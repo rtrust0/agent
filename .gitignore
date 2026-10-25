@@ -136,5 +136,20 @@ dmypy.json
 # pytype static type analyzer
 .pytype/
 
+# ===== 项目本地文件（勿提交/推送） =====
+# 本地 SQLite 数据库及备份（由 bootstrap_db.py 生成）
+chenguang.db
+chenguang.db.bak_*
+
+# 运行日志目录
+logs/
+
+# 本地工具 / 助手状态
+.workbuddy/
+.aigo123/
+
+# 前端依赖（app/ 下另有 .gitignore，此处兜底）
+node_modules/
+
 # Cython debug symbols
 cython_debug/
