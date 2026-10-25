@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>登录 · 辰光 Agent 平台</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="login-page">
+    <form class="login-card" onsubmit="return false;">
+      <div class="login-brand">
+        <div class="mark">辰</div>
+        <div>
+          <div class="name">辰光 Agent</div>
+          <div class="edition">企业级 AI Agent 管理平台</div>
+        </div>
+      </div>
+
+      <h1>登录控制台</h1>
+      <p class="sub">使用平台账号登录，权限由你的角色决定</p>
+
+      <div class="field">
+        <label for="username">用户名</label>
+        <input class="input" id="username" name="username" placeholder="输入用户名" autocomplete="username" />
+      </div>
+
+      <div class="field">
+        <label for="password">密码</label>
+        <input class="input" id="password" name="password" type="password" placeholder="输入密码" autocomplete="current-password" />
+      </div>
+
+      <div class="captcha-row">
+        <div class="field">
+          <label for="captcha">验证码</label>
+          <input class="input" id="captcha" name="captcha" placeholder="4 位字符" maxlength="4" />
+        </div>
+        <div style="padding-top: 22px;">
+          <div class="captcha-box" id="captcha-box" title="点击刷新验证码"></div>
+        </div>
+      </div>
+
+      <button class="btn btn-primary login-btn" type="submit" id="login-btn">登录</button>
+
+      <div class="login-foot">辰光 Agent · RBAC 权限原型</div>
+    </form>
+  </div>
+
+  <script>
+    (function () {
+      // 生成 4 位随机验证码
+      function genCaptcha() {
+        var chars = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
+        var s = '';
+        for (var i = 0; i < 4; i++) s += chars.charAt(Math.floor(Math.random() * chars.length));
+        return s;
+      }
+
+      var box = document.getElementById('captcha-box');
+      var captcha = genCaptcha();
+      box.textContent = captcha;
+      box.addEventListener('click', function () {
+        captcha = genCaptcha();
+        box.textContent = captcha;
+      });
+
+      document.getElementById('login-btn').addEventListener('click', function () {
+        var u = document.getElementById('username').value.trim();
+        var p = document.getElementById('password').value;
+        var c = document.getElementById('captcha').value.trim().toUpperCase();
+        if (!u || !p) { alert('请输入用户名和密码'); return; }
+        if (!c) { alert('请输入验证码'); return; }
+        if (c !== captcha) {
+          alert('验证码不正确');
+          captcha = genCaptcha();
+          box.textContent = captcha;
+          document.getElementById('captcha').value = '';
+          return;
+        }
+        // 原型：登录后跳转到工作台
+        window.location.href = 'index.html';
+      });
+    })();
+  </script>
+</body>
+</html>

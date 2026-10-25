@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>用户管理 · 辰光 Agent 平台</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-brand">
+        <div class="mark">辰</div>
+        <div>
+          <div class="name">辰光 Agent</div>
+          <div class="edition">RBAC 权限中心</div>
+        </div>
+      </div>
+      <nav class="sidebar-nav" id="sidebar-nav"></nav>
+      <div class="sidebar-user" id="sidebar-user"></div>
+    </aside>
+
+    <div class="main">
+      <header class="topbar">
+        <nav class="crumb" aria-label="面包屑">
+          <span>首页</span>
+          <span class="sep">/</span>
+          <span>系统管理</span>
+          <span class="sep">/</span>
+          <span class="here">用户管理</span>
+        </nav>
+        <div class="topbar-spacer"></div>
+        <div class="identity-switch" id="identity-switch"></div>
+      </header>
+
+      <main class="content">
+        <div class="page-head">
+          <div>
+            <h1 class="page-title">用户管理</h1>
+            <p class="page-sub">管理系统用户账号，并为用户分配角色</p>
+          </div>
+          <div class="actions">
+            <button class="btn btn-primary" data-perm="user:create" onclick="openCreateDialog()">
+              <span class="ico" id="ico-plus"></span>添加用户
+            </button>
+          </div>
+        </div>
+
+        <div class="stat-grid">
+          <div class="stat">
+            <div class="label">用户总数</div>
+            <div class="value" id="stat-total">6</div>
+          </div>
+          <div class="stat">
+            <div class="label">活跃用户</div>
+            <div class="value" id="stat-active" style="color:var(--grant)">5</div>
+          </div>
+          <div class="stat">
+            <div class="label">停用用户</div>
+            <div class="value" id="stat-inactive">1</div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head">
+            <div class="search-box" style="width:280px;max-width:100%">
+              <span class="ico" id="ico-search"></span>
+              <input class="input" id="user-search" placeholder="搜索用户名或邮箱…" />
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th style="width:56px">ID</th>
+                  <th>用户名</th>
+                  <th>邮箱</th>
+                  <th>角色</th>
+                  <th>状态</th>
+                  <th style="width:180px">操作</th>
+                </tr>
+              </thead>
+              <tbody id="user-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- 添加用户弹窗 -->
+  <div class="overlay" id="create-overlay" hidden>
+    <div class="dialog">
+      <div class="dialog-head">
+        <span class="dialog-title">添加用户</span>
+        <button class="dialog-close" onclick="closeCreateDialog()" id="ico-x-1"></button>
+      </div>
+      <div class="dialog-body">
+        <div class="field">
+          <label>用户名</label>
+          <input class="input" id="cu-username" placeholder="如 zhangwei" />
+        </div>
+        <div class="field">
+          <label>邮箱</label>
+          <input class="input" id="cu-email" placeholder="name@chenguang.ai" />
+        </div>
+        <div class="field">
+          <label>初始密码</label>
+          <input class="input" id="cu-password" type="password" placeholder="至少 8 位" />
+        </div>
+      </div>
+      <div class="dialog-foot">
+        <button class="btn btn-ghost" onclick="closeCreateDialog()">取消</button>
+        <button class="btn btn-primary" onclick="submitCreate()">创建用户</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 分配角色弹窗 -->
+  <div class="overlay" id="assign-overlay" hidden>
+    <div class="dialog">
+      <div class="dialog-head">
+        <span class="dialog-title">分配角色</span>
+        <button class="dialog-close" onclick="closeAssignDialog()" id="ico-x-2"></button>
+      </div>
+      <div class="dialog-body">
+        <p style="font-size:13px;color:var(--ink-2);margin-bottom:12px">为用户 <strong id="assign-username"></strong> 选择角色</p>
+        <div id="assign-role-list" style="display:flex;flex-direction:column;gap:8px;"></div>
+      </div>
+      <div class="dialog-foot">
+        <button class="btn btn-ghost" onclick="closeAssignDialog()">取消</button>
+        <button class="btn btn-primary" onclick="submitAssign()">保存</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 删除确认弹窗 -->
+  <div class="overlay" id="delete-overlay" hidden>
+    <div class="dialog" style="max-width:400px">
+      <div class="dialog-head">
+        <span class="dialog-title">删除用户</span>
+        <button class="dialog-close" onclick="closeDeleteDialog()" id="ico-x-3"></button>
+      </div>
+      <div class="dialog-body">
+        <p style="font-size:13.5px">确定要删除用户 <strong id="delete-username"></strong> 吗？此操作无法撤销。</p>
+      </div>
+      <div class="dialog-foot">
+        <button class="btn btn-ghost" onclick="closeDeleteDialog()">取消</button>
+        <button class="btn btn-primary" style="background:var(--danger)" onclick="submitDelete()">删除</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    (function () {
+      var D = RBAC_DATA;
+      RBAC.initCommon('users.html');
+
+      // 填充图标
+      document.getElementById('ico-plus').innerHTML = RBAC.icon('plus');
+      document.getElementById('ico-search').innerHTML = RBAC.icon('search');
+      document.getElementById('ico-x-1').innerHTML = RBAC.icon('x');
+      document.getElementById('ico-x-2').innerHTML = RBAC.icon('x');
+      document.getElementById('ico-x-3').innerHTML = RBAC.icon('x');
+
+      var assignUserId = null;
+      var deleteUserId = null;
+
+      function renderTable(keyword) {
+        var kw = (keyword || '').toLowerCase();
+        var rows = D.USERS.filter(function (u) {
+          return !kw || u.username.toLowerCase().indexOf(kw) !== -1 || u.email.toLowerCase().indexOf(kw) !== -1;
+        });
+        var tbody = document.getElementById('user-tbody');
+        var html = '';
+        rows.forEach(function (u) {
+          var roleBadges = u.roles.map(function (r) {
+            var cls = r === '超级管理员' ? 'badge-gold' : (r === '运营管理员' ? 'badge-blue' : 'badge-gray');
+            return '<span class="badge ' + cls + '">' + r + '</span>';
+          }).join(' ');
+          html += '<tr>' +
+            '<td class="cell-muted mono">' + u.id + '</td>' +
+            '<td class="cell-strong">' + u.username + '</td>' +
+            '<td class="cell-muted">' + u.email + '</td>' +
+            '<td>' + roleBadges + '</td>' +
+            '<td><span class="badge ' + (u.isActive ? 'badge-green' : 'badge-red') + '">' +
+              (u.isActive ? '活跃' : '停用') + '</span></td>' +
+            '<td><div style="display:flex;gap:4px">' +
+              '<button class="btn-icon" title="分配角色" data-perm="user:assign_roles" onclick="openAssignDialog(' + u.id + ')">' + RBAC.icon('shield') + '</button>' +
+              '<button class="btn-icon danger" title="删除" data-perm="user:delete" onclick="openDeleteDialog(' + u.id + ')">' + RBAC.icon('trash') + '</button>' +
+              '</div></td>' +
+            '</tr>';
+        });
+        tbody.innerHTML = html;
+
+        // 更新统计
+        var active = D.USERS.filter(function (u) { return u.isActive; }).length;
+        document.getElementById('stat-total').textContent = D.USERS.length;
+        document.getElementById('stat-active').textContent = active;
+        document.getElementById('stat-inactive').textContent = D.USERS.length - active;
+
+        // 重新应用按钮权限（新渲染的行）
+        document.querySelectorAll('[data-perm]').forEach(function (el) {
+          if (!RBAC.hasPerm(el.getAttribute('data-perm'))) {
+            el.setAttribute('data-perm-hidden', 'true');
+          }
+        });
+      }
+
+      document.getElementById('user-search').addEventListener('input', function (e) {
+        renderTable(e.target.value);
+      });
+
+      // 弹窗逻辑
+      window.openCreateDialog = function () {
+        document.getElementById('create-overlay').hidden = false;
+      };
+      window.closeCreateDialog = function () {
+        document.getElementById('create-overlay').hidden = true;
+      };
+      window.submitCreate = function () {
+        var u = document.getElementById('cu-username').value.trim();
+        var e = document.getElementById('cu-email').value.trim();
+        var p = document.getElementById('cu-password').value;
+        if (!u || !e || !p) { RBAC.toast('请填写所有字段', true); return; }
+        D.USERS.push({ id: D.USERS.length + 1, username: u, email: e, roles: [], isActive: true, createdAt: new Date().toLocaleString('zh-CN') });
+        closeCreateDialog();
+        renderTable(document.getElementById('user-search').value);
+        RBAC.toast('用户已创建');
+      };
+
+      window.openAssignDialog = function (id) {
+        assignUserId = id;
+        var u = D.USERS.find(function (x) { return x.id === id; });
+        document.getElementById('assign-username').textContent = u.username;
+        var listEl = document.getElementById('assign-role-list');
+        var html = '';
+        D.ROLES.forEach(function (r) {
+          var checked = u.roles.indexOf(r.name) !== -1;
+          html += '<label style="display:flex;align-items:center;gap:10px;cursor:pointer">' +
+            '<input type="checkbox" data-role="' + r.id + '" ' + (checked ? 'checked' : '') + '>' +
+            '<span>' + r.name + '</span>' +
+            '<span class="badge badge-gray">' + r.description + '</span></label>';
+        });
+        listEl.innerHTML = html;
+        document.getElementById('assign-overlay').hidden = false;
+      };
+      window.closeAssignDialog = function () {
+        document.getElementById('assign-overlay').hidden = true;
+      };
+      window.submitAssign = function () {
+        var u = D.USERS.find(function (x) { return x.id === assignUserId; });
+        var checked = document.querySelectorAll('#assign-role-list input:checked');
+        var names = [];
+        checked.forEach(function (c) {
+          var rid = parseInt(c.getAttribute('data-role'), 10);
+          var r = D.ROLES.find(function (x) { return x.id === rid; });
+          if (r) names.push(r.name);
+        });
+        u.roles = names;
+        closeAssignDialog();
+        renderTable(document.getElementById('user-search').value);
+        RBAC.toast('角色已更新');
+      };
+
+      window.openDeleteDialog = function (id) {
+        deleteUserId = id;
+        var u = D.USERS.find(function (x) { return x.id === id; });
+        document.getElementById('delete-username').textContent = u.username;
+        document.getElementById('delete-overlay').hidden = false;
+      };
+      window.closeDeleteDialog = function () {
+        document.getElementById('delete-overlay').hidden = true;
+      };
+      window.submitDelete = function () {
+        D.USERS = D.USERS.filter(function (x) { return x.id !== deleteUserId; });
+        closeDeleteDialog();
+        renderTable(document.getElementById('user-search').value);
+        RBAC.toast('用户已删除');
+      };
+
+      renderTable('');
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>权限管理 · 辰光 Agent 平台</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-brand">
+        <div class="mark">辰</div>
+        <div>
+          <div class="name">辰光 Agent</div>
+          <div class="edition">RBAC 权限中心</div>
+        </div>
+      </div>
+      <nav class="sidebar-nav" id="sidebar-nav"></nav>
+      <div class="sidebar-user" id="sidebar-user"></div>
+    </aside>
+
+    <div class="main">
+      <header class="topbar">
+        <nav class="crumb" aria-label="面包屑">
+          <span>首页</span>
+          <span class="sep">/</span>
+          <span>系统管理</span>
+          <span class="sep">/</span>
+          <span class="here">权限管理</span>
+        </nav>
+        <div class="topbar-spacer"></div>
+        <div class="identity-switch" id="identity-switch"></div>
+      </header>
+
+      <main class="content">
+        <div class="page-head">
+          <div>
+            <h1 class="page-title">权限管理</h1>
+            <p class="page-sub">以矩阵视角查看每个角色拥有的权限项，勾选状态即时反映授权关系</p>
+          </div>
+          <div class="actions">
+            <button class="btn btn-primary" data-perm="permission:create" onclick="openCreateDialog()">
+              <span class="ico" id="ico-plus"></span>创建权限
+            </button>
+          </div>
+        </div>
+
+        <div class="stat-grid">
+          <div class="stat">
+            <div class="label">权限项总数</div>
+            <div class="value" id="stat-total">22</div>
+          </div>
+          <div class="stat">
+            <div class="label">覆盖模块</div>
+            <div class="value">4</div>
+            <div class="meta">用户 · 角色 · 权限 · 系统</div>
+          </div>
+          <div class="stat">
+            <div class="label">权限码格式</div>
+            <div class="value" style="font-size:20px"><span class="mono">模块:操作</span></div>
+            <div class="meta">如 user:create、role:delete</div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head">
+            <span class="panel-title">角色 × 权限 矩阵</span>
+            <span class="badge badge-gray">勾选 = 已授权</span>
+          </div>
+          <div class="panel-body" style="padding:0">
+            <div class="matrix-wrap" id="matrix"></div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- 创建权限弹窗 -->
+  <div class="overlay" id="create-overlay" hidden>
+    <div class="dialog">
+      <div class="dialog-head">
+        <span class="dialog-title">创建权限</span>
+        <button class="dialog-close" onclick="closeCreateDialog()" id="ico-x-1"></button>
+      </div>
+      <div class="dialog-body">
+        <div class="field">
+          <label>权限编码</label>
+          <input class="input mono" id="cp-code" placeholder="如 user:export" />
+          <p class="hint">格式：模块:操作，如 user:read、role:create</p>
+        </div>
+        <div class="field">
+          <label>权限名称</label>
+          <input class="input" id="cp-name" placeholder="如 导出用户" />
+        </div>
+        <div class="field">
+          <label>描述</label>
+          <input class="input" id="cp-desc" placeholder="可选，说明该权限的用途" />
+        </div>
+      </div>
+      <div class="dialog-foot">
+        <button class="btn btn-ghost" onclick="closeCreateDialog()">取消</button>
+        <button class="btn btn-primary" onclick="submitCreate()">创建权限</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    (function () {
+      var D = RBAC_DATA;
+      RBAC.initCommon('permissions.html');
+
+      document.getElementById('ico-plus').innerHTML = RBAC.icon('plus');
+      document.getElementById('ico-x-1').innerHTML = RBAC.icon('x');
+
+      function renderMatrix() {
+        var roles = D.ROLES;
+        var mt = document.getElementById('matrix');
+        var html = '<table class="matrix"><thead><tr><th class="row-head">权限项</th>';
+        roles.forEach(function (r) {
+          html += '<th>' + r.name + '</th>';
+        });
+        html += '</tr></thead><tbody>';
+
+        var modules = ['user', 'role', 'permission', 'system'];
+        var modClass = { user: 'mod-user', role: 'mod-role', permission: 'mod-permission', system: 'mod-system' };
+
+        modules.forEach(function (mod) {
+          html += '<tr><th class="module-row" colspan="' + (roles.length + 1) + '">' +
+            '<span class="mod-tag ' + modClass[mod] + '"></span>' + D.MODULE_LABELS[mod] + '模块</th></tr>';
+          D.PERMISSIONS.filter(function (p) { return p.module === mod; }).forEach(function (p) {
+            html += '<tr><td class="perm-cell"><div class="perm-name">' + p.name +
+              '</div><div class="perm-desc"><span class="perm-code">' + p.code + '</span></div></td>';
+            roles.forEach(function (r) {
+              var on = r.permissions.indexOf(p.code) !== -1;
+              html += '<td><span class="cell-check ' + (on ? 'on' : 'off') + '">' +
+                (on ? RBAC.icon('check') : '') + '</span></td>';
+            });
+            html += '</tr>';
+          });
+        });
+
+        html += '</tbody></table>';
+        mt.innerHTML = html;
+        document.getElementById('stat-total').textContent = D.PERMISSIONS.length;
+      }
+
+      window.openCreateDialog = function () {
+        document.getElementById('create-overlay').hidden = false;
+      };
+      window.closeCreateDialog = function () {
+        document.getElementById('create-overlay').hidden = true;
+      };
+      window.submitCreate = function () {
+        var code = document.getElementById('cp-code').value.trim();
+        var name = document.getElementById('cp-name').value.trim();
+        var desc = document.getElementById('cp-desc').value.trim();
+        if (!code || !name) { RBAC.toast('请填写权限编码和名称', true); return; }
+        if (code.indexOf(':') === -1) { RBAC.toast('权限编码需符合「模块:操作」格式', true); return; }
+        var mod = code.split(':')[0];
+        D.PERMISSIONS.push({ code: code, name: name, module: mod });
+        closeCreateDialog();
+        renderMatrix();
+        RBAC.toast('权限已创建');
+      };
+
+      renderMatrix();
+    })();
+  </script>
+</body>
+</html>

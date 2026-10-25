@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>工作台 · 辰光 Agent 平台</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="app">
+    <!-- 侧边栏 -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-brand">
+        <div class="mark">辰</div>
+        <div>
+          <div class="name">辰光 Agent</div>
+          <div class="edition">RBAC 权限中心</div>
+        </div>
+      </div>
+      <nav class="sidebar-nav" id="sidebar-nav"></nav>
+      <div class="sidebar-user" id="sidebar-user"></div>
+    </aside>
+
+    <!-- 主区域 -->
+    <div class="main">
+      <header class="topbar">
+        <nav class="crumb" aria-label="面包屑">
+          <span>首页</span>
+          <span class="sep">/</span>
+          <span class="here">工作台</span>
+        </nav>
+        <div class="topbar-spacer"></div>
+        <div class="identity-switch" id="identity-switch"></div>
+      </header>
+
+      <main class="content">
+        <div class="page-head">
+          <div>
+            <h1 class="page-title">RBAC 权限中心</h1>
+            <p class="page-sub">在顶栏切换身份，实时查看菜单与按钮的权限差异</p>
+          </div>
+        </div>
+
+        <!-- 统计卡片 -->
+        <div class="stat-grid">
+          <div class="stat">
+            <div class="label">用户总数</div>
+            <div class="value">6</div>
+            <div class="meta">其中 5 个活跃</div>
+          </div>
+          <div class="stat">
+            <div class="label">角色</div>
+            <div class="value">3</div>
+            <div class="meta">超级管理员 · 运营管理员 · 只读观察者</div>
+          </div>
+          <div class="stat">
+            <div class="label">权限项</div>
+            <div class="value">22</div>
+            <div class="meta">覆盖 user / role / permission / system</div>
+          </div>
+          <div class="stat">
+            <div class="label">当前身份权限</div>
+            <div class="value"><span id="perm-count">22</span><span class="unit">项</span></div>
+            <div class="meta" id="perm-role">超级管理员</div>
+          </div>
+        </div>
+
+        <!-- 当前身份权限清单 -->
+        <div class="panel">
+          <div class="panel-head">
+            <span class="panel-title">当前身份的权限清单</span>
+            <span class="badge badge-blue" id="perm-badge">超级管理员</span>
+          </div>
+          <div class="panel-body">
+            <div id="perm-list" style="display:flex;flex-wrap:wrap;gap:8px;"></div>
+          </div>
+        </div>
+
+        <!-- 权限矩阵预览 -->
+        <div class="panel">
+          <div class="panel-head">
+            <span class="panel-title">角色 × 权限 矩阵</span>
+            <a href="permissions.html" class="btn btn-ghost btn-sm">进入权限管理</a>
+          </div>
+          <div class="panel-body">
+            <div class="matrix-wrap" id="matrix-preview"></div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    (function () {
+      var D = RBAC_DATA;
+      RBAC.initCommon('index.html');
+
+      var id = RBAC.getIdentity();
+      document.getElementById('perm-count').textContent = id.permissions.length;
+      document.getElementById('perm-role').textContent = id.roleName;
+      document.getElementById('perm-badge').textContent = id.roleName;
+
+      // 权限清单（标签形式）
+      var listEl = document.getElementById('perm-list');
+      var modClass = { user: 'mod-user', role: 'mod-role', permission: 'mod-permission', system: 'mod-system' };
+      var chips = '';
+      D.PERMISSIONS.forEach(function (p) {
+        var has = RBAC.hasPerm(p.code);
+        chips += '<span class="badge ' + (has ? 'badge-green' : 'badge-gray') + '"' +
+          (has ? '' : ' style="opacity:.5"') + '>' +
+          '<span class="mod-tag ' + modClass[p.module] + '"></span>' +
+          '<span class="mono">' + p.code + '</span></span>';
+      });
+      listEl.innerHTML = chips;
+
+      // 矩阵预览：权限码 × 角色
+      var roles = D.ROLES;
+      var mt = document.getElementById('matrix-preview');
+      var html = '<table class="matrix"><thead><tr><th class="row-head">权限</th>';
+      roles.forEach(function (r) { html += '<th>' + r.name + '</th>'; });
+      html += '</tr></thead><tbody>';
+
+      var modules = ['user', 'role', 'permission', 'system'];
+      modules.forEach(function (mod) {
+        html += '<tr><th class="module-row" colspan="' + (roles.length + 1) + '">' +
+          D.MODULE_LABELS[mod] + '模块</th></tr>';
+        D.PERMISSIONS.filter(function (p) { return p.module === mod; }).forEach(function (p) {
+          html += '<tr><td class="perm-cell"><div class="perm-name">' + p.name +
+            '</div><div class="perm-desc"><span class="perm-code">' + p.code + '</span></div></td>';
+          roles.forEach(function (r) {
+            var on = r.permissions.indexOf(p.code) !== -1;
+            html += '<td><span class="cell-check ' + (on ? 'on' : 'off') + '">' +
+              (on ? RBAC.icon('check') : '') + '</span></td>';
+          });
+          html += '</tr>';
+        });
+      });
+
+      html += '</tbody></table>';
+      mt.innerHTML = html;
+    })();
+  </script>
+</body>
+</html>
