@@ -2,8 +2,9 @@ import type { IncomingMessage, ServerResponse } from 'node:http'
 import type { ApiResponse, MockDb, MockRequestHandler, MockRoute, RouteContext } from './types'
 import { createSeed, getUserPermissionCodes } from './seed'
 import { authRoutes } from './routes/auth'
+import { userRoutes } from './routes/user'
 
-const allRoutes: MockRoute[] = [...authRoutes]
+const allRoutes: MockRoute[] = [...authRoutes, ...userRoutes]
 
 function readBody(req: IncomingMessage): Promise<Record<string, unknown>> {
   return new Promise((resolve) => {
