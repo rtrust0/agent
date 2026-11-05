@@ -5,8 +5,9 @@ import { authRoutes } from './routes/auth'
 import { userRoutes } from './routes/user'
 import { roleRoutes } from './routes/role'
 import { permissionRoutes } from './routes/permission'
+import { dashboardRoutes } from './routes/dashboard'
 
-const allRoutes: MockRoute[] = [...authRoutes, ...userRoutes, ...roleRoutes, ...permissionRoutes]
+const allRoutes: MockRoute[] = [...authRoutes, ...userRoutes, ...roleRoutes, ...permissionRoutes, ...dashboardRoutes]
 
 function readBody(req: IncomingMessage): Promise<Record<string, unknown>> {
   return new Promise((resolve) => {

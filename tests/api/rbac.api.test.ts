@@ -281,3 +281,16 @@ test('permission search', () =>
     assert.equal(res.code, 200)
     assert.equal((res.data as { total: number }).total, 22)
   }))
+
+// ---------- 工作台 ----------
+
+test('dashboard summary', () =>
+  withServer(async (baseUrl) => {
+    const { token } = await login(baseUrl, 'admin')
+    const res = await api(baseUrl, 'GET', '/api/dashboard/summary', { token })
+    assert.equal(res.code, 200)
+    const data = res.data as { totalUsers: number; totalRoles: number; totalPermissions: number }
+    assert.equal(data.totalUsers, 6)
+    assert.equal(data.totalRoles, 3)
+    assert.equal(data.totalPermissions, 22)
+  }))
