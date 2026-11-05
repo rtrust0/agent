@@ -1,4 +1,4 @@
-import { createServer, type IncomingMessage, type ServerResponse } from 'node:http'
+import { createServer } from 'node:http'
 import { createMockHandler, createSeed } from '../../mock/index'
 
 /**
@@ -11,7 +11,7 @@ export interface MockServer {
 }
 
 export function startMockServer(seed = createSeed()): Promise<MockServer> {
-  const handler: (req: IncomingMessage, res: ServerResponse) => void = createMockHandler(seed)
+  const handler = createMockHandler(seed)
   const server = createServer(handler)
 
   return new Promise((resolve, reject) => {
