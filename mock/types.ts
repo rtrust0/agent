@@ -16,6 +16,7 @@ export interface MockRole {
   description: string
   isSystem: boolean
   permissionCodes: string[]
+  createdAt: string
 }
 
 export interface MockUser {

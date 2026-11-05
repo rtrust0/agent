@@ -57,10 +57,11 @@ const ROLE_DEFS: Array<{
   description: string
   isSystem: boolean
   permissionCodes: string[]
+  createdAt: string
 }> = [
-  { code: 'super_admin', name: '超级管理员', description: '拥有平台全部权限，可管理一切资源', isSystem: true, permissionCodes: [...ALL_PERMISSION_CODES] },
-  { code: 'ops_admin', name: '运营管理员', description: '负责日常运营，可增改用户与角色，不可删除或分配', isSystem: false, permissionCodes: OPS_ADMIN_CODES },
-  { code: 'viewer', name: '只读观察者', description: '只能查看用户、角色与权限，不可做任何修改', isSystem: false, permissionCodes: VIEWER_CODES },
+  { code: 'super_admin', name: '超级管理员', description: '拥有平台全部权限，可管理一切资源', isSystem: true, permissionCodes: [...ALL_PERMISSION_CODES], createdAt: '2026-03-01 08:00' },
+  { code: 'ops_admin', name: '运营管理员', description: '负责日常运营，可增改用户与角色，不可删除或分配', isSystem: false, permissionCodes: OPS_ADMIN_CODES, createdAt: '2026-03-05 09:30' },
+  { code: 'viewer', name: '只读观察者', description: '只能查看用户、角色与权限，不可做任何修改', isSystem: false, permissionCodes: VIEWER_CODES, createdAt: '2026-03-05 10:00' },
 ]
 
 const USER_DEFS: Array<{
@@ -89,6 +90,7 @@ export function createSeed(): MockDb {
     description: r.description,
     isSystem: r.isSystem,
     permissionCodes: [...r.permissionCodes],
+    createdAt: r.createdAt,
   }))
   const roleIdByCode = new Map(roles.map((r) => [r.code, r.id]))
   const users: MockUser[] = USER_DEFS.map((u, i) => ({

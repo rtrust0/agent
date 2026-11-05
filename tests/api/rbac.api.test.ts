@@ -197,3 +197,87 @@ test('user read roles empty', () =>
     assert.equal(res.code, 200)
     assert.deepEqual(res.data, [])
   }))
+
+// ---------- 角色 ----------
+
+test('roles list requires login', () =>
+  withServer(async (baseUrl) => {
+    const noToken = await api(baseUrl, 'GET', '/api/roles/')
+    assert.equal(noToken.code, 401)
+    const { token } = await login(baseUrl, 'admin')
+    const res = await api(baseUrl, 'GET', '/api/roles/', { token })
+    assert.equal(res.code, 200)
+    assert.equal((res.data as unknown[]).length, 3)
+  }))
+
+test('list routes login only, no permission code required', () =>
+  withServer(async (baseUrl) => {
+    const { token } = await login(baseUrl, 'nobody')
+    const roles = await api(baseUrl, 'GET', '/api/roles/', { token })
+    assert.equal(roles.code, 200)
+    const rolesSearch = await api(baseUrl, 'GET', '/api/roles/search', { token })
+    assert.equal(rolesSearch.code, 403)
+    const perms = await api(baseUrl, 'GET', '/api/permissions/', { token })
+    assert.equal(perms.code, 200)
+    const permsSearch = await api(baseUrl, 'GET', '/api/permissions/search', { token })
+    assert.equal(permsSearch.code, 403)
+  }, rolelessSeed()))
+
+test('role delete system forbidden', () =>
+  withServer(async (baseUrl) => {
+    const { token } = await login(baseUrl, 'admin')
+    const res = await api(baseUrl, 'DELETE', '/api/roles/1', { token })
+    assert.equal(res.code, 400)
+  }))
+
+test('role assign permissions', () =>
+  withServer(async (baseUrl) => {
+    const ops = await login(baseUrl, 'ops')
+    const denied = await api(baseUrl, 'PUT', '/api/roles/3/permissions', {
+      token: ops.token,
+      body: { permissionCodes: ['user:list'] },
+    })
+    assert.equal(denied.code, 403)
+
+    const admin = await login(baseUrl, 'admin')
+    const ok = await api(baseUrl, 'PUT', '/api/roles/3/permissions', {
+      token: admin.token,
+      body: { permissionCodes: ['user:list', 'role:list'] },
+    })
+    assert.equal(ok.code, 200)
+  }))
+
+test('role create success', () =>
+  withServer(async (baseUrl) => {
+    const { token } = await login(baseUrl, 'admin')
+    const res = await api(baseUrl, 'POST', '/api/roles', {
+      token,
+      body: { code: 'auditor', name: '审计员', description: '审计', permissionCodes: ['user:list'] },
+    })
+    assert.equal(res.code, 200)
+    assert.equal((res.data as { code: string }).code, 'auditor')
+  }))
+
+// ---------- 权限 ----------
+
+test('permission update immutable code', () =>
+  withServer(async (baseUrl) => {
+    const { token } = await login(baseUrl, 'admin')
+    const res = await api(baseUrl, 'PUT', '/api/permissions/1', { token, body: { code: 'user:renamed' } })
+    assert.equal(res.code, 400)
+  }))
+
+test('permission delete used', () =>
+  withServer(async (baseUrl) => {
+    const { token } = await login(baseUrl, 'admin')
+    const res = await api(baseUrl, 'DELETE', '/api/permissions/1', { token })
+    assert.equal(res.code, 400)
+  }))
+
+test('permission search', () =>
+  withServer(async (baseUrl) => {
+    const { token } = await login(baseUrl, 'admin')
+    const res = await api(baseUrl, 'GET', '/api/permissions/search?page=1&pageSize=50', { token })
+    assert.equal(res.code, 200)
+    assert.equal((res.data as { total: number }).total, 22)
+  }))

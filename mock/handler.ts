@@ -3,8 +3,10 @@ import type { ApiResponse, MockDb, MockRequestHandler, MockRoute, RouteContext }
 import { createSeed, getUserPermissionCodes } from './seed'
 import { authRoutes } from './routes/auth'
 import { userRoutes } from './routes/user'
+import { roleRoutes } from './routes/role'
+import { permissionRoutes } from './routes/permission'
 
-const allRoutes: MockRoute[] = [...authRoutes, ...userRoutes]
+const allRoutes: MockRoute[] = [...authRoutes, ...userRoutes, ...roleRoutes, ...permissionRoutes]
 
 function readBody(req: IncomingMessage): Promise<Record<string, unknown>> {
   return new Promise((resolve) => {
