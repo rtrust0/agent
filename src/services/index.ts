@@ -1,2 +1,5 @@
-export { userService, USER_STATUS_LABEL } from './user.service'
+export { authService } from './auth.service'
+export { userService } from './user.service'
+export { roleService } from './role.service'
+export { permissionService } from './permission.service'
 export { dashboardService } from './dashboard.service'
