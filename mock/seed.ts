@@ -82,7 +82,7 @@ const USER_DEFS: Array<{
 
 /** 构造一份全新的内存种子数据（每次调用互不影响，供测试隔离使用） */
 export function createSeed(): MockDb {
-  const permissions: MockPermission[] = PERMISSION_DEFS.map((p, i) => ({ id: i + 1, ...p }))
+  const permissions: MockPermission[] = PERMISSION_DEFS.map((p, i) => ({ id: i + 1, ...p, createdAt: '2026-03-01 00:00' }))
   const roles: MockRole[] = ROLE_DEFS.map((r, i) => ({
     id: i + 1,
     code: r.code,

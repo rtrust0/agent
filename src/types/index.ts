@@ -1,14 +1,45 @@
 /**
- * 全局类型定义：与后端接口返回结构对齐。
+ * 全局类型定义：与后端接口返回结构对齐（RBAC 模块）。
  */
+
+export type PermissionModule = 'user' | 'role' | 'permission' | 'system'
 
 export interface User {
   id: number
-  name: string
+  username: string
   email: string
-  role: string
-  status: 'active' | 'disabled'
+  isActive: boolean
+  isSuperuser: boolean
+  roleIds: number[]
   createdAt: string
+}
+
+export interface Role {
+  id: number
+  code: string
+  name: string
+  description: string
+  isSystem: boolean
+  permissionCodes: string[]
+  createdAt: string
+}
+
+export interface Permission {
+  id: number
+  code: string
+  name: string
+  module: PermissionModule
+  createdAt: string
+}
+
+export interface AuthSession {
+  token: string
+  user: User
+}
+
+export interface Captcha {
+  captchaId: string
+  text: string
 }
 
 export interface PageResult<T> {
@@ -20,11 +51,8 @@ export interface PageResult<T> {
 
 export interface DashboardSummary {
   totalUsers: number
-  totalAgents: number
-  totalModels: number
-  totalPrompts: number
-  activeToday: number
-  trend: Array<{ date: string; count: number }>
+  totalRoles: number
+  totalPermissions: number
 }
 
 export interface ApiResponse<T = unknown> {

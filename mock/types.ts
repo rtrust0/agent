@@ -7,6 +7,7 @@ export interface MockPermission {
   code: string
   name: string
   module: PermissionModule
+  createdAt: string
 }
 
 export interface MockRole {

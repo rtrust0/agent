@@ -58,7 +58,13 @@ export const permissionRoutes: MockRoute[] = [
       if (!MODULES.includes(module)) return { code: 400, message: '模块不合法', data: null }
       if (ctx.db.permissions.some((p) => p.code === code)) return { code: 400, message: '权限码已存在', data: null }
       const nextId = Math.max(0, ...ctx.db.permissions.map((p) => p.id)) + 1
-      const permission: MockPermission = { id: nextId, code, name, module }
+      const permission: MockPermission = {
+        id: nextId,
+        code,
+        name,
+        module,
+        createdAt: new Date().toISOString().replace('T', ' ').slice(0, 19),
+      }
       ctx.db.permissions.push(permission)
       return { code: 200, message: '创建成功', data: permission }
     },
