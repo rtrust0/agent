@@ -6,6 +6,7 @@ export default pinia
 
 export { useAuthStore } from './auth'
 export { usePermissionStore } from './permission'
+export { usePermissionCatalogStore } from './permission-catalog'
 export { useUserStore } from './user'
 export { useRoleStore } from './role'
 export type { LoginCredentials } from './auth'
