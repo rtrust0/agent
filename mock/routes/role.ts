@@ -82,12 +82,17 @@ export const roleRoutes: MockRoute[] = [
       if (role.isSystem) return { code: 400, message: '内置角色不可修改', data: null }
       if (ctx.body.code !== undefined) {
         const code = String(ctx.body.code).trim()
+        if (!code) return { code: 400, message: '角色码不能为空', data: null }
         if (ctx.db.roles.some((r) => r.id !== role.id && r.code === code)) {
           return { code: 400, message: '角色码已存在', data: null }
         }
         role.code = code
       }
-      if (ctx.body.name !== undefined) role.name = String(ctx.body.name).trim()
+      if (ctx.body.name !== undefined) {
+        const name = String(ctx.body.name).trim()
+        if (!name) return { code: 400, message: '角色名不能为空', data: null }
+        role.name = name
+      }
       if (ctx.body.description !== undefined) role.description = String(ctx.body.description)
       return { code: 200, message: '更新成功', data: role }
     },

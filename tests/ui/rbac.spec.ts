@@ -67,6 +67,9 @@ test('viewer permissions page hides create and renders matrix', async ({ page })
   await page.getByRole('button', { name: '矩阵' }).click()
   await expect(page.getByText('权限矩阵')).toBeVisible()
   await expect(page.locator('.matrix__dot--on').first()).toBeVisible()
+  // 22 权限行 + 4 模块行 = 26 行；权限码 + 3 角色 = 4 列
+  await expect(page.locator('.matrix thead th')).toHaveCount(4)
+  await expect(page.locator('.matrix tbody tr')).toHaveCount(26)
 })
 
 test('ops is redirected to /403 for an unauthorized system route', async ({ page }) => {
@@ -78,8 +81,28 @@ test('ops is redirected to /403 for an unauthorized system route', async ({ page
 
 test('unauthenticated access redirects to login with redirect query', async ({ page }) => {
   await page.goto('/system/users')
-  await expect(page).toHaveURL(/\/login/)
+  await expect(page).toHaveURL(/\/login\?redirect=/)
   await expect(page.getByRole('heading', { name: '登录' })).toBeVisible()
+})
+
+test('logout then login as viewer shrinks menu without reload', async ({ page }) => {
+  await loginAs(page, '超级管理员')
+  await expect(page.getByRole('link', { name: 'API 密钥' })).toBeVisible()
+
+  // 退出登录（客户端导航，无整页刷新）
+  await page.locator('.userbox__logout').click()
+  await expect(page).toHaveURL(/\/login/)
+
+  // 以 viewer 重新登录
+  await page.getByRole('button', { name: '只读观察者' }).click()
+  const captchaBox = page.locator('.captcha__box')
+  await expect(captchaBox).toHaveText(/^[A-Z0-9]{4}$/)
+  await page.getByLabel('验证码').fill((await captchaBox.innerText()).trim())
+  await page.getByRole('button', { name: '登录' }).click()
+  await expect(page).toHaveURL('/')
+
+  await expect(page.getByRole('link', { name: 'API 密钥' })).toHaveCount(0)
+  await expect(page.locator('.userbox__name')).toHaveText('viewer')
 })
 
 test('identity switch recomputes menu and user box', async ({ page }) => {

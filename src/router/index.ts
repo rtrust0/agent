@@ -104,9 +104,9 @@ router.beforeEach(async (to) => {
     return to.fullPath !== '/' ? { path: '/login', query: { redirect: to.fullPath } } : { path: '/login' }
   }
 
-  if (!perm.loaded) {
-    await perm.fetchPermissions()
-  }
+  // 每次导航都校验权限（fetchPermissions 按 token 键控缓存，命中即复用），
+  // 确保跨标签页 token 变化或退出重登后不会残留上一账号的权限集合。
+  await perm.fetchPermissions()
 
   const required = to.meta.permission as string | undefined
   if (required && !perm.hasPerm(required)) {

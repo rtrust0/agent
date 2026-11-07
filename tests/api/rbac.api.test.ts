@@ -38,6 +38,20 @@ const VIEWER_CODES_SORTED = [
   'user:read_roles',
 ]
 
+const OPS_CODES_SORTED = [
+  'permission:list',
+  'permission:read',
+  'role:create',
+  'role:list',
+  'role:read',
+  'role:update',
+  'user:create',
+  'user:list',
+  'user:read',
+  'user:read_roles',
+  'user:update',
+]
+
 interface Api {
   code: number
   message: string
@@ -90,6 +104,22 @@ function rolelessSeed() {
     password: '123456',
     isActive: true,
     isSuperuser: false,
+    roleIds: [],
+    createdAt: '2026-01-01 00:00',
+  })
+  return seed
+}
+
+/** 没有任何角色的超管，用于验证 is_superuser 短路 */
+function superuserBareSeed() {
+  const seed = createSeed()
+  seed.users.push({
+    id: 98,
+    username: 'superb',
+    email: 'superb@x.com',
+    password: '123456',
+    isActive: true,
+    isSuperuser: true,
     roleIds: [],
     createdAt: '2026-01-01 00:00',
   })
@@ -686,4 +716,55 @@ test('unknown api route returns 404', () =>
   withServer(async (baseUrl) => {
     const res = await api(baseUrl, 'GET', '/api/not-exists')
     assert.equal(res.code, 404)
+  }))
+
+// ==================== 最终复查补充用例 ====================
+
+test('superuser with empty roles bypasses and returns all codes', () =>
+  withServer(async (baseUrl) => {
+    const { token } = await login(baseUrl, 'superb')
+    const search = await api(baseUrl, 'GET', '/api/users/search', { token })
+    assert.equal(search.code, 200)
+
+    const perms = await api(baseUrl, 'GET', '/api/users/me/permissions', { token })
+    assert.equal(perms.code, 200)
+    assert.deepEqual(perms.data, ALL_CODES_SORTED)
+  }, superuserBareSeed()))
+
+test('me permissions multi-role user dedup', () =>
+  withServer(async (baseUrl) => {
+    const { token } = await login(baseUrl, 'wangfang')
+    const res = await api(baseUrl, 'GET', '/api/users/me/permissions', { token })
+    assert.equal(res.code, 200)
+    // ops_admin(11) ∪ viewer(7 子集) = 11 项，去重排序
+    assert.deepEqual(res.data, OPS_CODES_SORTED)
+  }))
+
+test('me permissions includes dynamically created permission for superuser', () =>
+  withServer(async (baseUrl) => {
+    const { token } = await login(baseUrl, 'admin')
+    const created = await api(baseUrl, 'POST', '/api/permissions', {
+      token,
+      body: { code: 'user:export', name: '导出用户', module: 'user' },
+    })
+    assert.equal(created.code, 200)
+
+    const res = await api(baseUrl, 'GET', '/api/users/me/permissions', { token })
+    const codes = res.data as string[]
+    assert.ok(codes.includes('user:export'))
+    assert.equal(codes.length, 23)
+  }))
+
+test('role update empty name rejected', () =>
+  withServer(async (baseUrl) => {
+    const { token } = await login(baseUrl, 'admin')
+    const res = await api(baseUrl, 'PUT', '/api/roles/3', { token, body: { name: '  ' } })
+    assert.equal(res.code, 400)
+  }))
+
+test('permission update empty name rejected', () =>
+  withServer(async (baseUrl) => {
+    const { token } = await login(baseUrl, 'admin')
+    const res = await api(baseUrl, 'PUT', '/api/permissions/1', { token, body: { name: '  ' } })
+    assert.equal(res.code, 400)
   }))

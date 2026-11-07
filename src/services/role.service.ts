@@ -28,8 +28,10 @@ export const roleService = {
     return roleApi.create(data)
   },
 
-  /** 更新角色 */
-  update(id: number, data: UpdateRoleData): Promise<Role> {
+  /** 更新角色（角色码 / 名称不能为空） */
+  async update(id: number, data: UpdateRoleData): Promise<Role> {
+    if (data.code !== undefined && !data.code.trim()) throw new Error('角色码不能为空')
+    if (data.name !== undefined && !data.name.trim()) throw new Error('角色名不能为空')
     return roleApi.update(id, data)
   },
 

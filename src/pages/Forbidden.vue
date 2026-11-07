@@ -1,8 +1,15 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
+import { useAuthStore } from '@/store/auth'
 import BaseButton from '@/components/ui/BaseButton.vue'
 
 const router = useRouter()
+const auth = useAuthStore()
+
+function switchAccount() {
+  auth.logout()
+  router.replace('/login')
+}
 </script>
 
 <template>
@@ -15,7 +22,7 @@ const router = useRouter()
       </p>
       <div class="forbidden__actions">
         <BaseButton @click="router.replace('/')">返回工作台</BaseButton>
-        <BaseButton variant="ghost" @click="router.replace('/login')">切换账号</BaseButton>
+        <BaseButton variant="ghost" @click="switchAccount">切换账号</BaseButton>
       </div>
     </div>
   </div>

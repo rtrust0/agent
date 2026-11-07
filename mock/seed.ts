@@ -106,9 +106,9 @@ export function createSeed(): MockDb {
   return { permissions, roles, users, sessions: [], captcha: new Map() }
 }
 
-/** 取用户权限码并集；超管返回全部；结果去重并按字典序排序 */
+/** 取用户权限码并集；超管返回当前库中全部已定义权限码；结果去重并按字典序排序 */
 export function getUserPermissionCodes(db: MockDb, user: MockUser): string[] {
-  if (user.isSuperuser) return [...ALL_PERMISSION_CODES].sort()
+  if (user.isSuperuser) return db.permissions.map((p) => p.code).sort()
   const set = new Set<string>()
   for (const roleId of user.roleIds) {
     const role = db.roles.find((r) => r.id === roleId)

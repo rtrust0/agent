@@ -33,8 +33,9 @@ export const permissionService = {
     return permissionApi.create(data)
   },
 
-  /** 更新权限 */
-  update(id: number, data: UpdatePermissionData): Promise<Permission> {
+  /** 更新权限（名称不能为空） */
+  async update(id: number, data: UpdatePermissionData): Promise<Permission> {
+    if (data.name !== undefined && !data.name.trim()) throw new Error('权限名不能为空')
     return permissionApi.update(id, data)
   },
 

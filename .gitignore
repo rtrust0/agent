@@ -33,6 +33,8 @@ pnpm-debug.log*
 
 # 测试报告产物缓存
 coverage/
+test-results/
+playwright-report/
 
 # TypeScript 增量构建缓存
 *.tsbuildinfo

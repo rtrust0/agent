@@ -79,7 +79,11 @@ export const permissionRoutes: MockRoute[] = [
       if (ctx.body.code !== undefined && String(ctx.body.code) !== permission.code) {
         return { code: 400, message: '权限码不可修改', data: null }
       }
-      if (ctx.body.name !== undefined) permission.name = String(ctx.body.name).trim()
+      if (ctx.body.name !== undefined) {
+        const name = String(ctx.body.name).trim()
+        if (!name) return { code: 400, message: '权限名不能为空', data: null }
+        permission.name = name
+      }
       if (ctx.body.module !== undefined) {
         const module = String(ctx.body.module) as PermissionModule
         if (!MODULES.includes(module)) return { code: 400, message: '模块不合法', data: null }
