@@ -5,6 +5,7 @@ from fastapi import FastAPI
 from app.core.config import get_settings
 from app.core.database import init_db
 from app.core.exceptions import register_exception_handlers
+from app.modules.auth.api import router as auth_router
 
 
 @asynccontextmanager
@@ -22,6 +23,8 @@ def create_app() -> FastAPI:
         lifespan=lifespan,
     )
     register_exception_handlers(app)
+
+    app.include_router(auth_router, prefix="/api/v1")
 
     @app.get("/health", tags=["health"])
     async def health() -> dict[str, str]:

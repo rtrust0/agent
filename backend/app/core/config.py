@@ -12,7 +12,7 @@ class Settings(BaseSettings):
 
     DATABASE_URL: str = "sqlite+aiosqlite:///./rbac.db"
 
-    JWT_SECRET: str = "change-me-in-production"
+    JWT_SECRET: str = "change-me-in-production-change-me-32"
     JWT_ALGORITHM: str = "HS256"
     JWT_EXPIRES_MINUTES: int = 30
 
