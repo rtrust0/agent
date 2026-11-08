@@ -38,3 +38,11 @@ playwright-report/
 
 # TypeScript 增量构建缓存
 *.tsbuildinfo
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+backend/rbac.db
+.pytest_cache/
