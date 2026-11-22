@@ -10,3 +10,8 @@ class Permission(BaseModel):
     code: Mapped[str] = mapped_column(String(100), unique=True, index=True)
     name: Mapped[str] = mapped_column(String(100))
     description: Mapped[str | None] = mapped_column(String(200), nullable=True)
+
+    @property
+    def module(self) -> str:
+        """权限码所属模块：取 `模块:操作` 的前缀。"""
+        return self.code.split(":", 1)[0]

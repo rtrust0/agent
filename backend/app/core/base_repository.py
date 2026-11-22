@@ -49,8 +49,12 @@ class BaseRepository(Generic[T]):
         limit: int = 10,
         keyword: str | None = None,
         search_fields: list[str] | None = None,
+        extra_conditions: list | None = None,
+        order_desc: bool = False,
     ) -> tuple[list[T], int]:
         stmt = select(self.model)
+        if extra_conditions:
+            stmt = stmt.where(*extra_conditions)
         fields = search_fields or self.SEARCH_FIELDS
         if keyword and fields:
             conditions = [
@@ -64,6 +68,7 @@ class BaseRepository(Generic[T]):
         count_stmt = select(func.count()).select_from(stmt.subquery())
         total = (await self.db.execute(count_stmt)).scalar_one()
 
-        stmt = stmt.offset(offset).limit(limit).order_by(self.model.id.asc())
+        order = self.model.id.desc() if order_desc else self.model.id.asc()
+        stmt = stmt.offset(offset).limit(limit).order_by(order)
         result = await self.db.execute(stmt)
         return list(result.scalars().all()), total

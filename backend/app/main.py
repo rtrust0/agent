@@ -5,7 +5,15 @@ from fastapi import FastAPI
 from app.core.config import get_settings
 from app.core.database import init_db
 from app.core.exceptions import register_exception_handlers
+from app.core.request_context import RequestContextMiddleware
+from app.modules.approval.api import router as approval_router
+from app.modules.audit.api import router as audit_router
 from app.modules.auth.api import router as auth_router
+from app.modules.permission.api import router as permission_router
+from app.modules.role.api import router as role_router
+from app.modules.user.api import router as user_router
+
+API_PREFIX = "/api/v1"
 
 
 @asynccontextmanager
@@ -18,13 +26,22 @@ def create_app() -> FastAPI:
     settings = get_settings()
     app = FastAPI(
         title=settings.APP_NAME,
-        version="1.0.0",
+        version="2.0.0",
         debug=settings.APP_DEBUG,
         lifespan=lifespan,
     )
     register_exception_handlers(app)
+    app.add_middleware(RequestContextMiddleware)
 
-    app.include_router(auth_router, prefix="/api/v1")
+    for router in (
+        auth_router,
+        user_router,
+        role_router,
+        permission_router,
+        audit_router,
+        approval_router,
+    ):
+        app.include_router(router, prefix=API_PREFIX)
 
     @app.get("/health", tags=["health"])
     async def health() -> dict[str, str]:

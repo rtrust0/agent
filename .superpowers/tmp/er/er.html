@@ -1,0 +1,886 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><style>
+html,body{margin:0;padding:0;background:#f7f8fa;} svg{display:block;}
+</style></head><body><svg xmlns="http://www.w3.org/2000/svg" width="3220" height="1880" viewBox="0 0 3220 1880">
+<rect width="3220" height="1880" fill="#f7f8fa"/>
+<text x="40" y="58" font-family="Microsoft YaHei, PingFang SC, Noto Sans SC, Arial, sans-serif" font-size="30" font-weight="700" fill="#0f1b2d">辰光 Agent 平台 · 数据库 ER 图（V3）</text>
+<text x="40" y="88" font-family="Microsoft YaHei, PingFang SC, Noto Sans SC, Arial, sans-serif" font-size="14" fill="#5a6675">23 张表 · 71 个权限码 · 数据源 docs/design/db/script.sql</text>
+<g font-family="Microsoft YaHei, PingFang SC, Noto Sans SC, Arial, sans-serif" font-size="12" fill="#5a6675">
+<rect x="2350" y="34" width="20" height="14" rx="3" fill="#fbf1de" stroke="#e2a13c"/><text x="2376" y="46">主键 PK</text>
+<rect x="2460" y="34" width="20" height="14" rx="3" fill="#eef2fc" stroke="#3e63dd"/><text x="2486" y="46">外键 FK</text>
+<line x1="2582" y1="42" x2="2612" y2="42" stroke="#3e63dd" stroke-width="1.6"/>
+<line x1="2612" y1="42" x2="2600" y2="36" stroke="#3e63dd" stroke-width="1.6"/>
+<line x1="2612" y1="42" x2="2600" y2="48" stroke="#3e63dd" stroke-width="1.6"/>
+<line x1="2612" y1="42" x2="2600" y2="42" stroke="#3e63dd" stroke-width="1.6"/>
+<text x="2620" y="46">1:N 关系（鸦爪）</text>
+<line x1="2740" y1="42" x2="2780" y2="42" stroke="#3e63dd" stroke-width="1.6" stroke-dasharray="5 4"/><text x="2788" y="46">跨组外键</text>
+</g>
+<rect x="40" y="140" width="880" height="840" rx="14" fill="#eef2fc" fill-opacity="0.55" stroke="#3e63dd" stroke-opacity="0.35" stroke-dasharray="6 5"/>
+<text x="58" y="170" font-family="Microsoft YaHei, PingFang SC, Noto Sans SC, Arial, sans-serif" font-size="16" font-weight="700" fill="#3e63dd">核心 RBAC</text>
+<rect x="960" y="140" width="900" height="1500" rx="14" fill="#e9f4ee" fill-opacity="0.55" stroke="#1e7a5a" stroke-opacity="0.35" stroke-dasharray="6 5"/>
+<text x="978" y="170" font-family="Microsoft YaHei, PingFang SC, Noto Sans SC, Arial, sans-serif" font-size="16" font-weight="700" fill="#1e7a5a">业务与对话</text>
+<rect x="1900" y="140" width="620" height="1720" rx="14" fill="#fdf3e3" fill-opacity="0.55" stroke="#e2a13c" stroke-opacity="0.35" stroke-dasharray="6 5"/>
+<text x="1918" y="170" font-family="Microsoft YaHei, PingFang SC, Noto Sans SC, Arial, sans-serif" font-size="16" font-weight="700" fill="#e2a13c">内容与工具</text>
+<rect x="2560" y="140" width="600" height="1210" rx="14" fill="#fbeceb" fill-opacity="0.55" stroke="#c2453c" stroke-opacity="0.35" stroke-dasharray="6 5"/>
+<text x="2578" y="170" font-family="Microsoft YaHei, PingFang SC, Noto Sans SC, Arial, sans-serif" font-size="16" font-weight="700" fill="#c2453c">系统管理</text>
+<path d="M 460.0,238.0 C 510.0,238.0 450.0,238.0 500.0,238.0" fill="none" stroke="#3e63dd" stroke-width="1.6" stroke-opacity="0.75" />
+<line x1="460.0" y1="231.0" x2="460.0" y2="245.0" stroke="#3e63dd" stroke-width="2"/>
+<line x1="500.0" y1="238.0" x2="490.0" y2="232.0" stroke="#3e63dd" stroke-width="1.6"/>
+<line x1="500.0" y1="238.0" x2="486.0" y2="238.0" stroke="#3e63dd" stroke-width="1.6"/>
+<line x1="500.0" y1="238.0" x2="490.0" y2="244.0" stroke="#3e63dd" stroke-width="1.6"/>
+<path d="M 460.0,492.0 C 510.0,492.0 450.0,254.0 500.0,254.0" fill="none" stroke="#3e63dd" stroke-width="1.6" stroke-opacity="0.75" />
+<line x1="460.0" y1="485.0" x2="460.0" y2="499.0" stroke="#3e63dd" stroke-width="2"/>
+<line x1="500.0" y1="254.0" x2="490.0" y2="248.0" stroke="#3e63dd" stroke-width="1.6"/>
+<line x1="500.0" y1="254.0" x2="486.0" y2="254.0" stroke="#3e63dd" stroke-width="1.6"/>
+<line x1="500.0" y1="254.0" x2="490.0" y2="260.0" stroke="#3e63dd" stroke-width="1.6"/>
+<path d="M 460.0,492.0 C 510.0,492.0 450.0,348.0 500.0,348.0" fill="none" stroke="#3e63dd" stroke-width="1.6" stroke-opacity="0.75" />
+<line x1="460.0" y1="485.0" x2="460.0" y2="499.0" stroke="#3e63dd" stroke-width="2"/>
+<line x1="500.0" y1="348.0" x2="490.0" y2="342.0" stroke="#3e63dd" stroke-width="1.6"/>
+<line x1="500.0" y1="348.0" x2="486.0" y2="348.0" stroke="#3e63dd" stroke-width="1.6"/>
+<line x1="500.0" y1="348.0" x2="490.0" y2="354.0" stroke="#3e63dd" stroke-width="1.6"/>
+<path d="M 460.0,666.0 C 510.0,666.0 450.0,364.0 500.0,364.0" fill="none" stroke="#3e63dd" stroke-width="1.6" stroke-opacity="0.75" />
+<line x1="460.0" y1="659.0" x2="460.0" y2="673.0" stroke="#3e63dd" stroke-width="2"/>
+<line x1="500.0" y1="364.0" x2="490.0" y2="358.0" stroke="#3e63dd" stroke-width="1.6"/>
+<line x1="500.0" y1="364.0" x2="486.0" y2="364.0" stroke="#3e63dd" stroke-width="1.6"/>
+<line x1="500.0" y1="364.0" x2="490.0" y2="370.0" stroke="#3e63dd" stroke-width="1.6"/>
+<path d="M 460.0,238.0 C 510.0,238.0 450.0,474.0 500.0,474.0" fill="none" stroke="#3e63dd" stroke-width="1.6" stroke-opacity="0.75" />
+<line x1="460.0" y1="231.0" x2="460.0" y2="245.0" stroke="#3e63dd" stroke-width="2"/>
+<line x1="500.0" y1="474.0" x2="490.0" y2="468.0" stroke="#3e63dd" stroke-width="1.6"/>
+<line x1="500.0" y1="474.0" x2="486.0" y2="474.0" stroke="#3e63dd" stroke-width="1.6"/>
+<line x1="500.0" y1="474.0" x2="490.0" y2="480.0" stroke="#3e63dd" stroke-width="1.6"/>
+<path d="M 460.0,238.0 C 510.0,238.0 450.0,728.0 500.0,728.0" fill="none" stroke="#3e63dd" stroke-width="1.6" stroke-opacity="0.75" />
+<line x1="460.0" y1="231.0" x2="460.0" y2="245.0" stroke="#3e63dd" stroke-width="2"/>
+<line x1="500.0" y1="728.0" x2="490.0" y2="722.0" stroke="#3e63dd" stroke-width="1.6"/>
+<line x1="500.0" y1="728.0" x2="486.0" y2="728.0" stroke="#3e63dd" stroke-width="1.6"/>
+<line x1="500.0" y1="728.0" x2="490.0" y2="734.0" stroke="#3e63dd" stroke-width="1.6"/>
+<path d="M 460.0,238.0 C 510.0,238.0 450.0,808.0 500.0,808.0" fill="none" stroke="#3e63dd" stroke-width="1.6" stroke-opacity="0.75" stroke-dasharray="6 4"/>
+<line x1="460.0" y1="231.0" x2="460.0" y2="245.0" stroke="#3e63dd" stroke-width="2"/>
+<line x1="500.0" y1="808.0" x2="490.0" y2="802.0" stroke="#3e63dd" stroke-width="1.6"/>
+<line x1="500.0" y1="808.0" x2="486.0" y2="808.0" stroke="#3e63dd" stroke-width="1.6"/>
+<line x1="500.0" y1="808.0" x2="490.0" y2="814.0" stroke="#3e63dd" stroke-width="1.6"/>
+<path d="M 1220.0,382.0 C 1220.0,432.0 1220.0,372.0 1220.0,422.0" fill="none" stroke="#3e63dd" stroke-width="1.6" stroke-opacity="0.75" />
+<line x1="1213.0" y1="382.0" x2="1227.0" y2="382.0" stroke="#3e63dd" stroke-width="2"/>
+<line x1="1220.0" y1="422.0" x2="1214.0" y2="412.0" stroke="#3e63dd" stroke-width="1.6"/>
+<line x1="1220.0" y1="422.0" x2="1220.0" y2="408.0" stroke="#3e63dd" stroke-width="1.6"/>
+<line x1="1220.0" y1="422.0" x2="1226.0" y2="412.0" stroke="#3e63dd" stroke-width="1.6"/>
+<path d="M 1220.0,684.0 C 1220.0,734.0 1220.0,674.0 1220.0,724.0" fill="none" stroke="#3e63dd" stroke-width="1.6" stroke-opacity="0.75" />
+<line x1="1213.0" y1="684.0" x2="1227.0" y2="684.0" stroke="#3e63dd" stroke-width="2"/>
+<line x1="1220.0" y1="724.0" x2="1214.0" y2="714.0" stroke="#3e63dd" stroke-width="1.6"/>
+<line x1="1220.0" y1="724.0" x2="1220.0" y2="710.0" stroke="#3e63dd" stroke-width="1.6"/>
+<line x1="1220.0" y1="724.0" x2="1226.0" y2="714.0" stroke="#3e63dd" stroke-width="1.6"/>
+<path d="M 1220.0,970.0 C 1220.0,1020.0 1220.0,960.0 1220.0,1010.0" fill="none" stroke="#3e63dd" stroke-width="1.6" stroke-opacity="0.75" />
+<line x1="1213.0" y1="970.0" x2="1227.0" y2="970.0" stroke="#3e63dd" stroke-width="2"/>
+<line x1="1220.0" y1="1010.0" x2="1214.0" y2="1000.0" stroke="#3e63dd" stroke-width="1.6"/>
+<line x1="1220.0" y1="1010.0" x2="1220.0" y2="996.0" stroke="#3e63dd" stroke-width="1.6"/>
+<line x1="1220.0" y1="1010.0" x2="1226.0" y2="1000.0" stroke="#3e63dd" stroke-width="1.6"/>
+<path d="M 1430.0,762.0 C 1480.0,762.0 1420.0,778.0 1470.0,778.0" fill="none" stroke="#3e63dd" stroke-width="1.6" stroke-opacity="0.75" />
+<line x1="1430.0" y1="755.0" x2="1430.0" y2="769.0" stroke="#3e63dd" stroke-width="2"/>
+<line x1="1470.0" y1="778.0" x2="1460.0" y2="772.0" stroke="#3e63dd" stroke-width="1.6"/>
+<line x1="1470.0" y1="778.0" x2="1456.0" y2="778.0" stroke="#3e63dd" stroke-width="1.6"/>
+<line x1="1470.0" y1="778.0" x2="1460.0" y2="784.0" stroke="#3e63dd" stroke-width="1.6"/>
+<path d="M 1220.0,1384.0 C 1220.0,1434.0 1220.0,1374.0 1220.0,1424.0" fill="none" stroke="#3e63dd" stroke-width="1.6" stroke-opacity="0.75" />
+<line x1="1213.0" y1="1384.0" x2="1227.0" y2="1384.0" stroke="#3e63dd" stroke-width="2"/>
+<line x1="1220.0" y1="1424.0" x2="1214.0" y2="1414.0" stroke="#3e63dd" stroke-width="1.6"/>
+<line x1="1220.0" y1="1424.0" x2="1220.0" y2="1410.0" stroke="#3e63dd" stroke-width="1.6"/>
+<line x1="1220.0" y1="1424.0" x2="1226.0" y2="1414.0" stroke="#3e63dd" stroke-width="1.6"/>
+<path d="M 2210.0,430.0 C 2210.0,480.0 2210.0,420.0 2210.0,470.0" fill="none" stroke="#3e63dd" stroke-width="1.6" stroke-opacity="0.75" />
+<line x1="2203.0" y1="430.0" x2="2217.0" y2="430.0" stroke="#3e63dd" stroke-width="2"/>
+<line x1="2210.0" y1="470.0" x2="2204.0" y2="460.0" stroke="#3e63dd" stroke-width="1.6"/>
+<line x1="2210.0" y1="470.0" x2="2210.0" y2="456.0" stroke="#3e63dd" stroke-width="1.6"/>
+<line x1="2210.0" y1="470.0" x2="2216.0" y2="460.0" stroke="#3e63dd" stroke-width="1.6"/>
+<path d="M 2210.0,1002.0 C 2210.0,1052.0 2210.0,992.0 2210.0,1042.0" fill="none" stroke="#3e63dd" stroke-width="1.6" stroke-opacity="0.75" />
+<line x1="2203.0" y1="1002.0" x2="2217.0" y2="1002.0" stroke="#3e63dd" stroke-width="2"/>
+<line x1="2210.0" y1="1042.0" x2="2204.0" y2="1032.0" stroke="#3e63dd" stroke-width="1.6"/>
+<line x1="2210.0" y1="1042.0" x2="2210.0" y2="1028.0" stroke="#3e63dd" stroke-width="1.6"/>
+<line x1="2210.0" y1="1042.0" x2="2216.0" y2="1032.0" stroke="#3e63dd" stroke-width="1.6"/>
+<path d="M 2210.0,1304.0 C 2210.0,1354.0 2210.0,1294.0 2210.0,1344.0" fill="none" stroke="#3e63dd" stroke-width="1.6" stroke-opacity="0.75" />
+<line x1="2203.0" y1="1304.0" x2="2217.0" y2="1304.0" stroke="#3e63dd" stroke-width="2"/>
+<line x1="2210.0" y1="1344.0" x2="2204.0" y2="1334.0" stroke="#3e63dd" stroke-width="1.6"/>
+<line x1="2210.0" y1="1344.0" x2="2210.0" y2="1330.0" stroke="#3e63dd" stroke-width="1.6"/>
+<line x1="2210.0" y1="1344.0" x2="2216.0" y2="1334.0" stroke="#3e63dd" stroke-width="1.6"/>
+<path d="M 1430,460.0 C 1452,460.0 1452,1096.0 1430,1096.0" fill="none" stroke="#3e63dd" stroke-width="1.6" stroke-opacity="0.75" stroke-dasharray="6 4"/>
+<line x1="1430.0" y1="453.0" x2="1430.0" y2="467.0" stroke="#3e63dd" stroke-width="2"/>
+<line x1="1430.0" y1="1096.0" x2="1440.0" y2="1090.0" stroke="#3e63dd" stroke-width="1.6"/>
+<line x1="1430.0" y1="1096.0" x2="1444.0" y2="1096.0" stroke="#3e63dd" stroke-width="1.6"/>
+<line x1="1430.0" y1="1096.0" x2="1440.0" y2="1102.0" stroke="#3e63dd" stroke-width="1.6"/>
+<path d="M 460,238.0 H 940 V 1112.0 H 1010" fill="none" stroke="#3e63dd" stroke-width="1.6" stroke-opacity="0.75" stroke-dasharray="6 4"/>
+<line x1="460.0" y1="231.0" x2="460.0" y2="245.0" stroke="#3e63dd" stroke-width="2"/>
+<line x1="1010.0" y1="1112.0" x2="1000.0" y2="1106.0" stroke="#3e63dd" stroke-width="1.6"/>
+<line x1="1010.0" y1="1112.0" x2="996.0" y2="1112.0" stroke="#3e63dd" stroke-width="1.6"/>
+<line x1="1010.0" y1="1112.0" x2="1000.0" y2="1118.0" stroke="#3e63dd" stroke-width="1.6"/>
+<path d="M 2490,746.0 C 2516,746.0 2516,1398.0 2490,1398.0" fill="none" stroke="#3e63dd" stroke-width="1.6" stroke-opacity="0.75"/>
+<line x1="2490.0" y1="739.0" x2="2490.0" y2="753.0" stroke="#3e63dd" stroke-width="2"/>
+<line x1="2490.0" y1="1398.0" x2="2500.0" y2="1392.0" stroke="#3e63dd" stroke-width="1.6"/>
+<line x1="2490.0" y1="1398.0" x2="2504.0" y2="1398.0" stroke="#3e63dd" stroke-width="1.6"/>
+<line x1="2490.0" y1="1398.0" x2="2500.0" y2="1404.0" stroke="#3e63dd" stroke-width="1.6"/>
+<path d="M 70,358.0 C 18,358.0 18,374.0 70,374.0" fill="none" stroke="#3e63dd" stroke-width="1.6" stroke-opacity="0.75" stroke-dasharray="6 4"/>
+<line x1="70.0" y1="351.0" x2="70.0" y2="365.0" stroke="#3e63dd" stroke-width="2"/>
+<line x1="70.0" y1="374.0" x2="60.0" y2="368.0" stroke="#3e63dd" stroke-width="1.6"/>
+<line x1="70.0" y1="374.0" x2="56.0" y2="374.0" stroke="#3e63dd" stroke-width="1.6"/>
+<line x1="70.0" y1="374.0" x2="60.0" y2="380.0" stroke="#3e63dd" stroke-width="1.6"/>
+<rect x="70" y="200" width="390" height="214" rx="7" fill="#ffffff" stroke="#3e63dd" stroke-opacity="0.55"/>
+<path d="M 77 200 H 453 A 7 7 0 0 1 460 207 V 230 H 70 V 207 A 7 7 0 0 1 77 200 Z" fill="#0f1b2d"/>
+<text x="82" y="220" font-family="Consolas, Menlo, monospace" font-size="12.5" font-weight="700" fill="#ffffff">users</text>
+<text x="82" y="241" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="600" fill="#18212e">id</text>
+<text x="450" y="241" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">INT</text>
+<rect x="410.5" y="232.5" width="20" height="11" rx="2.5" fill="#fbf1de" stroke="#e2a13c" stroke-opacity="0.6"/>
+<text x="420.5" y="240.6" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Noto Sans SC, Arial, sans-serif" font-size="6.8" fill="#a6761f">PK</text>
+<rect x="71" y="246" width="388" height="16" fill="#f8fafc"/>
+<text x="82" y="257" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">username</text>
+<text x="450" y="257" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(50)</text>
+<text x="82" y="273" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">email</text>
+<text x="450" y="273" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(100)</text>
+<rect x="71" y="278" width="388" height="16" fill="#f8fafc"/>
+<text x="82" y="289" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">hashed_password</text>
+<text x="450" y="289" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(255)</text>
+<text x="82" y="305" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">is_active</text>
+<text x="450" y="305" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">BOOLEAN</text>
+<rect x="71" y="310" width="388" height="16" fill="#f8fafc"/>
+<text x="82" y="321" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">is_superuser</text>
+<text x="450" y="321" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">BOOLEAN</text>
+<text x="82" y="337" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">last_login</text>
+<text x="450" y="337" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">DATETIME</text>
+<rect x="71" y="342" width="388" height="16" fill="#f8fafc"/>
+<text x="82" y="353" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">data_scope</text>
+<text x="450" y="353" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(20)</text>
+<text x="82" y="369" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="600" fill="#18212e">created_by</text>
+<text x="450" y="369" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">INT</text>
+<rect x="410.5" y="360.5" width="20" height="11" rx="2.5" fill="#eef2fc" stroke="#3e63dd" stroke-opacity="0.6"/>
+<text x="420.5" y="368.6" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Noto Sans SC, Arial, sans-serif" font-size="6.8" fill="#3e63dd">FK</text>
+<rect x="71" y="374" width="388" height="16" fill="#f8fafc"/>
+<text x="82" y="385" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">created_at</text>
+<text x="450" y="385" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">DATETIME</text>
+<text x="82" y="401" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">updated_at</text>
+<text x="450" y="401" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">DATETIME</text>
+<rect x="70" y="454" width="390" height="134" rx="7" fill="#ffffff" stroke="#3e63dd" stroke-opacity="0.55"/>
+<path d="M 77 454 H 453 A 7 7 0 0 1 460 461 V 484 H 70 V 461 A 7 7 0 0 1 77 454 Z" fill="#0f1b2d"/>
+<text x="82" y="474" font-family="Consolas, Menlo, monospace" font-size="12.5" font-weight="700" fill="#ffffff">roles</text>
+<text x="82" y="495" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="600" fill="#18212e">id</text>
+<text x="450" y="495" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">INT</text>
+<rect x="410.5" y="486.5" width="20" height="11" rx="2.5" fill="#fbf1de" stroke="#e2a13c" stroke-opacity="0.6"/>
+<text x="420.5" y="494.6" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Noto Sans SC, Arial, sans-serif" font-size="6.8" fill="#a6761f">PK</text>
+<rect x="71" y="500" width="388" height="16" fill="#f8fafc"/>
+<text x="82" y="511" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">code</text>
+<text x="450" y="511" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(100)</text>
+<text x="82" y="527" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">name</text>
+<text x="450" y="527" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(100)</text>
+<rect x="71" y="532" width="388" height="16" fill="#f8fafc"/>
+<text x="82" y="543" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">description</text>
+<text x="450" y="543" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(200)</text>
+<text x="82" y="559" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">created_at</text>
+<text x="450" y="559" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">DATETIME</text>
+<rect x="71" y="564" width="388" height="16" fill="#f8fafc"/>
+<text x="82" y="575" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">updated_at</text>
+<text x="450" y="575" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">DATETIME</text>
+<rect x="70" y="628" width="390" height="134" rx="7" fill="#ffffff" stroke="#3e63dd" stroke-opacity="0.55"/>
+<path d="M 77 628 H 453 A 7 7 0 0 1 460 635 V 658 H 70 V 635 A 7 7 0 0 1 77 628 Z" fill="#0f1b2d"/>
+<text x="82" y="648" font-family="Consolas, Menlo, monospace" font-size="12.5" font-weight="700" fill="#ffffff">permissions</text>
+<text x="82" y="669" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="600" fill="#18212e">id</text>
+<text x="450" y="669" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">INT</text>
+<rect x="410.5" y="660.5" width="20" height="11" rx="2.5" fill="#fbf1de" stroke="#e2a13c" stroke-opacity="0.6"/>
+<text x="420.5" y="668.6" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Noto Sans SC, Arial, sans-serif" font-size="6.8" fill="#a6761f">PK</text>
+<rect x="71" y="674" width="388" height="16" fill="#f8fafc"/>
+<text x="82" y="685" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">code</text>
+<text x="450" y="685" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(100)</text>
+<text x="82" y="701" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">name</text>
+<text x="450" y="701" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(100)</text>
+<rect x="71" y="706" width="388" height="16" fill="#f8fafc"/>
+<text x="82" y="717" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">description</text>
+<text x="450" y="717" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(200)</text>
+<text x="82" y="733" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">created_at</text>
+<text x="450" y="733" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">DATETIME</text>
+<rect x="71" y="738" width="388" height="16" fill="#f8fafc"/>
+<text x="82" y="749" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">updated_at</text>
+<text x="450" y="749" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">DATETIME</text>
+<rect x="500" y="200" width="390" height="70" rx="7" fill="#ffffff" stroke="#3e63dd" stroke-opacity="0.55"/>
+<path d="M 507 200 H 883 A 7 7 0 0 1 890 207 V 230 H 500 V 207 A 7 7 0 0 1 507 200 Z" fill="#0f1b2d"/>
+<text x="512" y="220" font-family="Consolas, Menlo, monospace" font-size="12.5" font-weight="700" fill="#ffffff">user_roles</text>
+<text x="512" y="241" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="600" fill="#18212e">user_id</text>
+<text x="880" y="241" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">INT</text>
+<rect x="834.5" y="232.5" width="26" height="11" rx="2.5" fill="#f1eafe" stroke="#7c5cd6" stroke-opacity="0.6"/>
+<text x="847.5" y="240.6" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Noto Sans SC, Arial, sans-serif" font-size="6.8" fill="#6b46c1">PK,FK</text>
+<rect x="501" y="246" width="388" height="16" fill="#f8fafc"/>
+<text x="512" y="257" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="600" fill="#18212e">role_id</text>
+<text x="880" y="257" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">INT</text>
+<rect x="834.5" y="248.5" width="26" height="11" rx="2.5" fill="#f1eafe" stroke="#7c5cd6" stroke-opacity="0.6"/>
+<text x="847.5" y="256.6" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Noto Sans SC, Arial, sans-serif" font-size="6.8" fill="#6b46c1">PK,FK</text>
+<rect x="500" y="310" width="390" height="70" rx="7" fill="#ffffff" stroke="#3e63dd" stroke-opacity="0.55"/>
+<path d="M 507 310 H 883 A 7 7 0 0 1 890 317 V 340 H 500 V 317 A 7 7 0 0 1 507 310 Z" fill="#0f1b2d"/>
+<text x="512" y="330" font-family="Consolas, Menlo, monospace" font-size="12.5" font-weight="700" fill="#ffffff">role_permissions</text>
+<text x="512" y="351" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="600" fill="#18212e">role_id</text>
+<text x="880" y="351" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">INT</text>
+<rect x="834.5" y="342.5" width="26" height="11" rx="2.5" fill="#f1eafe" stroke="#7c5cd6" stroke-opacity="0.6"/>
+<text x="847.5" y="350.6" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Noto Sans SC, Arial, sans-serif" font-size="6.8" fill="#6b46c1">PK,FK</text>
+<rect x="501" y="356" width="388" height="16" fill="#f8fafc"/>
+<text x="512" y="367" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="600" fill="#18212e">permission_id</text>
+<text x="880" y="367" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">INT</text>
+<rect x="834.5" y="358.5" width="26" height="11" rx="2.5" fill="#f1eafe" stroke="#7c5cd6" stroke-opacity="0.6"/>
+<text x="847.5" y="366.6" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Noto Sans SC, Arial, sans-serif" font-size="6.8" fill="#6b46c1">PK,FK</text>
+<rect x="500" y="420" width="390" height="214" rx="7" fill="#ffffff" stroke="#3e63dd" stroke-opacity="0.55"/>
+<path d="M 507 420 H 883 A 7 7 0 0 1 890 427 V 450 H 500 V 427 A 7 7 0 0 1 507 420 Z" fill="#0f1b2d"/>
+<text x="512" y="440" font-family="Consolas, Menlo, monospace" font-size="12.5" font-weight="700" fill="#ffffff">audit_logs</text>
+<text x="512" y="461" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="600" fill="#18212e">id</text>
+<text x="880" y="461" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">INT</text>
+<rect x="840.5" y="452.5" width="20" height="11" rx="2.5" fill="#fbf1de" stroke="#e2a13c" stroke-opacity="0.6"/>
+<text x="850.5" y="460.6" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Noto Sans SC, Arial, sans-serif" font-size="6.8" fill="#a6761f">PK</text>
+<rect x="501" y="466" width="388" height="16" fill="#f8fafc"/>
+<text x="512" y="477" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="600" fill="#18212e">user_id</text>
+<text x="880" y="477" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">INT</text>
+<rect x="840.5" y="468.5" width="20" height="11" rx="2.5" fill="#eef2fc" stroke="#3e63dd" stroke-opacity="0.6"/>
+<text x="850.5" y="476.6" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Noto Sans SC, Arial, sans-serif" font-size="6.8" fill="#3e63dd">FK</text>
+<text x="512" y="493" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">username</text>
+<text x="880" y="493" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(100)</text>
+<rect x="501" y="498" width="388" height="16" fill="#f8fafc"/>
+<text x="512" y="509" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">action</text>
+<text x="880" y="509" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(50)</text>
+<text x="512" y="525" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">module</text>
+<text x="880" y="525" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(50)</text>
+<rect x="501" y="530" width="388" height="16" fill="#f8fafc"/>
+<text x="512" y="541" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">target_id</text>
+<text x="880" y="541" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(100)</text>
+<text x="512" y="557" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">target_name</text>
+<text x="880" y="557" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(200)</text>
+<rect x="501" y="562" width="388" height="16" fill="#f8fafc"/>
+<text x="512" y="573" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">detail</text>
+<text x="880" y="573" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">TEXT</text>
+<text x="512" y="589" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">ip_address</text>
+<text x="880" y="589" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(50)</text>
+<rect x="501" y="594" width="388" height="16" fill="#f8fafc"/>
+<text x="512" y="605" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">user_agent</text>
+<text x="880" y="605" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(300)</text>
+<text x="512" y="621" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">created_at</text>
+<text x="880" y="621" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">DATETIME</text>
+<rect x="500" y="674" width="390" height="214" rx="7" fill="#ffffff" stroke="#3e63dd" stroke-opacity="0.55"/>
+<path d="M 507 674 H 883 A 7 7 0 0 1 890 681 V 704 H 500 V 681 A 7 7 0 0 1 507 674 Z" fill="#0f1b2d"/>
+<text x="512" y="694" font-family="Consolas, Menlo, monospace" font-size="12.5" font-weight="700" fill="#ffffff">permission_applications</text>
+<text x="512" y="715" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="600" fill="#18212e">id</text>
+<text x="880" y="715" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">INT</text>
+<rect x="840.5" y="706.5" width="20" height="11" rx="2.5" fill="#fbf1de" stroke="#e2a13c" stroke-opacity="0.6"/>
+<text x="850.5" y="714.6" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Noto Sans SC, Arial, sans-serif" font-size="6.8" fill="#a6761f">PK</text>
+<rect x="501" y="720" width="388" height="16" fill="#f8fafc"/>
+<text x="512" y="731" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="600" fill="#18212e">applicant_id</text>
+<text x="880" y="731" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">INT</text>
+<rect x="840.5" y="722.5" width="20" height="11" rx="2.5" fill="#eef2fc" stroke="#3e63dd" stroke-opacity="0.6"/>
+<text x="850.5" y="730.6" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Noto Sans SC, Arial, sans-serif" font-size="6.8" fill="#3e63dd">FK</text>
+<text x="512" y="747" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">applicant_name</text>
+<text x="880" y="747" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(100)</text>
+<rect x="501" y="752" width="388" height="16" fill="#f8fafc"/>
+<text x="512" y="763" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">permission_code</text>
+<text x="880" y="763" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(100)</text>
+<text x="512" y="779" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">reason</text>
+<text x="880" y="779" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">TEXT</text>
+<rect x="501" y="784" width="388" height="16" fill="#f8fafc"/>
+<text x="512" y="795" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">status</text>
+<text x="880" y="795" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(20)</text>
+<text x="512" y="811" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="600" fill="#18212e">approver_id</text>
+<text x="880" y="811" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">INT</text>
+<rect x="840.5" y="802.5" width="20" height="11" rx="2.5" fill="#eef2fc" stroke="#3e63dd" stroke-opacity="0.6"/>
+<text x="850.5" y="810.6" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Noto Sans SC, Arial, sans-serif" font-size="6.8" fill="#3e63dd">FK</text>
+<rect x="501" y="816" width="388" height="16" fill="#f8fafc"/>
+<text x="512" y="827" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">approver_name</text>
+<text x="880" y="827" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(100)</text>
+<text x="512" y="843" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">approved_at</text>
+<text x="880" y="843" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">DATETIME</text>
+<rect x="501" y="848" width="388" height="16" fill="#f8fafc"/>
+<text x="512" y="859" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">expired_at</text>
+<text x="880" y="859" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">DATETIME</text>
+<text x="512" y="875" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">created_at</text>
+<text x="880" y="875" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">DATETIME</text>
+<rect x="1010" y="200" width="420" height="182" rx="7" fill="#ffffff" stroke="#1e7a5a" stroke-opacity="0.55"/>
+<path d="M 1017 200 H 1423 A 7 7 0 0 1 1430 207 V 230 H 1010 V 207 A 7 7 0 0 1 1017 200 Z" fill="#0f1b2d"/>
+<text x="1022" y="220" font-family="Consolas, Menlo, monospace" font-size="12.5" font-weight="700" fill="#ffffff">model_providers</text>
+<text x="1022" y="241" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="600" fill="#18212e">id</text>
+<text x="1420" y="241" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">INT</text>
+<rect x="1380.5" y="232.5" width="20" height="11" rx="2.5" fill="#fbf1de" stroke="#e2a13c" stroke-opacity="0.6"/>
+<text x="1390.5" y="240.6" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Noto Sans SC, Arial, sans-serif" font-size="6.8" fill="#a6761f">PK</text>
+<rect x="1011" y="246" width="418" height="16" fill="#f8fafc"/>
+<text x="1022" y="257" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">name</text>
+<text x="1420" y="257" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(100)</text>
+<text x="1022" y="273" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">type</text>
+<text x="1420" y="273" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(50)</text>
+<rect x="1011" y="278" width="418" height="16" fill="#f8fafc"/>
+<text x="1022" y="289" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">status</text>
+<text x="1420" y="289" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(50)</text>
+<text x="1022" y="305" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">endpoint</text>
+<text x="1420" y="305" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(500)</text>
+<rect x="1011" y="310" width="418" height="16" fill="#f8fafc"/>
+<text x="1022" y="321" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">api_key</text>
+<text x="1420" y="321" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">TEXT</text>
+<text x="1022" y="337" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">description</text>
+<text x="1420" y="337" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(500)</text>
+<rect x="1011" y="342" width="418" height="16" fill="#f8fafc"/>
+<text x="1022" y="353" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">created_at</text>
+<text x="1420" y="353" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">DATETIME</text>
+<text x="1022" y="369" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">updated_at</text>
+<text x="1420" y="369" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">DATETIME</text>
+<rect x="1010" y="422" width="420" height="262" rx="7" fill="#ffffff" stroke="#1e7a5a" stroke-opacity="0.55"/>
+<path d="M 1017 422 H 1423 A 7 7 0 0 1 1430 429 V 452 H 1010 V 429 A 7 7 0 0 1 1017 422 Z" fill="#0f1b2d"/>
+<text x="1022" y="442" font-family="Consolas, Menlo, monospace" font-size="12.5" font-weight="700" fill="#ffffff">models</text>
+<text x="1022" y="463" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="600" fill="#18212e">id</text>
+<text x="1420" y="463" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">INT</text>
+<rect x="1380.5" y="454.5" width="20" height="11" rx="2.5" fill="#fbf1de" stroke="#e2a13c" stroke-opacity="0.6"/>
+<text x="1390.5" y="462.6" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Noto Sans SC, Arial, sans-serif" font-size="6.8" fill="#a6761f">PK</text>
+<rect x="1011" y="468" width="418" height="16" fill="#f8fafc"/>
+<text x="1022" y="479" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">name</text>
+<text x="1420" y="479" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(100)</text>
+<text x="1022" y="495" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">model_id</text>
+<text x="1420" y="495" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(100)</text>
+<rect x="1011" y="500" width="418" height="16" fill="#f8fafc"/>
+<text x="1022" y="511" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="600" fill="#18212e">provider_id</text>
+<text x="1420" y="511" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">INT</text>
+<rect x="1380.5" y="502.5" width="20" height="11" rx="2.5" fill="#eef2fc" stroke="#3e63dd" stroke-opacity="0.6"/>
+<text x="1390.5" y="510.6" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Noto Sans SC, Arial, sans-serif" font-size="6.8" fill="#3e63dd">FK</text>
+<text x="1022" y="527" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">capabilities</text>
+<text x="1420" y="527" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(500)</text>
+<rect x="1011" y="532" width="418" height="16" fill="#f8fafc"/>
+<text x="1022" y="543" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">context_length</text>
+<text x="1420" y="543" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">INT</text>
+<text x="1022" y="559" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">status</text>
+<text x="1420" y="559" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(50)</text>
+<rect x="1011" y="564" width="418" height="16" fill="#f8fafc"/>
+<text x="1022" y="575" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">input_price</text>
+<text x="1420" y="575" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">NUMERIC(10,6)</text>
+<text x="1022" y="591" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">output_price</text>
+<text x="1420" y="591" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">NUMERIC(10,6)</text>
+<rect x="1011" y="596" width="418" height="16" fill="#f8fafc"/>
+<text x="1022" y="607" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">currency</text>
+<text x="1420" y="607" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(10)</text>
+<text x="1022" y="623" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">is_default</text>
+<text x="1420" y="623" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">BOOLEAN</text>
+<rect x="1011" y="628" width="418" height="16" fill="#f8fafc"/>
+<text x="1022" y="639" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">description</text>
+<text x="1420" y="639" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">TEXT</text>
+<text x="1022" y="655" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">created_at</text>
+<text x="1420" y="655" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">DATETIME</text>
+<rect x="1011" y="660" width="418" height="16" fill="#f8fafc"/>
+<text x="1022" y="671" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">updated_at</text>
+<text x="1420" y="671" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">DATETIME</text>
+<rect x="1010" y="724" width="420" height="246" rx="7" fill="#ffffff" stroke="#1e7a5a" stroke-opacity="0.55"/>
+<path d="M 1017 724 H 1423 A 7 7 0 0 1 1430 731 V 754 H 1010 V 731 A 7 7 0 0 1 1017 724 Z" fill="#0f1b2d"/>
+<text x="1022" y="744" font-family="Consolas, Menlo, monospace" font-size="12.5" font-weight="700" fill="#ffffff">agents</text>
+<text x="1022" y="765" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="600" fill="#18212e">id</text>
+<text x="1420" y="765" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">INT</text>
+<rect x="1380.5" y="756.5" width="20" height="11" rx="2.5" fill="#fbf1de" stroke="#e2a13c" stroke-opacity="0.6"/>
+<text x="1390.5" y="764.6" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Noto Sans SC, Arial, sans-serif" font-size="6.8" fill="#a6761f">PK</text>
+<rect x="1011" y="770" width="418" height="16" fill="#f8fafc"/>
+<text x="1022" y="781" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">name</text>
+<text x="1420" y="781" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(200)</text>
+<text x="1022" y="797" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">description</text>
+<text x="1420" y="797" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">TEXT</text>
+<rect x="1011" y="802" width="418" height="16" fill="#f8fafc"/>
+<text x="1022" y="813" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">type</text>
+<text x="1420" y="813" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(50)</text>
+<text x="1022" y="829" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">status</text>
+<text x="1420" y="829" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(50)</text>
+<rect x="1011" y="834" width="418" height="16" fill="#f8fafc"/>
+<text x="1022" y="845" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="600" fill="#18212e">model_id</text>
+<text x="1420" y="845" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">INT</text>
+<rect x="1380.5" y="836.5" width="20" height="11" rx="2.5" fill="#eef2fc" stroke="#3e63dd" stroke-opacity="0.6"/>
+<text x="1390.5" y="844.6" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Noto Sans SC, Arial, sans-serif" font-size="6.8" fill="#3e63dd">FK</text>
+<text x="1022" y="861" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">config</text>
+<text x="1420" y="861" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">JSON</text>
+<rect x="1011" y="866" width="418" height="16" fill="#f8fafc"/>
+<text x="1022" y="877" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">success_rate</text>
+<text x="1420" y="877" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">NUMERIC(5,2)</text>
+<text x="1022" y="893" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">call_count_7d</text>
+<text x="1420" y="893" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">INT</text>
+<rect x="1011" y="898" width="418" height="16" fill="#f8fafc"/>
+<text x="1022" y="909" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">version</text>
+<text x="1420" y="909" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(50)</text>
+<text x="1022" y="925" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">created_by</text>
+<text x="1420" y="925" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(100)</text>
+<rect x="1011" y="930" width="418" height="16" fill="#f8fafc"/>
+<text x="1022" y="941" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">created_at</text>
+<text x="1420" y="941" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">DATETIME</text>
+<text x="1022" y="957" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">updated_at</text>
+<text x="1420" y="957" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">DATETIME</text>
+<rect x="1470" y="724" width="380" height="198" rx="7" fill="#ffffff" stroke="#1e7a5a" stroke-opacity="0.55"/>
+<path d="M 1477 724 H 1843 A 7 7 0 0 1 1850 731 V 754 H 1470 V 731 A 7 7 0 0 1 1477 724 Z" fill="#0f1b2d"/>
+<text x="1482" y="744" font-family="Consolas, Menlo, monospace" font-size="12.5" font-weight="700" fill="#ffffff">agent_versions</text>
+<text x="1482" y="765" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="600" fill="#18212e">id</text>
+<text x="1840" y="765" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">INT</text>
+<rect x="1800.5" y="756.5" width="20" height="11" rx="2.5" fill="#fbf1de" stroke="#e2a13c" stroke-opacity="0.6"/>
+<text x="1810.5" y="764.6" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Noto Sans SC, Arial, sans-serif" font-size="6.8" fill="#a6761f">PK</text>
+<rect x="1471" y="770" width="378" height="16" fill="#f8fafc"/>
+<text x="1482" y="781" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="600" fill="#18212e">agent_id</text>
+<text x="1840" y="781" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">INT</text>
+<rect x="1800.5" y="772.5" width="20" height="11" rx="2.5" fill="#eef2fc" stroke="#3e63dd" stroke-opacity="0.6"/>
+<text x="1810.5" y="780.6" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Noto Sans SC, Arial, sans-serif" font-size="6.8" fill="#3e63dd">FK</text>
+<text x="1482" y="797" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">version</text>
+<text x="1840" y="797" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(50)</text>
+<rect x="1471" y="802" width="378" height="16" fill="#f8fafc"/>
+<text x="1482" y="813" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">config</text>
+<text x="1840" y="813" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">JSON</text>
+<text x="1482" y="829" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">changelog</text>
+<text x="1840" y="829" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(500)</text>
+<rect x="1471" y="834" width="378" height="16" fill="#f8fafc"/>
+<text x="1482" y="845" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">is_current</text>
+<text x="1840" y="845" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">BOOLEAN</text>
+<text x="1482" y="861" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">published_by</text>
+<text x="1840" y="861" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(100)</text>
+<rect x="1471" y="866" width="378" height="16" fill="#f8fafc"/>
+<text x="1482" y="877" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">published_at</text>
+<text x="1840" y="877" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">DATETIME</text>
+<text x="1482" y="893" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">created_at</text>
+<text x="1840" y="893" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">DATETIME</text>
+<rect x="1471" y="898" width="378" height="16" fill="#f8fafc"/>
+<text x="1482" y="909" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">updated_at</text>
+<text x="1840" y="909" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">DATETIME</text>
+<rect x="1010" y="1010" width="420" height="374" rx="7" fill="#ffffff" stroke="#1e7a5a" stroke-opacity="0.55"/>
+<path d="M 1017 1010 H 1423 A 7 7 0 0 1 1430 1017 V 1040 H 1010 V 1017 A 7 7 0 0 1 1017 1010 Z" fill="#0f1b2d"/>
+<text x="1022" y="1030" font-family="Consolas, Menlo, monospace" font-size="12.5" font-weight="700" fill="#ffffff">conversations</text>
+<text x="1022" y="1051" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="600" fill="#18212e">id</text>
+<text x="1420" y="1051" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">INT</text>
+<rect x="1380.5" y="1042.5" width="20" height="11" rx="2.5" fill="#fbf1de" stroke="#e2a13c" stroke-opacity="0.6"/>
+<text x="1390.5" y="1050.6" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Noto Sans SC, Arial, sans-serif" font-size="6.8" fill="#a6761f">PK</text>
+<rect x="1011" y="1056" width="418" height="16" fill="#f8fafc"/>
+<text x="1022" y="1067" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="600" fill="#18212e">agent_id</text>
+<text x="1420" y="1067" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">INT</text>
+<rect x="1380.5" y="1058.5" width="20" height="11" rx="2.5" fill="#eef2fc" stroke="#3e63dd" stroke-opacity="0.6"/>
+<text x="1390.5" y="1066.6" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Noto Sans SC, Arial, sans-serif" font-size="6.8" fill="#3e63dd">FK</text>
+<text x="1022" y="1083" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">agent_name</text>
+<text x="1420" y="1083" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(100)</text>
+<rect x="1011" y="1088" width="418" height="16" fill="#f8fafc"/>
+<text x="1022" y="1099" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="600" fill="#18212e">model_id</text>
+<text x="1420" y="1099" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">INT</text>
+<rect x="1380.5" y="1090.5" width="20" height="11" rx="2.5" fill="#eef2fc" stroke="#3e63dd" stroke-opacity="0.6"/>
+<text x="1390.5" y="1098.6" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Noto Sans SC, Arial, sans-serif" font-size="6.8" fill="#3e63dd">FK</text>
+<text x="1022" y="1115" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="600" fill="#18212e">user_id</text>
+<text x="1420" y="1115" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">INT</text>
+<rect x="1380.5" y="1106.5" width="20" height="11" rx="2.5" fill="#eef2fc" stroke="#3e63dd" stroke-opacity="0.6"/>
+<text x="1390.5" y="1114.6" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Noto Sans SC, Arial, sans-serif" font-size="6.8" fill="#3e63dd">FK</text>
+<rect x="1011" y="1120" width="418" height="16" fill="#f8fafc"/>
+<text x="1022" y="1131" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">status</text>
+<text x="1420" y="1131" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(50)</text>
+<text x="1022" y="1147" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">turn_count</text>
+<text x="1420" y="1147" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">INT</text>
+<rect x="1011" y="1152" width="418" height="16" fill="#f8fafc"/>
+<text x="1022" y="1163" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">input_tokens</text>
+<text x="1420" y="1163" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">INT</text>
+<text x="1022" y="1179" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">output_tokens</text>
+<text x="1420" y="1179" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">INT</text>
+<rect x="1011" y="1184" width="418" height="16" fill="#f8fafc"/>
+<text x="1022" y="1195" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">total_tokens</text>
+<text x="1420" y="1195" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">INT</text>
+<text x="1022" y="1211" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">total_cost</text>
+<text x="1420" y="1211" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">NUMERIC(12,6)</text>
+<rect x="1011" y="1216" width="418" height="16" fill="#f8fafc"/>
+<text x="1022" y="1227" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">latency_ms</text>
+<text x="1420" y="1227" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">INT</text>
+<text x="1022" y="1243" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">satisfaction</text>
+<text x="1420" y="1243" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(20)</text>
+<rect x="1011" y="1248" width="418" height="16" fill="#f8fafc"/>
+<text x="1022" y="1259" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">rating</text>
+<text x="1420" y="1259" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">INT</text>
+<text x="1022" y="1275" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">tags</text>
+<text x="1420" y="1275" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">JSON</text>
+<rect x="1011" y="1280" width="418" height="16" fill="#f8fafc"/>
+<text x="1022" y="1291" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">needs_optimization</text>
+<text x="1420" y="1291" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">BOOLEAN</text>
+<text x="1022" y="1307" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">annotation</text>
+<text x="1420" y="1307" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">JSON</text>
+<rect x="1011" y="1312" width="418" height="16" fill="#f8fafc"/>
+<text x="1022" y="1323" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">started_at</text>
+<text x="1420" y="1323" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">DATETIME</text>
+<text x="1022" y="1339" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">ended_at</text>
+<text x="1420" y="1339" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">DATETIME</text>
+<rect x="1011" y="1344" width="418" height="16" fill="#f8fafc"/>
+<text x="1022" y="1355" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">created_at</text>
+<text x="1420" y="1355" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">DATETIME</text>
+<text x="1022" y="1371" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">updated_at</text>
+<text x="1420" y="1371" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">DATETIME</text>
+<rect x="1010" y="1424" width="420" height="182" rx="7" fill="#ffffff" stroke="#1e7a5a" stroke-opacity="0.55"/>
+<path d="M 1017 1424 H 1423 A 7 7 0 0 1 1430 1431 V 1454 H 1010 V 1431 A 7 7 0 0 1 1017 1424 Z" fill="#0f1b2d"/>
+<text x="1022" y="1444" font-family="Consolas, Menlo, monospace" font-size="12.5" font-weight="700" fill="#ffffff">conversation_turns</text>
+<text x="1022" y="1465" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="600" fill="#18212e">id</text>
+<text x="1420" y="1465" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">INT</text>
+<rect x="1380.5" y="1456.5" width="20" height="11" rx="2.5" fill="#fbf1de" stroke="#e2a13c" stroke-opacity="0.6"/>
+<text x="1390.5" y="1464.6" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Noto Sans SC, Arial, sans-serif" font-size="6.8" fill="#a6761f">PK</text>
+<rect x="1011" y="1470" width="418" height="16" fill="#f8fafc"/>
+<text x="1022" y="1481" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="600" fill="#18212e">conversation_id</text>
+<text x="1420" y="1481" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">INT</text>
+<rect x="1380.5" y="1472.5" width="20" height="11" rx="2.5" fill="#eef2fc" stroke="#3e63dd" stroke-opacity="0.6"/>
+<text x="1390.5" y="1480.6" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Noto Sans SC, Arial, sans-serif" font-size="6.8" fill="#3e63dd">FK</text>
+<text x="1022" y="1497" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">position</text>
+<text x="1420" y="1497" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">INT</text>
+<rect x="1011" y="1502" width="418" height="16" fill="#f8fafc"/>
+<text x="1022" y="1513" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">role</text>
+<text x="1420" y="1513" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(20)</text>
+<text x="1022" y="1529" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">content</text>
+<text x="1420" y="1529" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">TEXT</text>
+<rect x="1011" y="1534" width="418" height="16" fill="#f8fafc"/>
+<text x="1022" y="1545" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">timestamp</text>
+<text x="1420" y="1545" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">DATETIME</text>
+<text x="1022" y="1561" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">trace</text>
+<text x="1420" y="1561" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">JSON</text>
+<rect x="1011" y="1566" width="418" height="16" fill="#f8fafc"/>
+<text x="1022" y="1577" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">created_at</text>
+<text x="1420" y="1577" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">DATETIME</text>
+<text x="1022" y="1593" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">updated_at</text>
+<text x="1420" y="1593" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">DATETIME</text>
+<rect x="1930" y="200" width="560" height="230" rx="7" fill="#ffffff" stroke="#e2a13c" stroke-opacity="0.55"/>
+<path d="M 1937 200 H 2483 A 7 7 0 0 1 2490 207 V 230 H 1930 V 207 A 7 7 0 0 1 1937 200 Z" fill="#0f1b2d"/>
+<text x="1942" y="220" font-family="Consolas, Menlo, monospace" font-size="12.5" font-weight="700" fill="#ffffff">prompts</text>
+<text x="1942" y="241" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="600" fill="#18212e">id</text>
+<text x="2480" y="241" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">INT</text>
+<rect x="2440.5" y="232.5" width="20" height="11" rx="2.5" fill="#fbf1de" stroke="#e2a13c" stroke-opacity="0.6"/>
+<text x="2450.5" y="240.6" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Noto Sans SC, Arial, sans-serif" font-size="6.8" fill="#a6761f">PK</text>
+<rect x="1931" y="246" width="558" height="16" fill="#f8fafc"/>
+<text x="1942" y="257" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">name</text>
+<text x="2480" y="257" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(200)</text>
+<text x="1942" y="273" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">description</text>
+<text x="2480" y="273" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(500)</text>
+<rect x="1931" y="278" width="558" height="16" fill="#f8fafc"/>
+<text x="1942" y="289" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">category</text>
+<text x="2480" y="289" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(50)</text>
+<text x="1942" y="305" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">tags</text>
+<text x="2480" y="305" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">JSON</text>
+<rect x="1931" y="310" width="558" height="16" fill="#f8fafc"/>
+<text x="1942" y="321" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">content</text>
+<text x="2480" y="321" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">TEXT</text>
+<text x="1942" y="337" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">variables</text>
+<text x="2480" y="337" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">JSON</text>
+<rect x="1931" y="342" width="558" height="16" fill="#f8fafc"/>
+<text x="1942" y="353" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">version</text>
+<text x="2480" y="353" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(50)</text>
+<text x="1942" y="369" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">status</text>
+<text x="2480" y="369" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(50)</text>
+<rect x="1931" y="374" width="558" height="16" fill="#f8fafc"/>
+<text x="1942" y="385" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">created_by</text>
+<text x="2480" y="385" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(100)</text>
+<text x="1942" y="401" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">created_at</text>
+<text x="2480" y="401" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">DATETIME</text>
+<rect x="1931" y="406" width="558" height="16" fill="#f8fafc"/>
+<text x="1942" y="417" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">updated_at</text>
+<text x="2480" y="417" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">DATETIME</text>
+<rect x="1930" y="470" width="560" height="198" rx="7" fill="#ffffff" stroke="#e2a13c" stroke-opacity="0.55"/>
+<path d="M 1937 470 H 2483 A 7 7 0 0 1 2490 477 V 500 H 1930 V 477 A 7 7 0 0 1 1937 470 Z" fill="#0f1b2d"/>
+<text x="1942" y="490" font-family="Consolas, Menlo, monospace" font-size="12.5" font-weight="700" fill="#ffffff">prompt_versions</text>
+<text x="1942" y="511" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="600" fill="#18212e">id</text>
+<text x="2480" y="511" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">INT</text>
+<rect x="2440.5" y="502.5" width="20" height="11" rx="2.5" fill="#fbf1de" stroke="#e2a13c" stroke-opacity="0.6"/>
+<text x="2450.5" y="510.6" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Noto Sans SC, Arial, sans-serif" font-size="6.8" fill="#a6761f">PK</text>
+<rect x="1931" y="516" width="558" height="16" fill="#f8fafc"/>
+<text x="1942" y="527" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="600" fill="#18212e">prompt_id</text>
+<text x="2480" y="527" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">INT</text>
+<rect x="2440.5" y="518.5" width="20" height="11" rx="2.5" fill="#eef2fc" stroke="#3e63dd" stroke-opacity="0.6"/>
+<text x="2450.5" y="526.6" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Noto Sans SC, Arial, sans-serif" font-size="6.8" fill="#3e63dd">FK</text>
+<text x="1942" y="543" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">version</text>
+<text x="2480" y="543" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(50)</text>
+<rect x="1931" y="548" width="558" height="16" fill="#f8fafc"/>
+<text x="1942" y="559" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">content</text>
+<text x="2480" y="559" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">TEXT</text>
+<text x="1942" y="575" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">changelog</text>
+<text x="2480" y="575" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(500)</text>
+<rect x="1931" y="580" width="558" height="16" fill="#f8fafc"/>
+<text x="1942" y="591" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">is_current</text>
+<text x="2480" y="591" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">BOOLEAN</text>
+<text x="1942" y="607" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">published_by</text>
+<text x="2480" y="607" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(100)</text>
+<rect x="1931" y="612" width="558" height="16" fill="#f8fafc"/>
+<text x="1942" y="623" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">published_at</text>
+<text x="2480" y="623" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">DATETIME</text>
+<text x="1942" y="639" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">created_at</text>
+<text x="2480" y="639" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">DATETIME</text>
+<rect x="1931" y="644" width="558" height="16" fill="#f8fafc"/>
+<text x="1942" y="655" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">updated_at</text>
+<text x="2480" y="655" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">DATETIME</text>
+<rect x="1930" y="708" width="560" height="294" rx="7" fill="#ffffff" stroke="#e2a13c" stroke-opacity="0.55"/>
+<path d="M 1937 708 H 2483 A 7 7 0 0 1 2490 715 V 738 H 1930 V 715 A 7 7 0 0 1 1937 708 Z" fill="#0f1b2d"/>
+<text x="1942" y="728" font-family="Consolas, Menlo, monospace" font-size="12.5" font-weight="700" fill="#ffffff">knowledge_bases</text>
+<text x="1942" y="749" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="600" fill="#18212e">id</text>
+<text x="2480" y="749" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">INT</text>
+<rect x="2440.5" y="740.5" width="20" height="11" rx="2.5" fill="#fbf1de" stroke="#e2a13c" stroke-opacity="0.6"/>
+<text x="2450.5" y="748.6" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Noto Sans SC, Arial, sans-serif" font-size="6.8" fill="#a6761f">PK</text>
+<rect x="1931" y="754" width="558" height="16" fill="#f8fafc"/>
+<text x="1942" y="765" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">name</text>
+<text x="2480" y="765" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(200)</text>
+<text x="1942" y="781" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">description</text>
+<text x="2480" y="781" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(500)</text>
+<rect x="1931" y="786" width="558" height="16" fill="#f8fafc"/>
+<text x="1942" y="797" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">status</text>
+<text x="2480" y="797" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(50)</text>
+<text x="1942" y="813" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">document_count</text>
+<text x="2480" y="813" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">INT</text>
+<rect x="1931" y="818" width="558" height="16" fill="#f8fafc"/>
+<text x="1942" y="829" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">segment_count</text>
+<text x="2480" y="829" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">INT</text>
+<text x="1942" y="845" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">embedding_model</text>
+<text x="2480" y="845" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(100)</text>
+<rect x="1931" y="850" width="558" height="16" fill="#f8fafc"/>
+<text x="1942" y="861" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">chunk_method</text>
+<text x="2480" y="861" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(20)</text>
+<text x="1942" y="877" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">chunk_size</text>
+<text x="2480" y="877" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">INT</text>
+<rect x="1931" y="882" width="558" height="16" fill="#f8fafc"/>
+<text x="1942" y="893" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">chunk_overlap</text>
+<text x="2480" y="893" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">INT</text>
+<text x="1942" y="909" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">retrieval_strategy</text>
+<text x="2480" y="909" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(20)</text>
+<rect x="1931" y="914" width="558" height="16" fill="#f8fafc"/>
+<text x="1942" y="925" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">top_k</text>
+<text x="2480" y="925" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">INT</text>
+<text x="1942" y="941" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">similarity_threshold</text>
+<text x="2480" y="941" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">FLOAT</text>
+<rect x="1931" y="946" width="558" height="16" fill="#f8fafc"/>
+<text x="1942" y="957" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">created_by</text>
+<text x="2480" y="957" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(100)</text>
+<text x="1942" y="973" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">created_at</text>
+<text x="2480" y="973" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">DATETIME</text>
+<rect x="1931" y="978" width="558" height="16" fill="#f8fafc"/>
+<text x="1942" y="989" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">updated_at</text>
+<text x="2480" y="989" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">DATETIME</text>
+<rect x="1930" y="1042" width="560" height="262" rx="7" fill="#ffffff" stroke="#e2a13c" stroke-opacity="0.55"/>
+<path d="M 1937 1042 H 2483 A 7 7 0 0 1 2490 1049 V 1072 H 1930 V 1049 A 7 7 0 0 1 1937 1042 Z" fill="#0f1b2d"/>
+<text x="1942" y="1062" font-family="Consolas, Menlo, monospace" font-size="12.5" font-weight="700" fill="#ffffff">documents</text>
+<text x="1942" y="1083" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="600" fill="#18212e">id</text>
+<text x="2480" y="1083" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">INT</text>
+<rect x="2440.5" y="1074.5" width="20" height="11" rx="2.5" fill="#fbf1de" stroke="#e2a13c" stroke-opacity="0.6"/>
+<text x="2450.5" y="1082.6" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Noto Sans SC, Arial, sans-serif" font-size="6.8" fill="#a6761f">PK</text>
+<rect x="1931" y="1088" width="558" height="16" fill="#f8fafc"/>
+<text x="1942" y="1099" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="600" fill="#18212e">knowledge_base_id</text>
+<text x="2480" y="1099" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">INT</text>
+<rect x="2440.5" y="1090.5" width="20" height="11" rx="2.5" fill="#eef2fc" stroke="#3e63dd" stroke-opacity="0.6"/>
+<text x="2450.5" y="1098.6" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Noto Sans SC, Arial, sans-serif" font-size="6.8" fill="#3e63dd">FK</text>
+<text x="1942" y="1115" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">file_name</text>
+<text x="2480" y="1115" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(500)</text>
+<rect x="1931" y="1120" width="558" height="16" fill="#f8fafc"/>
+<text x="1942" y="1131" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">file_type</text>
+<text x="2480" y="1131" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(50)</text>
+<text x="1942" y="1147" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">file_size</text>
+<text x="2480" y="1147" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(50)</text>
+<rect x="1931" y="1152" width="558" height="16" fill="#f8fafc"/>
+<text x="1942" y="1163" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">minio_path</text>
+<text x="2480" y="1163" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(1000)</text>
+<text x="1942" y="1179" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">status</text>
+<text x="2480" y="1179" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(50)</text>
+<rect x="1931" y="1184" width="558" height="16" fill="#f8fafc"/>
+<text x="1942" y="1195" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">segment_count</text>
+<text x="2480" y="1195" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">INT</text>
+<text x="1942" y="1211" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">word_count</text>
+<text x="2480" y="1211" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">INT</text>
+<rect x="1931" y="1216" width="558" height="16" fill="#f8fafc"/>
+<text x="1942" y="1227" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">error_message</text>
+<text x="2480" y="1227" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">TEXT</text>
+<text x="1942" y="1243" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">uploaded_by</text>
+<text x="2480" y="1243" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(100)</text>
+<rect x="1931" y="1248" width="558" height="16" fill="#f8fafc"/>
+<text x="1942" y="1259" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">processed_at</text>
+<text x="2480" y="1259" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">DATETIME</text>
+<text x="1942" y="1275" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">created_at</text>
+<text x="2480" y="1275" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">DATETIME</text>
+<rect x="1931" y="1280" width="558" height="16" fill="#f8fafc"/>
+<text x="1942" y="1291" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">updated_at</text>
+<text x="2480" y="1291" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">DATETIME</text>
+<rect x="1930" y="1344" width="560" height="198" rx="7" fill="#ffffff" stroke="#e2a13c" stroke-opacity="0.55"/>
+<path d="M 1937 1344 H 2483 A 7 7 0 0 1 2490 1351 V 1374 H 1930 V 1351 A 7 7 0 0 1 1937 1344 Z" fill="#0f1b2d"/>
+<text x="1942" y="1364" font-family="Consolas, Menlo, monospace" font-size="12.5" font-weight="700" fill="#ffffff">segments</text>
+<text x="1942" y="1385" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="600" fill="#18212e">id</text>
+<text x="2480" y="1385" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">INT</text>
+<rect x="2440.5" y="1376.5" width="20" height="11" rx="2.5" fill="#fbf1de" stroke="#e2a13c" stroke-opacity="0.6"/>
+<text x="2450.5" y="1384.6" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Noto Sans SC, Arial, sans-serif" font-size="6.8" fill="#a6761f">PK</text>
+<rect x="1931" y="1390" width="558" height="16" fill="#f8fafc"/>
+<text x="1942" y="1401" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="600" fill="#18212e">knowledge_base_id</text>
+<text x="2480" y="1401" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">INT</text>
+<rect x="2440.5" y="1392.5" width="20" height="11" rx="2.5" fill="#eef2fc" stroke="#3e63dd" stroke-opacity="0.6"/>
+<text x="2450.5" y="1400.6" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Noto Sans SC, Arial, sans-serif" font-size="6.8" fill="#3e63dd">FK</text>
+<text x="1942" y="1417" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="600" fill="#18212e">document_id</text>
+<text x="2480" y="1417" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">INT</text>
+<rect x="2440.5" y="1408.5" width="20" height="11" rx="2.5" fill="#eef2fc" stroke="#3e63dd" stroke-opacity="0.6"/>
+<text x="2450.5" y="1416.6" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Noto Sans SC, Arial, sans-serif" font-size="6.8" fill="#3e63dd">FK</text>
+<rect x="1931" y="1422" width="558" height="16" fill="#f8fafc"/>
+<text x="1942" y="1433" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">position</text>
+<text x="2480" y="1433" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">INT</text>
+<text x="1942" y="1449" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">content</text>
+<text x="2480" y="1449" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">TEXT</text>
+<rect x="1931" y="1454" width="558" height="16" fill="#f8fafc"/>
+<text x="1942" y="1465" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">word_count</text>
+<text x="2480" y="1465" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">INT</text>
+<text x="1942" y="1481" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">token_count</text>
+<text x="2480" y="1481" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">INT</text>
+<rect x="1931" y="1486" width="558" height="16" fill="#f8fafc"/>
+<text x="1942" y="1497" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">hit_count</text>
+<text x="2480" y="1497" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">INT</text>
+<text x="1942" y="1513" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">created_at</text>
+<text x="2480" y="1513" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">DATETIME</text>
+<rect x="1931" y="1518" width="558" height="16" fill="#f8fafc"/>
+<text x="1942" y="1529" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">updated_at</text>
+<text x="2480" y="1529" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">DATETIME</text>
+<rect x="1930" y="1582" width="560" height="246" rx="7" fill="#ffffff" stroke="#e2a13c" stroke-opacity="0.55"/>
+<path d="M 1937 1582 H 2483 A 7 7 0 0 1 2490 1589 V 1612 H 1930 V 1589 A 7 7 0 0 1 1937 1582 Z" fill="#0f1b2d"/>
+<text x="1942" y="1602" font-family="Consolas, Menlo, monospace" font-size="12.5" font-weight="700" fill="#ffffff">tools</text>
+<text x="1942" y="1623" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="600" fill="#18212e">id</text>
+<text x="2480" y="1623" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">INT</text>
+<rect x="2440.5" y="1614.5" width="20" height="11" rx="2.5" fill="#fbf1de" stroke="#e2a13c" stroke-opacity="0.6"/>
+<text x="2450.5" y="1622.6" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Noto Sans SC, Arial, sans-serif" font-size="6.8" fill="#a6761f">PK</text>
+<rect x="1931" y="1628" width="558" height="16" fill="#f8fafc"/>
+<text x="1942" y="1639" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">name</text>
+<text x="2480" y="1639" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(200)</text>
+<text x="1942" y="1655" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">description</text>
+<text x="2480" y="1655" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">TEXT</text>
+<rect x="1931" y="1660" width="558" height="16" fill="#f8fafc"/>
+<text x="1942" y="1671" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">type</text>
+<text x="2480" y="1671" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(50)</text>
+<text x="1942" y="1687" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">status</text>
+<text x="2480" y="1687" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(50)</text>
+<rect x="1931" y="1692" width="558" height="16" fill="#f8fafc"/>
+<text x="1942" y="1703" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">config</text>
+<text x="2480" y="1703" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">JSON</text>
+<text x="1942" y="1719" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">function_definition</text>
+<text x="2480" y="1719" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">JSON</text>
+<rect x="1931" y="1724" width="558" height="16" fill="#f8fafc"/>
+<text x="1942" y="1735" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">call_count_7d</text>
+<text x="2480" y="1735" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">INT</text>
+<text x="1942" y="1751" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">success_rate</text>
+<text x="2480" y="1751" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">NUMERIC(5,2)</text>
+<rect x="1931" y="1756" width="558" height="16" fill="#f8fafc"/>
+<text x="1942" y="1767" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">avg_latency</text>
+<text x="2480" y="1767" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">INT</text>
+<text x="1942" y="1783" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">created_by</text>
+<text x="2480" y="1783" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(100)</text>
+<rect x="1931" y="1788" width="558" height="16" fill="#f8fafc"/>
+<text x="1942" y="1799" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">created_at</text>
+<text x="2480" y="1799" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">DATETIME</text>
+<text x="1942" y="1815" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">updated_at</text>
+<text x="2480" y="1815" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">DATETIME</text>
+<rect x="2590" y="200" width="540" height="246" rx="7" fill="#ffffff" stroke="#c2453c" stroke-opacity="0.55"/>
+<path d="M 2597 200 H 3123 A 7 7 0 0 1 3130 207 V 230 H 2590 V 207 A 7 7 0 0 1 2597 200 Z" fill="#0f1b2d"/>
+<text x="2602" y="220" font-family="Consolas, Menlo, monospace" font-size="12.5" font-weight="700" fill="#ffffff">api_keys</text>
+<text x="2602" y="241" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="600" fill="#18212e">id</text>
+<text x="3120" y="241" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">INT</text>
+<rect x="3080.5" y="232.5" width="20" height="11" rx="2.5" fill="#fbf1de" stroke="#e2a13c" stroke-opacity="0.6"/>
+<text x="3090.5" y="240.6" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Noto Sans SC, Arial, sans-serif" font-size="6.8" fill="#a6761f">PK</text>
+<rect x="2591" y="246" width="538" height="16" fill="#f8fafc"/>
+<text x="2602" y="257" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">name</text>
+<text x="3120" y="257" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(100)</text>
+<text x="2602" y="273" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">key</text>
+<text x="3120" y="273" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(100)</text>
+<rect x="2591" y="278" width="538" height="16" fill="#f8fafc"/>
+<text x="2602" y="289" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">permissions</text>
+<text x="3120" y="289" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(20)</text>
+<text x="2602" y="305" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">status</text>
+<text x="3120" y="305" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(20)</text>
+<rect x="2591" y="310" width="538" height="16" fill="#f8fafc"/>
+<text x="2602" y="321" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">rate_limit</text>
+<text x="3120" y="321" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">INT</text>
+<text x="2602" y="337" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">call_count</text>
+<text x="3120" y="337" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">INT</text>
+<rect x="2591" y="342" width="538" height="16" fill="#f8fafc"/>
+<text x="2602" y="353" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">last_used_at</text>
+<text x="3120" y="353" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">DATETIME</text>
+<text x="2602" y="369" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">expires_at</text>
+<text x="3120" y="369" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">DATETIME</text>
+<rect x="2591" y="374" width="538" height="16" fill="#f8fafc"/>
+<text x="2602" y="385" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">allowed_agent_ids</text>
+<text x="3120" y="385" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">JSON</text>
+<text x="2602" y="401" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">created_by</text>
+<text x="3120" y="401" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(100)</text>
+<rect x="2591" y="406" width="538" height="16" fill="#f8fafc"/>
+<text x="2602" y="417" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">created_at</text>
+<text x="3120" y="417" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">DATETIME</text>
+<text x="2602" y="433" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">updated_at</text>
+<text x="3120" y="433" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">DATETIME</text>
+<rect x="2590" y="486" width="540" height="182" rx="7" fill="#ffffff" stroke="#c2453c" stroke-opacity="0.55"/>
+<path d="M 2597 486 H 3123 A 7 7 0 0 1 3130 493 V 516 H 2590 V 493 A 7 7 0 0 1 2597 486 Z" fill="#0f1b2d"/>
+<text x="2602" y="506" font-family="Consolas, Menlo, monospace" font-size="12.5" font-weight="700" fill="#ffffff">alert_rules</text>
+<text x="2602" y="527" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="600" fill="#18212e">id</text>
+<text x="3120" y="527" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">INT</text>
+<rect x="3080.5" y="518.5" width="20" height="11" rx="2.5" fill="#fbf1de" stroke="#e2a13c" stroke-opacity="0.6"/>
+<text x="3090.5" y="526.6" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Noto Sans SC, Arial, sans-serif" font-size="6.8" fill="#a6761f">PK</text>
+<rect x="2591" y="532" width="538" height="16" fill="#f8fafc"/>
+<text x="2602" y="543" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">name</text>
+<text x="3120" y="543" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(100)</text>
+<text x="2602" y="559" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">description</text>
+<text x="3120" y="559" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(200)</text>
+<rect x="2591" y="564" width="538" height="16" fill="#f8fafc"/>
+<text x="2602" y="575" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">condition</text>
+<text x="3120" y="575" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">JSON</text>
+<text x="2602" y="591" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">notification</text>
+<text x="3120" y="591" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">JSON</text>
+<rect x="2591" y="596" width="538" height="16" fill="#f8fafc"/>
+<text x="2602" y="607" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">status</text>
+<text x="3120" y="607" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(20)</text>
+<text x="2602" y="623" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">created_by</text>
+<text x="3120" y="623" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(100)</text>
+<rect x="2591" y="628" width="538" height="16" fill="#f8fafc"/>
+<text x="2602" y="639" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">created_at</text>
+<text x="3120" y="639" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">DATETIME</text>
+<text x="2602" y="655" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">updated_at</text>
+<text x="3120" y="655" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">DATETIME</text>
+<rect x="2590" y="708" width="540" height="278" rx="7" fill="#ffffff" stroke="#c2453c" stroke-opacity="0.55"/>
+<path d="M 2597 708 H 3123 A 7 7 0 0 1 3130 715 V 738 H 2590 V 715 A 7 7 0 0 1 2597 708 Z" fill="#0f1b2d"/>
+<text x="2602" y="728" font-family="Consolas, Menlo, monospace" font-size="12.5" font-weight="700" fill="#ffffff">alerts</text>
+<text x="2602" y="749" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="600" fill="#18212e">id</text>
+<text x="3120" y="749" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">INT</text>
+<rect x="3080.5" y="740.5" width="20" height="11" rx="2.5" fill="#fbf1de" stroke="#e2a13c" stroke-opacity="0.6"/>
+<text x="3090.5" y="748.6" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Noto Sans SC, Arial, sans-serif" font-size="6.8" fill="#a6761f">PK</text>
+<rect x="2591" y="754" width="538" height="16" fill="#f8fafc"/>
+<text x="2602" y="765" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">type</text>
+<text x="3120" y="765" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(20)</text>
+<text x="2602" y="781" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">title</text>
+<text x="3120" y="781" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(200)</text>
+<rect x="2591" y="786" width="538" height="16" fill="#f8fafc"/>
+<text x="2602" y="797" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">message</text>
+<text x="3120" y="797" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">TEXT</text>
+<text x="2602" y="813" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">source</text>
+<text x="3120" y="813" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(50)</text>
+<rect x="2591" y="818" width="538" height="16" fill="#f8fafc"/>
+<text x="2602" y="829" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">severity</text>
+<text x="3120" y="829" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(20)</text>
+<text x="2602" y="845" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">status</text>
+<text x="3120" y="845" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(20)</text>
+<rect x="2591" y="850" width="538" height="16" fill="#f8fafc"/>
+<text x="2602" y="861" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">count</text>
+<text x="3120" y="861" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">INT</text>
+<text x="2602" y="877" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">first_occurred_at</text>
+<text x="3120" y="877" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">DATETIME</text>
+<rect x="2591" y="882" width="538" height="16" fill="#f8fafc"/>
+<text x="2602" y="893" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">last_occurred_at</text>
+<text x="3120" y="893" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">DATETIME</text>
+<text x="2602" y="909" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">acknowledged_by</text>
+<text x="3120" y="909" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(100)</text>
+<rect x="2591" y="914" width="538" height="16" fill="#f8fafc"/>
+<text x="2602" y="925" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">acknowledged_at</text>
+<text x="3120" y="925" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">DATETIME</text>
+<text x="2602" y="941" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">resolved_at</text>
+<text x="3120" y="941" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">DATETIME</text>
+<rect x="2591" y="946" width="538" height="16" fill="#f8fafc"/>
+<text x="2602" y="957" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">created_at</text>
+<text x="3120" y="957" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">DATETIME</text>
+<text x="2602" y="973" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">updated_at</text>
+<text x="3120" y="973" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">DATETIME</text>
+<rect x="2590" y="1026" width="540" height="230" rx="7" fill="#ffffff" stroke="#c2453c" stroke-opacity="0.55"/>
+<path d="M 2597 1026 H 3123 A 7 7 0 0 1 3130 1033 V 1056 H 2590 V 1033 A 7 7 0 0 1 2597 1026 Z" fill="#0f1b2d"/>
+<text x="2602" y="1046" font-family="Consolas, Menlo, monospace" font-size="12.5" font-weight="700" fill="#ffffff">system_settings</text>
+<text x="2602" y="1067" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="600" fill="#18212e">id</text>
+<text x="3120" y="1067" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">INT</text>
+<rect x="3080.5" y="1058.5" width="20" height="11" rx="2.5" fill="#fbf1de" stroke="#e2a13c" stroke-opacity="0.6"/>
+<text x="3090.5" y="1066.6" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Noto Sans SC, Arial, sans-serif" font-size="6.8" fill="#a6761f">PK</text>
+<rect x="2591" y="1072" width="538" height="16" fill="#f8fafc"/>
+<text x="2602" y="1083" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">system_name</text>
+<text x="3120" y="1083" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(100)</text>
+<text x="2602" y="1099" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">system_description</text>
+<text x="3120" y="1099" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">TEXT</text>
+<rect x="2591" y="1104" width="538" height="16" fill="#f8fafc"/>
+<text x="2602" y="1115" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">default_language</text>
+<text x="3120" y="1115" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(20)</text>
+<text x="2602" y="1131" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">default_model</text>
+<text x="3120" y="1131" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(100)</text>
+<rect x="2591" y="1136" width="538" height="16" fill="#f8fafc"/>
+<text x="2602" y="1147" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">default_temperature</text>
+<text x="3120" y="1147" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">FLOAT</text>
+<text x="2602" y="1163" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">default_max_tokens</text>
+<text x="3120" y="1163" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">INT</text>
+<rect x="2591" y="1168" width="538" height="16" fill="#f8fafc"/>
+<text x="2602" y="1179" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">smtp_server</text>
+<text x="3120" y="1179" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(200)</text>
+<text x="2602" y="1195" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">smtp_port</text>
+<text x="3120" y="1195" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">INT</text>
+<rect x="2591" y="1200" width="538" height="16" fill="#f8fafc"/>
+<text x="2602" y="1211" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">sender_email</text>
+<text x="3120" y="1211" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">VARCHAR(100)</text>
+<text x="2602" y="1227" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">created_at</text>
+<text x="3120" y="1227" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">DATETIME</text>
+<rect x="2591" y="1232" width="538" height="16" fill="#f8fafc"/>
+<text x="2602" y="1243" font-family="Consolas, Menlo, monospace" font-size="9.5" font-weight="400" fill="#18212e">updated_at</text>
+<text x="3120" y="1243" text-anchor="end" font-family="Consolas, Menlo, monospace" font-size="8.2" fill="#8b95a3">DATETIME</text>
+</svg></body></html>
