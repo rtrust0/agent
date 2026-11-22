@@ -34,6 +34,9 @@ async def test_user_search_with_permission(client, db_session):
     body = response.json()
     assert body["code"] == 200
     assert body["data"]["total"] == 2
+    # 列表必须内联角色，否则前端「角色」列只能显示 —
+    lister_row = next(item for item in body["data"]["items"] if item["username"] == "lister")
+    assert [role["code"] for role in lister_row["roles"]] == ["lister"]
 
 
 async def test_user_search_keyword(client, db_session):

@@ -9,7 +9,6 @@ from app.modules.user.schema import (
     RoleBrief,
     UserAssignRoles,
     UserCreate,
-    UserRead,
     UserUpdate,
     UserWithRolesRead,
 )
@@ -37,16 +36,20 @@ async def get_my_permissions(
     return ResponseSchema(data=await svc.get_my_permissions(current_user))
 
 
-@router.get("/search", response_model=ResponseSchema[PageResult[UserRead]], summary="分页搜索用户")
+@router.get(
+    "/search",
+    response_model=ResponseSchema[PageResult[UserWithRolesRead]],
+    summary="分页搜索用户",
+)
 async def search_users(
     params: PageParams = Depends(),
     svc: UserService = Depends(get_user_service),
     current_user: User = Depends(get_current_user_with_permission("user:list")),
-) -> ResponseSchema[PageResult[UserRead]]:
+) -> ResponseSchema[PageResult[UserWithRolesRead]]:
     users, total = await svc.search_page(params, current_user)
     return ResponseSchema(
         data=PageResult(
-            items=[UserRead.model_validate(u) for u in users],
+            items=[UserWithRolesRead.model_validate(u) for u in users],
             total=total,
             page=params.page,
             page_size=params.page_size,
@@ -54,15 +57,17 @@ async def search_users(
     )
 
 
-@router.get("", response_model=ResponseSchema[list[UserRead]], summary="用户全量列表")
+@router.get(
+    "", response_model=ResponseSchema[list[UserWithRolesRead]], summary="用户全量列表"
+)
 async def list_users(
     offset: int = 0,
     limit: int = 100,
     svc: UserService = Depends(get_user_service),
     _: User = Depends(get_current_user),
-) -> ResponseSchema[list[UserRead]]:
+) -> ResponseSchema[list[UserWithRolesRead]]:
     users = await svc.list_all(offset, limit)
-    return ResponseSchema(data=[UserRead.model_validate(u) for u in users])
+    return ResponseSchema(data=[UserWithRolesRead.model_validate(u) for u in users])
 
 
 @router.post("", response_model=ResponseSchema[UserWithRolesRead], summary="创建用户")

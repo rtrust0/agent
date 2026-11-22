@@ -25,6 +25,11 @@ test('全量用户列表返回 seed 的 3 个账号', async () => {
     users.map((user) => user.username),
     ['admin', 'ops', 'viewer'],
   )
+  // 列表必须带回角色，否则页面「角色」列会显示为 —
+  assert.deepEqual(
+    users.map((user) => user.roleIds.length),
+    [1, 1, 1],
+  )
 })
 
 test('分页参数从 camelCase 映射为后端 page_size', async () => {
