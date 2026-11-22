@@ -1,7 +1,6 @@
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.core.data_scope import scope_condition
 from app.core.deps import PageParams, get_effective_permission_codes
 from app.core.exceptions import BizException
 from app.core.security import hash_password
@@ -22,12 +21,15 @@ class UserService:
         return list(await self.repo.get_all(offset, limit))
 
     async def search_page(self, params: PageParams, current_user: User) -> tuple[list[User], int]:
-        condition = scope_condition(User, current_user, owner_is_user_id=True)
+        """用户目录属平台级数据：仅由 `user:list` 控制，不应用数据范围过滤。
+
+        否则 `data_scope=own` 的只读账号虽然有 `user:list`，却只能看到自己创建的用户
+        （通常为 0 条）。数据范围仍作用于业务数据（Agent / Prompt / 知识库 / 工具 / 对话 / 统计）。
+        """
         return await self.repo.get_page(
             params.offset,
             params.page_size,
             params.keyword,
-            extra_conditions=[condition] if condition is not None else None,
         )
 
     async def get_user(self, user_id: int) -> User:

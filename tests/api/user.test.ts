@@ -92,8 +92,14 @@ test('删除用户后搜索结果为空', async () => {
   assert.equal(after.total, 0)
 })
 
-test('只读账号创建用户被后端拒绝（403）', async () => {
+test('只读账号可查看用户目录，但创建用户被后端拒绝（403）', async () => {
   await loginAs('viewer')
+  // 用户目录属平台级数据：own 范围也不做过滤，只读角色应能看到全部账号
+  const users = await userApi.listAll()
+  assert.deepEqual(
+    users.map((user) => user.username),
+    ['admin', 'ops', 'viewer'],
+  )
   await expectReject(
     () =>
       userApi.create({

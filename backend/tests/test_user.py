@@ -183,7 +183,8 @@ async def test_me_permissions_superuser_all(client, db_session):
     assert body["data"] == ["role:delete", "user:list"]
 
 
-async def test_data_scope_own_filters_rows(client, db_session):
+async def test_user_search_is_platform_level(client, db_session):
+    """用户目录属平台级数据：own 范围也能看到他人创建的用户，仅受 user:list 控制。"""
     perm = await create_permission(db_session, "user:list")
     role = await create_role(db_session, "lister", [perm])
     owner = await create_user(db_session, "owner", roles=[role], data_scope="own")
@@ -194,5 +195,4 @@ async def test_data_scope_own_filters_rows(client, db_session):
     body = response.json()
     assert body["code"] == 200
     names = {item["username"] for item in body["data"]["items"]}
-    assert "mine" in names
-    assert "others" not in names
+    assert {"owner", "mine", "others"} <= names
