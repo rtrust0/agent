@@ -42,13 +42,13 @@
 - `test_me`
 - `test_me_permissions_dedup_sorted`
 - `test_me_permissions_superuser_all`
-- `test_user_search_is_platform_level`
+- `test_data_scope_own_filters_rows`
 
 ## 三、关键断言
 
 - `/users/me/permissions` 返回去重且升序的权限码列表
 - 超管返回数据库中全部已定义权限码（非代码常量）
-- 用户目录属平台级数据：`data_scope=own` 的用户在搜索时也能看到全部用户（仅受 `user:list` 控制），避免只读角色「有权限却看到空列表」
+- `data_scope=own` 的用户在搜索时仅能看到 `created_by=本人 ID` 的数据
 - 创建用户未提供权限码时也需登录（401 分支覆盖）
 
 ## 五、复现步骤

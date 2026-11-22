@@ -1,6 +1,7 @@
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.core.data_scope import scope_condition
 from app.core.deps import PageParams, get_effective_permission_codes
 from app.core.exceptions import BizException
 from app.core.security import hash_password
@@ -21,16 +22,12 @@ class UserService:
         return list(await self.repo.get_all(offset, limit))
 
     async def search_page(self, params: PageParams, current_user: User) -> tuple[list[User], int]:
-        """用户目录属平台级数据：仅由 `user:list` 控制，不应用数据范围过滤。
-
-        V3 §3.4.2 曾将用户模块列入数据范围，但与 `/users` 全量接口对登录用户开放、
-        以及「只读角色有 user:list 却看不到任何用户」的体验冲突，故统一不做范围过滤。
-        数据范围仍作用于业务数据（Agent / Prompt / 知识库 / 工具 / 对话 / 统计）。
-        """
+        condition = scope_condition(User, current_user, owner_is_user_id=True)
         return await self.repo.get_page(
             params.offset,
             params.page_size,
             params.keyword,
+            extra_conditions=[condition] if condition is not None else None,
         )
 
     async def get_user(self, user_id: int) -> User:
