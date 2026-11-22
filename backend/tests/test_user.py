@@ -34,6 +34,8 @@ async def test_user_search_with_permission(client, db_session):
     body = response.json()
     assert body["code"] == 200
     assert body["data"]["total"] == 2
+    lister_row = next(item for item in body["data"]["items"] if item["username"] == "lister")
+    assert [role["code"] for role in lister_row["roles"]] == ["lister"]
 
 
 async def test_user_search_keyword(client, db_session):
@@ -148,12 +150,15 @@ async def test_get_user_roles(client, db_session):
 
 
 async def test_me(client, db_session):
-    await create_user(db_session, "admin", superuser=True)
+    perm = await create_permission(db_session, "user:list")
+    role = await create_role(db_session, "me_role", [perm])
+    await create_user(db_session, "admin", superuser=True, roles=[role])
     token = await login_token(client, "admin")
     response = await client.get("/api/v1/users/me", headers=AUTH(token))
     body = response.json()
     assert body["code"] == 200
     assert body["data"]["username"] == "admin"
+    assert [item["code"] for item in body["data"]["roles"]] == ["me_role"]
 
 
 async def test_me_permissions_dedup_sorted(client, db_session):
@@ -180,7 +185,8 @@ async def test_me_permissions_superuser_all(client, db_session):
     assert body["data"] == ["role:delete", "user:list"]
 
 
-async def test_data_scope_own_filters_rows(client, db_session):
+async def test_user_search_is_platform_level(client, db_session):
+    """用户目录属平台级数据：own 范围也能看到他人创建的用户，仅受 user:list 控制。"""
     perm = await create_permission(db_session, "user:list")
     role = await create_role(db_session, "lister", [perm])
     owner = await create_user(db_session, "owner", roles=[role], data_scope="own")
@@ -191,5 +197,4 @@ async def test_data_scope_own_filters_rows(client, db_session):
     body = response.json()
     assert body["code"] == 200
     names = {item["username"] for item in body["data"]["items"]}
-    assert "mine" in names
-    assert "others" not in names
+    assert {"owner", "mine", "others"} <= names

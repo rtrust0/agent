@@ -25,6 +25,11 @@ test('全量用户列表返回 seed 的 3 个账号', async () => {
     users.map((user) => user.username),
     ['admin', 'ops', 'viewer'],
   )
+  // 列表必须带回角色，否则页面「角色」列会显示为 —
+  assert.deepEqual(
+    users.map((user) => user.roleIds.length),
+    [1, 1, 1],
+  )
 })
 
 test('分页参数从 camelCase 映射为后端 page_size', async () => {
@@ -70,6 +75,15 @@ test('查看与调整用户角色', async () => {
   const cleared = await userApi.assignRoles(target.id, [])
   assert.deepEqual(cleared.roleIds, [])
   assert.deepEqual(await userApi.readRoles(target.id), [])
+
+  // 列表接口需反映最新角色（页面分配后刷新即生效）
+  const relisted = await userApi.search({ keyword: CREATED })
+  assert.deepEqual(relisted.list[0].roleIds, [])
+
+  const restored = await userApi.assignRoles(target.id, [roles[0].id])
+  assert.deepEqual(restored.roleIds, [roles[0].id])
+  const again = await userApi.search({ keyword: CREATED })
+  assert.deepEqual(again.list[0].roleIds, [roles[0].id])
 })
 
 test('详情映射 createdAt / dataScope 字段', async () => {
@@ -87,8 +101,14 @@ test('删除用户后搜索结果为空', async () => {
   assert.equal(after.total, 0)
 })
 
-test('只读账号创建用户被后端拒绝（403）', async () => {
+test('只读账号可查看用户目录，但创建用户被后端拒绝（403）', async () => {
   await loginAs('viewer')
+  // 用户目录属平台级数据：own 范围也不做过滤，只读角色应能看到全部账号
+  const users = await userApi.listAll()
+  assert.deepEqual(
+    users.map((user) => user.username),
+    ['admin', 'ops', 'viewer'],
+  )
   await expectReject(
     () =>
       userApi.create({
