@@ -1,8 +1,10 @@
 /**
  * 全局类型定义：与后端接口返回结构对齐（RBAC 模块）。
+ * 后端返回 snake_case，apis 层负责映射为这里的 camelCase 领域模型。
  */
 
-export type PermissionModule = 'user' | 'role' | 'permission' | 'system'
+/** 权限模块前缀：由权限码 `模块:操作` 派生，后端共 15 个模块 */
+export type PermissionModule = string
 
 export interface User {
   id: number
@@ -10,6 +12,7 @@ export interface User {
   email: string
   isActive: boolean
   isSuperuser: boolean
+  dataScope: string
   roleIds: number[]
   createdAt: string
 }
@@ -29,17 +32,13 @@ export interface Permission {
   code: string
   name: string
   module: PermissionModule
+  description: string
   createdAt: string
 }
 
 export interface AuthSession {
   token: string
   user: User
-}
-
-export interface Captcha {
-  captchaId: string
-  text: string
 }
 
 export interface PageResult<T> {

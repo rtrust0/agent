@@ -1,21 +1,17 @@
 <script setup lang="ts">
-import { onMounted, reactive, ref } from 'vue'
+import { reactive, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAuthStore } from '@/store/auth'
 import { useToast } from '@/composables/useToast'
-import { authService } from '@/services/auth.service'
 import BaseButton from '@/components/ui/BaseButton.vue'
 import BaseInput from '@/components/ui/BaseInput.vue'
-import BaseCaptcha from '@/components/ui/BaseCaptcha.vue'
 
 const router = useRouter()
 const route = useRoute()
 const auth = useAuthStore()
 const { toast } = useToast()
 
-const form = reactive({ username: 'admin', password: '123456', captcha: '' })
-const captchaId = ref('')
-const captchaText = ref('')
+const form = reactive({ username: 'admin', password: '123456' })
 const submitting = ref(false)
 const error = ref('')
 
@@ -25,19 +21,6 @@ const demoAccounts = [
   { username: 'viewer', label: '只读观察者' },
 ]
 
-async function refreshCaptcha() {
-  try {
-    const captcha = await authService.captcha()
-    captchaId.value = captcha.captchaId
-    captchaText.value = captcha.text
-    form.captcha = ''
-  } catch (e) {
-    error.value = e instanceof Error ? e.message : '验证码加载失败'
-  }
-}
-
-onMounted(refreshCaptcha)
-
 function fillAccount(username: string) {
   form.username = username
   form.password = '123456'
@@ -45,8 +28,8 @@ function fillAccount(username: string) {
 
 async function onSubmit() {
   error.value = ''
-  if (!form.username.trim() || !form.password || !form.captcha.trim()) {
-    error.value = '请填写用户名、密码与验证码'
+  if (!form.username.trim() || !form.password) {
+    error.value = '请填写用户名与密码'
     return
   }
   submitting.value = true
@@ -54,15 +37,12 @@ async function onSubmit() {
     await auth.login({
       username: form.username.trim(),
       password: form.password,
-      captchaId: captchaId.value,
-      captcha: form.captcha.trim(),
     })
     toast('success', '登录成功')
     const redirect = typeof route.query.redirect === 'string' ? route.query.redirect : '/'
     await router.replace(redirect)
   } catch (e) {
     error.value = e instanceof Error ? e.message : '登录失败'
-    await refreshCaptcha()
   } finally {
     submitting.value = false
   }
@@ -93,7 +73,6 @@ async function onSubmit() {
         <form class="login__fields" @submit.prevent="onSubmit">
           <BaseInput v-model="form.username" label="用户名" placeholder="请输入用户名" />
           <BaseInput v-model="form.password" label="密码" type="password" placeholder="请输入密码" />
-          <BaseCaptcha v-model="form.captcha" :text="captchaText" @refresh="refreshCaptcha" />
 
           <p v-if="error" class="login__error">{{ error }}</p>
 

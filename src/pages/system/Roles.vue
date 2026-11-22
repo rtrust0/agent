@@ -10,15 +10,8 @@ import BaseModal from '@/components/ui/BaseModal.vue'
 import BaseBadge from '@/components/ui/BaseBadge.vue'
 import BasePagination from '@/components/ui/BasePagination.vue'
 import BaseSkeleton from '@/components/ui/BaseSkeleton.vue'
-import type { Permission, PermissionModule, Role } from '@/types'
-
-const MODULE_LABEL: Record<PermissionModule, string> = {
-  user: '用户',
-  role: '角色',
-  permission: '权限',
-  system: '系统',
-}
-const MODULE_ORDER: PermissionModule[] = ['user', 'role', 'permission', 'system']
+import { groupPermissions } from '@/constants/permission-modules'
+import type { Permission, Role } from '@/types'
 
 const roleStore = useRoleStore()
 const { hasPerm } = usePermission()
@@ -27,13 +20,7 @@ const { toast } = useToast()
 const permissions = ref<Permission[]>([])
 const keywordInput = ref('')
 
-const groupedPermissions = computed(() =>
-  MODULE_ORDER.map((module) => ({
-    module,
-    label: MODULE_LABEL[module],
-    items: permissions.value.filter((permission) => permission.module === module),
-  })),
-)
+const groupedPermissions = computed(() => groupPermissions(permissions.value))
 
 // 创建 / 编辑
 const formOpen = ref(false)
@@ -227,7 +214,7 @@ onMounted(async () => {
     <!-- 创建 / 编辑 -->
     <BaseModal :open="formOpen" :title="editingId === null ? '创建角色' : '编辑角色'" @close="formOpen = false">
       <form class="form" @submit.prevent="submitForm">
-        <BaseInput v-model="form.code" label="角色码" placeholder="如 auditor" />
+        <BaseInput v-model="form.code" label="角色码" placeholder="如 auditor" :disabled="editingId !== null" />
         <BaseInput v-model="form.name" label="名称" placeholder="如 审计员" />
         <BaseInput v-model="form.description" label="描述" placeholder="角色职责说明" />
         <template v-if="editingId === null">

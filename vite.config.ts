@@ -1,29 +1,16 @@
 import { fileURLToPath, URL } from 'node:url'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
-import { createMockHandler } from './mock'
 
 /**
- * 本地 mock 中间件：拦截 `/api/*` 请求，交给内存 mock handler 处理。
- * handler 内做路由匹配、鉴权与三级权限拦截，前端无需后端即可独立开发与测试。
+ * 前后端联调配置：
+ * `/api/*` 反向代理到 FastAPI（默认 http://127.0.0.1:8000），
+ * 前端不再内置 mock，所有请求由真实后端执行业务逻辑后返回。
  */
+const BACKEND_TARGET = process.env.VITE_PROXY_TARGET ?? 'http://127.0.0.1:8000'
+
 export default defineConfig({
-  plugins: [
-    vue(),
-    {
-      name: 'mock-api',
-      configureServer(server) {
-        const handler = createMockHandler()
-        server.middlewares.use((req, res, next) => {
-          if (req.url && req.url.startsWith('/api/')) {
-            handler(req, res)
-            return
-          }
-          next()
-        })
-      },
-    },
-  ],
+  plugins: [vue()],
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
@@ -31,5 +18,15 @@ export default defineConfig({
   },
   server: {
     port: 5174,
+    proxy: {
+      '/api': {
+        target: BACKEND_TARGET,
+        changeOrigin: true,
+      },
+      '/health': {
+        target: BACKEND_TARGET,
+        changeOrigin: true,
+      },
+    },
   },
 })

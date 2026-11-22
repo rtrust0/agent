@@ -22,9 +22,11 @@ def get_user_service(db: AsyncSession = Depends(get_db)) -> UserService:
     return UserService(db)
 
 
-@router.get("/me", response_model=ResponseSchema[UserRead], summary="当前用户信息")
-async def read_me(current_user: User = Depends(get_current_user)) -> ResponseSchema[UserRead]:
-    return ResponseSchema(data=UserRead.model_validate(current_user))
+@router.get("/me", response_model=ResponseSchema[UserWithRolesRead], summary="当前用户信息")
+async def read_me(
+    current_user: User = Depends(get_current_user),
+) -> ResponseSchema[UserWithRolesRead]:
+    return ResponseSchema(data=UserWithRolesRead.model_validate(current_user))
 
 
 @router.get("/me/permissions", response_model=ResponseSchema[list[str]], summary="当前用户权限码")

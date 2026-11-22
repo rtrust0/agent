@@ -5,22 +5,13 @@ import { useRoleStore } from '@/store/role'
 import { usePermission } from '@/composables/usePermission'
 import { useToast } from '@/composables/useToast'
 import { permissionService } from '@/services/permission.service'
+import { groupPermissions, moduleLabel } from '@/constants/permission-modules'
 import BaseButton from '@/components/ui/BaseButton.vue'
 import BaseInput from '@/components/ui/BaseInput.vue'
-import BaseSelect from '@/components/ui/BaseSelect.vue'
 import BaseModal from '@/components/ui/BaseModal.vue'
 import BasePagination from '@/components/ui/BasePagination.vue'
 import BaseSkeleton from '@/components/ui/BaseSkeleton.vue'
-import type { Permission, PermissionModule } from '@/types'
-
-const MODULE_LABEL: Record<PermissionModule, string> = {
-  user: '用户',
-  role: '角色',
-  permission: '权限',
-  system: '系统',
-}
-const MODULE_ORDER: PermissionModule[] = ['user', 'role', 'permission', 'system']
-const MODULE_OPTIONS = MODULE_ORDER.map((module) => ({ label: MODULE_LABEL[module], value: module }))
+import type { Permission } from '@/types'
 
 const catalog = usePermissionCatalogStore()
 const roleStore = useRoleStore()
@@ -32,15 +23,13 @@ const keywordInput = ref('')
 const allPermissions = ref<Permission[]>([])
 
 const matrixGroups = computed(() =>
-  MODULE_ORDER.map((module) => ({
-    module,
-    label: MODULE_LABEL[module],
-    rows: allPermissions.value
-      .filter((permission) => permission.module === module)
-      .map((permission) => ({
-        ...permission,
-        grants: roleStore.roles.map((role) => role.permissionCodes.includes(permission.code)),
-      })),
+  groupPermissions(allPermissions.value).map((group) => ({
+    module: group.module,
+    label: group.label,
+    rows: group.items.map((permission) => ({
+      ...permission,
+      grants: roleStore.roles.map((role) => role.permissionCodes.includes(permission.code)),
+    })),
   })),
 )
 
@@ -49,7 +38,7 @@ const formOpen = ref(false)
 const editingId = ref<number | null>(null)
 const saving = ref(false)
 const formError = ref('')
-const form = reactive({ code: '', name: '', module: 'user' as PermissionModule })
+const form = reactive({ code: '', name: '' })
 
 // 删除
 const deleteOpen = ref(false)
@@ -60,7 +49,6 @@ function openCreate() {
   editingId.value = null
   form.code = ''
   form.name = ''
-  form.module = 'user'
   formError.value = ''
   formOpen.value = true
 }
@@ -69,7 +57,6 @@ function openEdit(permission: Permission) {
   editingId.value = permission.id
   form.code = permission.code
   form.name = permission.name
-  form.module = permission.module
   formError.value = ''
   formOpen.value = true
 }
@@ -79,10 +66,10 @@ async function submitForm() {
   saving.value = true
   try {
     if (editingId.value === null) {
-      await catalog.createPermission({ code: form.code, name: form.name, module: form.module })
+      await catalog.createPermission({ code: form.code, name: form.name })
       toast('success', '权限创建成功')
     } else {
-      await catalog.updatePermission(editingId.value, { name: form.name, module: form.module })
+      await catalog.updatePermission(editingId.value, { name: form.name })
       toast('success', '权限已更新')
     }
     await refreshMatrix()
@@ -174,7 +161,7 @@ onMounted(async () => {
                 <td class="mono">{{ permission.id }}</td>
                 <td><code class="mono">{{ permission.code }}</code></td>
                 <td>{{ permission.name }}</td>
-                <td>{{ MODULE_LABEL[permission.module] }}</td>
+                <td>{{ moduleLabel(permission.module) }}</td>
                 <td v-if="hasPerm('permission:update') || hasPerm('permission:delete')" class="table__actions">
                   <button v-if="hasPerm('permission:update')" class="link-btn" type="button" @click="openEdit(permission)">编辑</button>
                   <button v-if="hasPerm('permission:delete')" class="link-btn link-btn--danger" type="button" @click="openDelete(permission)">删除</button>
@@ -232,7 +219,7 @@ onMounted(async () => {
       <form class="form" @submit.prevent="submitForm">
         <BaseInput v-model="form.code" label="权限码" placeholder="如 user:export" :disabled="editingId !== null" />
         <BaseInput v-model="form.name" label="名称" placeholder="如 导出用户" />
-        <BaseSelect v-model="form.module" label="模块" :options="MODULE_OPTIONS" />
+        <p class="form-hint">模块由权限码前缀自动派生（如 `user:export` → 用户）</p>
         <p v-if="formError" class="form-error">{{ formError }}</p>
       </form>
       <template #footer>
@@ -243,7 +230,7 @@ onMounted(async () => {
 
     <!-- 删除确认 -->
     <BaseModal :open="deleteOpen" :title="'删除权限'" @close="deleteOpen = false">
-      <p class="confirm-text">确定删除权限 <strong>{{ deleteTarget?.code }}</strong> 吗？被角色引用的权限不可删除。</p>
+      <p class="confirm-text">确定删除权限 <strong>{{ deleteTarget?.code }}</strong> 吗？删除后该权限将从所有角色中移除。</p>
       <template #footer>
         <BaseButton variant="ghost" @click="deleteOpen = false">取消</BaseButton>
         <BaseButton variant="danger" :loading="deleting" @click="confirmDelete">删除</BaseButton>

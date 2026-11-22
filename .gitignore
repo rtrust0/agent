@@ -44,5 +44,5 @@ __pycache__/
 *.py[cod]
 .venv/
 venv/
-backend/rbac.db
+backend/*.db
 .pytest_cache/

@@ -4,7 +4,7 @@ import { authService } from '@/services/auth.service'
 import { usePermissionStore } from './permission'
 import type { User } from '@/types'
 
-/** 演示账号密码（与 mock 种子一致） */
+/** 演示账号密码（与后端 seed 数据一致：app/seed.py） */
 const DEMO_PASSWORDS: Record<string, string> = {
   admin: '123456',
   ops: '123456',
@@ -14,8 +14,6 @@ const DEMO_PASSWORDS: Record<string, string> = {
 export interface LoginCredentials {
   username: string
   password: string
-  captchaId: string
-  captcha: string
 }
 
 /**
@@ -57,12 +55,9 @@ export const useAuthStore = defineStore('auth', () => {
 
   /** 身份切换：以演示账号重新登录（等价于换账号） */
   async function switchIdentity(username: string): Promise<void> {
-    const captcha = await authService.captcha()
     await login({
       username,
       password: DEMO_PASSWORDS[username] ?? '123456',
-      captchaId: captcha.captchaId,
-      captcha: captcha.text,
     })
   }
 

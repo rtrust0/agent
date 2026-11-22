@@ -4,15 +4,9 @@ import { dashboardService } from '@/services/dashboard.service'
 import { roleService } from '@/services/role.service'
 import { permissionService } from '@/services/permission.service'
 import { authService } from '@/services/auth.service'
+import { groupPermissions } from '@/constants/permission-modules'
 import BaseSkeleton from '@/components/ui/BaseSkeleton.vue'
-import type { DashboardSummary, Permission, PermissionModule, Role } from '@/types'
-
-const MODULE_LABEL: Record<PermissionModule, string> = {
-  user: '用户',
-  role: '角色',
-  permission: '权限',
-  system: '系统',
-}
+import type { DashboardSummary, Permission, Role } from '@/types'
 
 const summary = ref<DashboardSummary | null>(null)
 const myPermissions = ref<string[]>([])
@@ -28,16 +22,14 @@ const statCards = computed(() => [
 ])
 
 const groupedPermissions = computed(() => {
-  const groups = new Map<PermissionModule, string[]>()
-  const codeToModule = new Map(permissions.value.map((p) => [p.code, p.module]))
-  for (const code of myPermissions.value) {
-    const module = codeToModule.get(code)
-    if (!module) continue
-    const list = groups.get(module) ?? []
-    list.push(code)
-    groups.set(module, list)
-  }
-  return [...groups.entries()].map(([module, codes]) => ({ module, label: MODULE_LABEL[module], codes }))
+  const mine = new Set(myPermissions.value)
+  return groupPermissions(permissions.value)
+    .map((group) => ({
+      module: group.module,
+      label: group.label,
+      codes: group.items.map((permission) => permission.code).filter((code) => mine.has(code)),
+    }))
+    .filter((group) => group.codes.length > 0)
 })
 
 const matrixRows = computed(() =>
