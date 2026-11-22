@@ -4,13 +4,6 @@ import { authService } from '@/services/auth.service'
 import { usePermissionStore } from './permission'
 import type { User } from '@/types'
 
-/** 演示账号密码（与后端 seed 数据一致：app/seed.py） */
-const DEMO_PASSWORDS: Record<string, string> = {
-  admin: '123456',
-  ops: '123456',
-  viewer: '123456',
-}
-
 export interface LoginCredentials {
   username: string
   password: string
@@ -53,14 +46,6 @@ export const useAuthStore = defineStore('auth', () => {
     usePermissionStore().setSuperuser(user.value.isSuperuser)
   }
 
-  /** 身份切换：以演示账号重新登录（等价于换账号） */
-  async function switchIdentity(username: string): Promise<void> {
-    await login({
-      username,
-      password: DEMO_PASSWORDS[username] ?? '123456',
-    })
-  }
-
   /** 退出登录：清 token、用户与权限状态 */
   function logout(): void {
     authService.logout()
@@ -69,5 +54,5 @@ export const useAuthStore = defineStore('auth', () => {
     usePermissionStore().reset()
   }
 
-  return { token, user, loading, error, isLoggedIn, login, restore, switchIdentity, logout }
+  return { token, user, loading, error, isLoggedIn, login, restore, logout }
 })

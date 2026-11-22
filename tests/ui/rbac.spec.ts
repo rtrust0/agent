@@ -28,6 +28,8 @@ test('viewer menu hides write / system modules', async ({ page }) => {
   await expect(page.getByRole('link', { name: 'API 密钥' })).toHaveCount(0)
   await expect(page.getByRole('link', { name: '审计日志' })).toHaveCount(0)
   await expect(page.getByRole('link', { name: '系统配置' })).toHaveCount(0)
+  // 演示用的身份切换器已整体移除，任何账号都不应出现
+  await expect(page.locator('.switcher')).toHaveCount(0)
 })
 
 test('viewer sees no create / delete / assign buttons on users page', async ({ page }) => {
@@ -132,13 +134,12 @@ test('dashboard renders stats and permission chips from backend', async ({ page 
   await expect(page.locator('.matrix thead th')).toHaveCount(4)
 })
 
-test('identity switch recomputes menu and user box', async ({ page }) => {
+test('identity switcher is removed from the layout', async ({ page }) => {
   await loginAs(page, '超级管理员')
-  await expect(page.getByRole('link', { name: 'API 密钥' })).toBeVisible()
-
-  await page.getByRole('button', { name: '只读观察者' }).click()
-  await page.waitForLoadState('load')
-
-  await expect(page.locator('.userbox__name')).toHaveText('viewer')
-  await expect(page.getByRole('link', { name: 'API 密钥' })).toHaveCount(0)
+  // 顶栏不再提供身份切换按钮，避免演示用的“一键提权”入口
+  await expect(page.locator('.switcher')).toHaveCount(0)
+  await expect(page.getByRole('group', { name: '身份切换' })).toHaveCount(0)
+  // 退出后可通过登录页换账号
+  await page.locator('.userbox__logout').click()
+  await expect(page).toHaveURL(/\/login/)
 })

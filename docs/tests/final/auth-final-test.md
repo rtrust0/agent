@@ -36,7 +36,7 @@
 - `ops is redirected to /403 for an unauthorized system route`
 - `unauthenticated access redirects to login with redirect query`
 - `logout then login as viewer shrinks menu without reload`
-- `identity switch recomputes menu and user box`
+- `identity switcher is removed from the layout`
 
 ## 四、关键断言
 
@@ -44,11 +44,14 @@
 - 超管权限码 71 个且按字典序返回；ops 45 个；viewer 23 个
 - 密码错误返回业务码 401（`用户名或密码错误`），不会误判为 400
 - 无 token 访问 `/users/me` 返回 401，并触发前端清 token 逻辑
+- 顶栏「身份切换」已整体移除：E2E 断言 `.switcher` 数量为 0、`身份切换` 分组不存在；换账号只能退出后重新登录
 
 ## 五、契约差异与实现裁定
 
 - 登录失败沿用后端业务码 401；原 mock 为 400，前端仅提示 message，不受影响。
-- 身份切换（admin → viewer）不复用旧权限缓存：`store/permission.ts` 以 token 为键，切换后重拉。
+- 权限缓存以 token 为键：退出并换账号登录后必然重拉，不会复用上一账号的权限集合。
+- 演示用的「身份切换」已整体移除（顶栏 UI、`authStore.switchIdentity`、硬编码演示密码），换账号统一走「退出 → 登录页」。
+- 真正的安全边界在账号密码而非切换按钮：seed 的演示密码 `123456` 本身可直接登录 admin，上线前必须改密码或删除演示账号。
 - 已移除 Vite mock 中间件，`/api` 由 Vite 代理到真实 FastAPI（默认 `http://127.0.0.1:8000`）。
 - `mock/` 目录的删除被本机安全策略拒绝（安全删除失败），代码中已无任何引用，属遗留未清理文件。
 - 图形验证码整体移除：后端 V3 登录契约只有 `username/password`，前端同步删除验证码字段与接口。

@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
 import { RouterLink, RouterView, useRoute, useRouter } from 'vue-router'
 import { useAuthStore } from '@/store/auth'
 import { usePermission } from '@/composables/usePermission'
-import { useToast } from '@/composables/useToast'
 
 interface MenuItem {
   to: string
@@ -15,7 +14,6 @@ const route = useRoute()
 const router = useRouter()
 const auth = useAuthStore()
 const { hasPerm } = usePermission()
-const { toast } = useToast()
 
 const platformItems: MenuItem[] = [{ to: '/', label: '工作台' }]
 
@@ -53,30 +51,6 @@ const breadcrumbs = computed(() => {
   const item = [...platformItems, ...systemItems].find((i) => i.to === route.path)
   return ['系统管理', item?.label ?? '']
 })
-
-const identities = [
-  { username: 'admin', label: '超级管理员' },
-  { username: 'ops', label: '运营管理员' },
-  { username: 'viewer', label: '只读观察者' },
-]
-
-const switching = ref(false)
-const activeUsername = computed(() => auth.user?.username ?? '')
-const currentRoleLabel = computed(
-  () => identities.find((i) => i.username === activeUsername.value)?.label ?? '',
-)
-
-async function onSwitch(username: string) {
-  if (switching.value || username === activeUsername.value) return
-  switching.value = true
-  try {
-    await auth.switchIdentity(username)
-    window.location.reload()
-  } catch (e) {
-    toast('error', e instanceof Error ? e.message : '身份切换失败')
-    switching.value = false
-  }
-}
 
 async function onLogout() {
   auth.logout()
@@ -130,7 +104,6 @@ async function onLogout() {
       <div class="userbox">
         <div class="userbox__info">
           <span class="userbox__name">{{ auth.user?.username ?? '未登录' }}</span>
-          <span class="userbox__role">{{ currentRoleLabel }}</span>
         </div>
         <button class="userbox__logout" type="button" @click="onLogout">退出</button>
       </div>
@@ -143,20 +116,6 @@ async function onLogout() {
             {{ crumb }}
             <span v-if="index < breadcrumbs.length - 1" class="crumbs__sep">/</span>
           </span>
-        </div>
-
-        <div class="switcher" role="group" aria-label="身份切换">
-          <button
-            v-for="identity in identities"
-            :key="identity.username"
-            class="switcher__btn"
-            :class="{ 'switcher__btn--active': identity.username === activeUsername }"
-            type="button"
-            :disabled="switching"
-            @click="onSwitch(identity.username)"
-          >
-            {{ identity.label }}
-          </button>
         </div>
       </header>
 
@@ -266,10 +225,6 @@ async function onLogout() {
   font-size: 13px;
   font-weight: 500;
 }
-.userbox__role {
-  font-size: 11.5px;
-  color: #8b97ab;
-}
 .userbox__logout {
   height: 28px;
   padding: 0 10px;
@@ -313,36 +268,6 @@ async function onLogout() {
 .crumbs__sep {
   margin-left: 6px;
   color: var(--ink-3);
-}
-.switcher {
-  display: flex;
-  padding: 3px;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  background: #f3f5f8;
-}
-.switcher__btn {
-  height: 28px;
-  padding: 0 12px;
-  border: none;
-  border-radius: 6px;
-  background: transparent;
-  color: var(--ink-2);
-  font-size: 12.5px;
-  transition: background-color 0.15s ease, color 0.15s ease;
-}
-.switcher__btn:hover:not(:disabled) {
-  color: var(--ink);
-}
-.switcher__btn--active {
-  background: #fff;
-  color: var(--navy-900);
-  font-weight: 600;
-  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.08);
-}
-.switcher__btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
 }
 .content {
   flex: 1;
