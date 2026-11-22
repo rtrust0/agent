@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>角色管理 · 辰光 Agent 平台</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-brand">
+        <div class="mark">辰</div>
+        <div>
+          <div class="name">辰光 Agent</div>
+          <div class="edition">RBAC 权限中心</div>
+        </div>
+      </div>
+      <nav class="sidebar-nav" id="sidebar-nav"></nav>
+      <div class="sidebar-user" id="sidebar-user"></div>
+    </aside>
+
+    <div class="main">
+      <header class="topbar">
+        <nav class="crumb" aria-label="面包屑">
+          <span>首页</span>
+          <span class="sep">/</span>
+          <span>系统管理</span>
+          <span class="sep">/</span>
+          <span class="here">角色管理</span>
+        </nav>
+        <div class="topbar-spacer"></div>
+        <div class="identity-switch" id="identity-switch"></div>
+      </header>
+
+      <main class="content">
+        <div class="page-head">
+          <div>
+            <h1 class="page-title">角色管理</h1>
+            <p class="page-sub">管理系统角色，并为角色分配权限</p>
+          </div>
+          <div class="actions">
+            <button class="btn btn-primary" data-perm="role:create" onclick="openCreateDialog()">
+              <span class="ico" id="ico-plus"></span>创建角色
+            </button>
+          </div>
+        </div>
+
+        <div class="stat-grid">
+          <div class="stat">
+            <div class="label">角色总数</div>
+            <div class="value" id="stat-total">3</div>
+          </div>
+          <div class="stat">
+            <div class="label">系统内置角色</div>
+            <div class="value" id="stat-system" style="color:var(--dawn)">1</div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head">
+            <div class="search-box" style="width:280px;max-width:100%">
+              <span class="ico" id="ico-search"></span>
+              <input class="input" id="role-search" placeholder="搜索角色名称或编码…" />
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th style="width:56px">ID</th>
+                  <th>角色编码</th>
+                  <th>角色名称</th>
+                  <th>描述</th>
+                  <th style="width:110px">权限数</th>
+                  <th style="width:210px">操作</th>
+                </tr>
+              </thead>
+              <tbody id="role-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- 创建角色弹窗 -->
+  <div class="overlay" id="create-overlay" hidden>
+    <div class="dialog">
+      <div class="dialog-head">
+        <span class="dialog-title">创建角色</span>
+        <button class="dialog-close" onclick="closeCreateDialog()" id="ico-x-1"></button>
+      </div>
+      <div class="dialog-body">
+        <div class="field">
+          <label>角色编码</label>
+          <input class="input" id="cr-code" placeholder="如 ops_admin" />
+          <p class="hint">小写字母与下划线，创建后不可修改</p>
+        </div>
+        <div class="field">
+          <label>角色名称</label>
+          <input class="input" id="cr-name" placeholder="如 运营管理员" />
+        </div>
+        <div class="field">
+          <label>描述</label>
+          <input class="input" id="cr-desc" placeholder="可选，说明该角色的职责" />
+        </div>
+      </div>
+      <div class="dialog-foot">
+        <button class="btn btn-ghost" onclick="closeCreateDialog()">取消</button>
+        <button class="btn btn-primary" onclick="submitCreate()">创建角色</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 分配权限弹窗 -->
+  <div class="overlay" id="assign-overlay" hidden>
+    <div class="dialog" style="max-width:520px">
+      <div class="dialog-head">
+        <span class="dialog-title">分配权限</span>
+        <button class="dialog-close" onclick="closeAssignDialog()" id="ico-x-2"></button>
+      </div>
+      <div class="dialog-body">
+        <p style="font-size:13px;color:var(--ink-2);margin-bottom:12px">为角色 <strong id="assign-role-name"></strong> 选择权限项</p>
+        <div id="assign-perm-list"></div>
+      </div>
+      <div class="dialog-foot">
+        <button class="btn btn-ghost" onclick="closeAssignDialog()">取消</button>
+        <button class="btn btn-primary" onclick="submitAssign()">保存</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 删除确认弹窗 -->
+  <div class="overlay" id="delete-overlay" hidden>
+    <div class="dialog" style="max-width:400px">
+      <div class="dialog-head">
+        <span class="dialog-title">删除角色</span>
+        <button class="dialog-close" onclick="closeDeleteDialog()" id="ico-x-3"></button>
+      </div>
+      <div class="dialog-body">
+        <p style="font-size:13.5px">确定要删除角色 <strong id="delete-role-name"></strong> 吗？此操作无法撤销。</p>
+      </div>
+      <div class="dialog-foot">
+        <button class="btn btn-ghost" onclick="closeDeleteDialog()">取消</button>
+        <button class="btn btn-primary" style="background:var(--danger)" onclick="submitDelete()">删除</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    (function () {
+      var D = RBAC_DATA;
+      RBAC.initCommon('roles.html');
+
+      document.getElementById('ico-plus').innerHTML = RBAC.icon('plus');
+      document.getElementById('ico-search').innerHTML = RBAC.icon('search');
+      document.getElementById('ico-x-1').innerHTML = RBAC.icon('x');
+      document.getElementById('ico-x-2').innerHTML = RBAC.icon('x');
+      document.getElementById('ico-x-3').innerHTML = RBAC.icon('x');
+
+      var assignRoleId = null;
+      var deleteRoleId = null;
+
+      function renderTable(keyword) {
+        var kw = (keyword || '').toLowerCase();
+        var rows = D.ROLES.filter(function (r) {
+          return !kw || r.name.toLowerCase().indexOf(kw) !== -1 || r.code.toLowerCase().indexOf(kw) !== -1;
+        });
+        var tbody = document.getElementById('role-tbody');
+        var html = '';
+        rows.forEach(function (r) {
+          html += '<tr>' +
+            '<td class="cell-muted mono">' + r.id + '</td>' +
+            '<td><span class="perm-code">' + r.code + '</span></td>' +
+            '<td class="cell-strong">' + r.name +
+              (r.isSystem ? ' <span class="badge badge-gold">内置</span>' : '') + '</td>' +
+            '<td class="cell-muted">' + r.description + '</td>' +
+            '<td><span class="badge badge-blue">' + r.permissions.length + ' 项</span></td>' +
+            '<td><div style="display:flex;gap:4px">' +
+              '<button class="btn-icon" title="编辑" data-perm="role:update" onclick="RBAC.toast(\'原型演示：编辑功能\')">' + RBAC.icon('edit') + '</button>' +
+              '<button class="btn-icon" title="分配权限" data-perm="role:assign_permissions" onclick="openAssignDialog(' + r.id + ')">' + RBAC.icon('key') + '</button>' +
+              '<button class="btn-icon danger" title="删除" data-perm="role:delete" onclick="openDeleteDialog(' + r.id + ')">' + RBAC.icon('trash') + '</button>' +
+              '</div></td>' +
+            '</tr>';
+        });
+        tbody.innerHTML = html;
+
+        var sysCount = D.ROLES.filter(function (r) { return r.isSystem; }).length;
+        document.getElementById('stat-total').textContent = D.ROLES.length;
+        document.getElementById('stat-system').textContent = sysCount;
+
+        document.querySelectorAll('[data-perm]').forEach(function (el) {
+          if (!RBAC.hasPerm(el.getAttribute('data-perm'))) {
+            el.setAttribute('data-perm-hidden', 'true');
+          }
+        });
+      }
+
+      document.getElementById('role-search').addEventListener('input', function (e) {
+        renderTable(e.target.value);
+      });
+
+      window.openCreateDialog = function () {
+        document.getElementById('create-overlay').hidden = false;
+      };
+      window.closeCreateDialog = function () {
+        document.getElementById('create-overlay').hidden = true;
+      };
+      window.submitCreate = function () {
+        var code = document.getElementById('cr-code').value.trim();
+        var name = document.getElementById('cr-name').value.trim();
+        var desc = document.getElementById('cr-desc').value.trim();
+        if (!code || !name) { RBAC.toast('请填写角色编码和名称', true); return; }
+        D.ROLES.push({ id: D.ROLES.length + 1, code: code, name: name, description: desc || '自定义角色', isSystem: false, permissions: [] });
+        closeCreateDialog();
+        renderTable(document.getElementById('role-search').value);
+        RBAC.toast('角色已创建');
+      };
+
+      window.openAssignDialog = function (id) {
+        assignRoleId = id;
+        var r = D.ROLES.find(function (x) { return x.id === id; });
+        document.getElementById('assign-role-name').textContent = r.name;
+        var listEl = document.getElementById('assign-perm-list');
+        var modClass = { user: 'mod-user', role: 'mod-role', permission: 'mod-permission', system: 'mod-system' };
+        var html = '';
+        var modules = ['user', 'role', 'permission', 'system'];
+        modules.forEach(function (mod) {
+          html += '<div style="font-size:12px;font-weight:600;color:var(--ink-2);margin:14px 0 6px">' +
+            D.MODULE_LABELS[mod] + '模块</div>';
+          D.PERMISSIONS.filter(function (p) { return p.module === mod; }).forEach(function (p) {
+            var checked = r.permissions.indexOf(p.code) !== -1;
+            html += '<label style="display:flex;align-items:center;gap:10px;padding:6px 4px;cursor:pointer;border-bottom:1px solid var(--line-2)">' +
+              '<input type="checkbox" data-perm-code="' + p.code + '" ' + (checked ? 'checked' : '') + '>' +
+              '<span class="mod-tag ' + modClass[mod] + '"></span>' +
+              '<span style="flex:1">' + p.name + '</span>' +
+              '<span class="perm-code">' + p.code + '</span></label>';
+          });
+        });
+        listEl.innerHTML = html;
+        document.getElementById('assign-overlay').hidden = false;
+      };
+      window.closeAssignDialog = function () {
+        document.getElementById('assign-overlay').hidden = true;
+      };
+      window.submitAssign = function () {
+        var r = D.ROLES.find(function (x) { return x.id === assignRoleId; });
+        var codes = [];
+        document.querySelectorAll('#assign-perm-list input:checked').forEach(function (c) {
+          codes.push(c.getAttribute('data-perm-code'));
+        });
+        r.permissions = codes;
+        closeAssignDialog();
+        renderTable(document.getElementById('role-search').value);
+        RBAC.toast('权限已更新');
+      };
+
+      window.openDeleteDialog = function (id) {
+        deleteRoleId = id;
+        var r = D.ROLES.find(function (x) { return x.id === id; });
+        document.getElementById('delete-role-name').textContent = r.name;
+        document.getElementById('delete-overlay').hidden = false;
+      };
+      window.closeDeleteDialog = function () {
+        document.getElementById('delete-overlay').hidden = true;
+      };
+      window.submitDelete = function () {
+        D.ROLES = D.ROLES.filter(function (x) { return x.id !== deleteRoleId; });
+        closeDeleteDialog();
+        renderTable(document.getElementById('role-search').value);
+        RBAC.toast('角色已删除');
+      };
+
+      renderTable('');
+    })();
+  </script>
+</body>
+</html>
