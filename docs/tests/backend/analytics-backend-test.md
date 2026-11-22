@@ -5,7 +5,7 @@
 - 测试文件：`backend/tests/test_analytics.py`
 - 执行命令：`cd backend && .venv/Scripts/python.exe -m pytest tests/test_analytics.py -q`
 - 测试环境：Python 3.14 / FastAPI / SQLAlchemy 2.0（async）/ Pydantic v2；pytest + pytest-asyncio + httpx，内存 SQLite
-- 用例结果：**6 passed / 0 failed**
+- 用例结果：**7 passed / 0 failed**
 
 ## 一、接口覆盖
 
@@ -28,12 +28,14 @@
 - `test_analytics_by_agent_and_model`
 - `test_analytics_costs`
 - `test_analytics_evaluation`
+- `test_analytics_respects_data_scope`
 
 ## 三、关键断言
 
 - 成功率 = completed / total，保留两位小数
 - 按模型聚合时未关联模型归入「未指定模型」
 - 费用均值按对话数计算，0 对话时不除零
+- `own` / `dept` 数据范围只统计本人（`conversations.user_id`）产生的对话，`all` 与超管统计全量
 
 ## 五、复现步骤
 

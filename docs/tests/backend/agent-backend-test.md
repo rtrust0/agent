@@ -5,7 +5,7 @@
 - 测试文件：`backend/tests/test_agent.py`
 - 执行命令：`cd backend && .venv/Scripts/python.exe -m pytest tests/test_agent.py -q`
 - 测试环境：Python 3.14 / FastAPI / SQLAlchemy 2.0（async）/ Pydantic v2；pytest + pytest-asyncio + httpx，内存 SQLite
-- 用例结果：**10 passed / 0 failed**
+- 用例结果：**13 passed / 0 failed**
 
 ## 一、接口覆盖
 
@@ -36,6 +36,9 @@
 - `test_agent_update_and_delete`
 - `test_agent_publish_versions_and_rollback`
 - `test_agent_test_and_monitor`
+- `test_agent_update_cannot_activate_without_publish`
+- `test_agent_update_out_of_scope_forbidden`
+- `test_agent_republish_after_rollback_no_duplicate_version`
 
 ## 三、关键断言
 
@@ -43,6 +46,8 @@
 - 访问他人 Agent 详情返回 403
 - 发布版本号按 `v0.1 → v0.2 → v0.3` 递增且只有一个 `is_current`
 - 回滚后 Agent 版本与配置同步回退
+- 回滚后再次发布不会与历史版本重号（取历史最大版本 +1）
+- `PUT /agents/{id}` 不能直接把 `status` 改为 active（必须走发布接口）
 
 ## 五、复现步骤
 

@@ -163,3 +163,47 @@ async def test_agent_test_and_monitor(client, db_session):
     monitor = await client.get(f"/api/v1/agents/{agent.id}/monitor", headers=AUTH(token))
     assert monitor.json()["data"]["version"] == "v0.1"
     assert monitor.json()["data"]["recent_errors"] == []
+
+
+async def test_agent_update_cannot_activate_without_publish(client, db_session):
+    await create_user(db_session, "admin", superuser=True)
+    token = await login_token(client, "admin")
+    agent = await create_agent(db_session, "未发布")
+    response = await client.put(
+        f"/api/v1/agents/{agent.id}", json={"status": "active"}, headers=AUTH(token)
+    )
+    assert response.json()["code"] == 400
+    detail = await client.get(f"/api/v1/agents/{agent.id}", headers=AUTH(token))
+    assert detail.json()["data"]["status"] == "draft"
+
+
+async def test_agent_update_out_of_scope_forbidden(client, db_session):
+    await _agent_user(db_session, "writer", codes=["agent:update", "agent:delete"])
+    foreign = await create_agent(db_session, "他人 Agent", created_by="someone")
+    token = await login_token(client, "writer")
+    updated = await client.put(
+        f"/api/v1/agents/{foreign.id}", json={"name": "越权改名"}, headers=AUTH(token)
+    )
+    deleted = await client.delete(f"/api/v1/agents/{foreign.id}", headers=AUTH(token))
+    assert updated.json()["code"] == 403
+    assert deleted.json()["code"] == 403
+
+
+async def test_agent_republish_after_rollback_no_duplicate_version(client, db_session):
+    await create_user(db_session, "admin", superuser=True)
+    token = await login_token(client, "admin")
+    agent = await create_agent(db_session, "版本连续")
+    await client.post(f"/api/v1/agents/{agent.id}/publish", headers=AUTH(token))
+    await client.post(f"/api/v1/agents/{agent.id}/publish", headers=AUTH(token))
+    await client.post(
+        f"/api/v1/agents/{agent.id}/versions/v0.2/rollback", headers=AUTH(token)
+    )
+    republished = await client.post(
+        f"/api/v1/agents/{agent.id}/publish", headers=AUTH(token)
+    )
+    assert republished.json()["data"]["version"] == "v0.4"
+    versions = (
+        await client.get(f"/api/v1/agents/{agent.id}/versions", headers=AUTH(token))
+    ).json()["data"]
+    assert [v["version"] for v in versions] == ["v0.4", "v0.3", "v0.2"]
+    assert sum(1 for v in versions if v["is_current"]) == 1

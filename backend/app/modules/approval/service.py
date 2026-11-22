@@ -23,6 +23,8 @@ class ApprovalService:
         reason = data.reason.strip()
         if not reason:
             raise BizException(code=400, message="申请理由不能为空")
+        if data.expired_at is not None and data.expired_at <= datetime.now():
+            raise BizException(code=400, message="过期时间必须晚于当前时间")
 
         exists = await self.db.scalar(
             select(Permission.id).where(Permission.code == data.permission_code)
@@ -75,6 +77,8 @@ class ApprovalService:
         application = await self.repo.get_by_id(application_id)
         if not application:
             raise BizException(code=404, message="申请记录不存在")
+        if application.applicant_id == actor.id:
+            raise BizException(code=400, message="不能审批自己提交的申请")
         if application.status != "pending":
             raise BizException(code=400, message="该申请已处理，不能重复审批")
 
@@ -89,6 +93,7 @@ class ApprovalService:
             application.status = "approved"
             if data.expired_at is not None:
                 application.expired_at = data.expired_at
+            await self._apply_data_scope(application)
         else:
             application.status = "rejected"
 
@@ -108,3 +113,14 @@ class ApprovalService:
         await self.db.commit()
         await self.db.refresh(application)
         return application
+
+    async def _apply_data_scope(self, application: PermissionApplication) -> None:
+        """`data_scope:*` 类权限码审批通过后同步到用户的数据范围字段。"""
+        if not application.permission_code.startswith("data_scope:"):
+            return
+        scope = application.permission_code.split(":", 1)[1]
+        if scope not in {"own", "dept", "all"}:
+            return
+        applicant = await self.db.get(User, application.applicant_id)
+        if applicant:
+            applicant.data_scope = scope

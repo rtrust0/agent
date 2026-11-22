@@ -5,7 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.data_scope import assert_in_scope, scope_condition
 from app.core.deps import PageParams
 from app.core.exceptions import BizException
-from app.core.versioning import bump_version
+from app.core.versioning import next_version
 from app.modules.agent.model import Agent, AgentVersion
 from app.modules.agent.repository import AgentRepository, AgentVersionRepository
 from app.modules.agent.schema import AgentCreate, AgentMonitorRead, AgentTestResult, AgentUpdate
@@ -77,6 +77,8 @@ class AgentService:
     async def update(self, actor: User, agent_id: int, data: AgentUpdate) -> Agent:
         agent = await self.get_agent(agent_id, actor)
         await self._validate(data.type, data.model_id)
+        if data.status is not None and data.status not in {"draft", "inactive", "error"}:
+            raise BizException(code=400, message="请使用发布接口激活 Agent")
         before = {"name": agent.name, "status": agent.status, "model_id": agent.model_id}
         for field in ("name", "description", "type", "model_id", "config", "status"):
             value = getattr(data, field)
@@ -107,7 +109,10 @@ class AgentService:
 
     async def publish(self, actor: User, agent_id: int, changelog: str | None) -> Agent:
         agent = await self.get_agent(agent_id, actor)
-        new_version = bump_version(agent.version)
+        history = await self.version_repo.list_by_agent(agent.id)
+        new_version = next_version(
+            [item.version for item in history] + [agent.version], agent.version
+        )
         await self.version_repo.clear_current(agent.id)
         version = AgentVersion(
             agent_id=agent.id,

@@ -69,7 +69,7 @@ async def test_audit_logs_filter_by_username(client, db_session):
     ).json()
     assert filtered["data"]["total"] == 2  # login + role create
     assert all(item["username"] == "second" for item in filtered["data"]["items"])
-    assert admin.id  # 保持引用，避免未使用告警
+    assert admin.username == "admin"
 
 
 async def test_audit_logs_export_csv(client, db_session):
@@ -96,4 +96,4 @@ async def test_audit_log_survives_user_deletion(client, db_session):
     ).json()
     assert body["data"]["total"] == 1
     assert body["data"]["items"][0]["username"] == "admin"
-    assert admin.id
+    assert admin.username == "admin"

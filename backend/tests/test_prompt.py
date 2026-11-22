@@ -150,3 +150,42 @@ async def test_prompt_delete(client, db_session):
     missing = await client.get(f"/api/v1/prompts/{prompt.id}", headers=AUTH(token))
     assert deleted.json()["code"] == 200
     assert missing.json()["code"] == 404
+
+
+async def test_prompt_update_cannot_publish_directly(client, db_session):
+    await create_user(db_session, "admin", superuser=True)
+    token = await login_token(client, "admin")
+    prompt = await create_prompt(db_session, "未发布")
+    response = await client.put(
+        f"/api/v1/prompts/{prompt.id}", json={"status": "published"}, headers=AUTH(token)
+    )
+    assert response.json()["code"] == 400
+    detail = await client.get(f"/api/v1/prompts/{prompt.id}", headers=AUTH(token))
+    assert detail.json()["data"]["status"] == "draft"
+
+
+async def test_prompt_delete_out_of_scope_forbidden(client, db_session):
+    await _prompt_user(db_session, "writer", codes=["prompt:delete"])
+    foreign = await create_prompt(db_session, "他人 Prompt", created_by="someone")
+    token = await login_token(client, "writer")
+    response = await client.delete(f"/api/v1/prompts/{foreign.id}", headers=AUTH(token))
+    assert response.json()["code"] == 403
+
+
+async def test_prompt_republish_after_rollback_no_duplicate_version(client, db_session):
+    await create_user(db_session, "admin", superuser=True)
+    token = await login_token(client, "admin")
+    prompt = await create_prompt(db_session, "版本连续")
+    await client.post(f"/api/v1/prompts/{prompt.id}/publish", headers=AUTH(token))
+    await client.post(f"/api/v1/prompts/{prompt.id}/publish", headers=AUTH(token))
+    await client.post(
+        f"/api/v1/prompts/{prompt.id}/versions/v0.2/rollback", headers=AUTH(token)
+    )
+    republished = await client.post(
+        f"/api/v1/prompts/{prompt.id}/publish", headers=AUTH(token)
+    )
+    assert republished.json()["data"]["version"] == "v0.4"
+    versions = (
+        await client.get(f"/api/v1/prompts/{prompt.id}/versions", headers=AUTH(token))
+    ).json()["data"]
+    assert [v["version"] for v in versions] == ["v0.4", "v0.3", "v0.2"]

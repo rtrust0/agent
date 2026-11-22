@@ -5,7 +5,7 @@
 - 测试文件：`backend/tests/test_prompt.py`
 - 执行命令：`cd backend && .venv/Scripts/python.exe -m pytest tests/test_prompt.py -q`
 - 测试环境：Python 3.14 / FastAPI / SQLAlchemy 2.0（async）/ Pydantic v2；pytest + pytest-asyncio + httpx，内存 SQLite
-- 用例结果：**8 passed / 0 failed**
+- 用例结果：**11 passed / 0 failed**
 
 ## 一、接口覆盖
 
@@ -33,11 +33,16 @@
 - `test_prompt_publish_versions_and_rollback`
 - `test_prompt_test_render`
 - `test_prompt_delete`
+- `test_prompt_update_cannot_publish_directly`
+- `test_prompt_delete_out_of_scope_forbidden`
+- `test_prompt_republish_after_rollback_no_duplicate_version`
 
 ## 三、关键断言
 
 - 发布后状态置 `published` 且版本递增
 - 回滚同时恢复历史内容与版本号
+- 回滚后再次发布不会与历史版本重号
+- `PUT /prompts/{id}` 不能直接把状态改为 published（必须走发布接口）
 - `{{变量}}` 渲染缺失变量时保留占位符并返回 `missing_variables`
 
 ## 五、复现步骤

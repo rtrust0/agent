@@ -20,9 +20,10 @@ class PromptVersionRepository(BaseRepository[PromptVersion]):
 
     async def get_by_version(self, prompt_id: int, version: str) -> PromptVersion | None:
         return await self.db.scalar(
-            select(PromptVersion).where(
-                PromptVersion.prompt_id == prompt_id, PromptVersion.version == version
-            )
+            select(PromptVersion)
+            .where(PromptVersion.prompt_id == prompt_id, PromptVersion.version == version)
+            .order_by(PromptVersion.id.desc())
+            .limit(1)
         )
 
     async def list_by_prompt(self, prompt_id: int) -> list[PromptVersion]:

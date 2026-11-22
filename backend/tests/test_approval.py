@@ -167,6 +167,68 @@ async def test_audit_processed_application_twice(client, db_session):
     assert missing.json()["code"] == 404
 
 
+async def test_cannot_audit_own_application(client, db_session):
+    permissions = [
+        await create_permission(db_session, "approval:apply"),
+        await create_permission(db_session, "approval:audit"),
+    ]
+    role = await create_role(db_session, "self_service", permissions)
+    await create_user(db_session, "selfie", roles=[role], data_scope="all")
+    await create_permission(db_session, "agent:list")
+    token = await login_token(client, "selfie")
+    created = await client.post(
+        "/api/v1/approvals/apply",
+        json={"permission_code": "agent:list", "reason": "self"},
+        headers=AUTH(token),
+    )
+    application_id = created.json()["data"]["id"]
+    response = await client.put(
+        f"/api/v1/approvals/{application_id}/audit",
+        json={"approved": True},
+        headers=AUTH(token),
+    )
+    assert response.json()["code"] == 400
+    listed = await client.get("/api/v1/approvals/my", headers=AUTH(token))
+    assert listed.json()["data"]["items"][0]["status"] == "pending"
+
+
+async def test_data_scope_application_updates_user_scope(client, db_session):
+    await _applicant(db_session)
+    await _auditor(db_session)
+    await create_permission(db_session, "data_scope:all")
+    applicant_token = await login_token(client, "applicant")
+    auditor_token = await login_token(client, "auditor")
+    created = await client.post(
+        "/api/v1/approvals/apply",
+        json={"permission_code": "data_scope:all", "reason": "需要全量数据"},
+        headers=AUTH(applicant_token),
+    )
+    application_id = created.json()["data"]["id"]
+    await client.put(
+        f"/api/v1/approvals/{application_id}/audit",
+        json={"approved": True},
+        headers=AUTH(auditor_token),
+    )
+    me = await client.get("/api/v1/users/me", headers=AUTH(applicant_token))
+    assert me.json()["data"]["data_scope"] == "all"
+
+
+async def test_apply_expired_at_in_past_rejected(client, db_session):
+    await _applicant(db_session)
+    await create_permission(db_session, "agent:list")
+    token = await login_token(client, "applicant")
+    response = await client.post(
+        "/api/v1/approvals/apply",
+        json={
+            "permission_code": "agent:list",
+            "reason": "过期时间非法",
+            "expired_at": (datetime.now() - timedelta(days=1)).isoformat(),
+        },
+        headers=AUTH(token),
+    )
+    assert response.json()["code"] == 400
+
+
 async def test_expired_grant_not_effective(client, db_session):
     applicant = await _applicant(db_session)
     await create_permission(db_session, "agent:list")

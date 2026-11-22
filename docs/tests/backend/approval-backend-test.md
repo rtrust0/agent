@@ -5,7 +5,7 @@
 - 测试文件：`backend/tests/test_approval.py`
 - 执行命令：`cd backend && .venv/Scripts/python.exe -m pytest tests/test_approval.py -q`
 - 测试环境：Python 3.14 / FastAPI / SQLAlchemy 2.0（async）/ Pydantic v2；pytest + pytest-asyncio + httpx，内存 SQLite
-- 用例结果：**9 passed / 0 failed**
+- 用例结果：**12 passed / 0 failed**
 
 ## 一、接口覆盖
 
@@ -28,6 +28,9 @@
 - `test_approve_grants_permission_immediately`
 - `test_reject_does_not_grant`
 - `test_audit_processed_application_twice`
+- `test_cannot_audit_own_application`
+- `test_data_scope_application_updates_user_scope`
+- `test_apply_expired_at_in_past_rejected`
 - `test_expired_grant_not_effective`
 
 ## 三、关键断言
@@ -35,7 +38,9 @@
 - 审批通过后权限立即可用于鉴权（`/users/me/permissions` 同步可见）
 - 拒绝不授予权限
 - `expired_at` 已过期的历史授权不再计入有效权限（到期自动回收）
-- 处理过的申请不可重复审批
+- 处理过的申请不可重复审批，且不能审批本人提交的申请
+- 申请时 `expired_at` 必须晚于当前时间
+- `data_scope:*` 类权限码审批通过后同步写入用户 `data_scope` 字段
 
 ## 五、复现步骤
 

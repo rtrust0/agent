@@ -25,43 +25,43 @@ def get_analytics_service(db: AsyncSession = Depends(get_db)) -> AnalyticsServic
 @router.get("/overview", response_model=ResponseSchema[AnalyticsOverview], summary="总览")
 async def get_overview(
     svc: AnalyticsService = Depends(get_analytics_service),
-    _: User = Depends(get_current_user_with_permission("analytics:read")),
+    current_user: User = Depends(get_current_user_with_permission("analytics:read")),
 ) -> ResponseSchema[AnalyticsOverview]:
-    return ResponseSchema(data=await svc.overview())
+    return ResponseSchema(data=await svc.overview(current_user))
 
 
 @router.get("/daily", response_model=ResponseSchema[list[DailyMetric]], summary="按日统计")
 async def get_daily(
     days: int = Query(14, ge=1, le=90),
     svc: AnalyticsService = Depends(get_analytics_service),
-    _: User = Depends(get_current_user_with_permission("analytics:read")),
+    current_user: User = Depends(get_current_user_with_permission("analytics:read")),
 ) -> ResponseSchema[list[DailyMetric]]:
-    return ResponseSchema(data=await svc.daily(days))
+    return ResponseSchema(data=await svc.daily(current_user, days))
 
 
 @router.get("/by-agent", response_model=ResponseSchema[list[AgentMetric]], summary="按 Agent 统计")
 async def get_by_agent(
     svc: AnalyticsService = Depends(get_analytics_service),
-    _: User = Depends(get_current_user_with_permission("analytics:read")),
+    current_user: User = Depends(get_current_user_with_permission("analytics:read")),
 ) -> ResponseSchema[list[AgentMetric]]:
-    return ResponseSchema(data=await svc.by_agent())
+    return ResponseSchema(data=await svc.by_agent(current_user))
 
 
 @router.get("/by-model", response_model=ResponseSchema[list[ModelMetric]], summary="按模型统计")
 async def get_by_model(
     svc: AnalyticsService = Depends(get_analytics_service),
-    _: User = Depends(get_current_user_with_permission("analytics:read")),
+    current_user: User = Depends(get_current_user_with_permission("analytics:read")),
 ) -> ResponseSchema[list[ModelMetric]]:
-    return ResponseSchema(data=await svc.by_model())
+    return ResponseSchema(data=await svc.by_model(current_user))
 
 
 @router.get("/costs", response_model=ResponseSchema[CostSummary], summary="费用统计")
 async def get_costs(
     days: int = Query(14, ge=1, le=90),
     svc: AnalyticsService = Depends(get_analytics_service),
-    _: User = Depends(get_current_user_with_permission("analytics:read")),
+    current_user: User = Depends(get_current_user_with_permission("analytics:read")),
 ) -> ResponseSchema[CostSummary]:
-    return ResponseSchema(data=await svc.costs(days))
+    return ResponseSchema(data=await svc.costs(current_user, days))
 
 
 @router.get(
@@ -69,6 +69,6 @@ async def get_costs(
 )
 async def get_evaluation(
     svc: AnalyticsService = Depends(get_analytics_service),
-    _: User = Depends(get_current_user_with_permission("analytics:read")),
+    current_user: User = Depends(get_current_user_with_permission("analytics:read")),
 ) -> ResponseSchema[EvaluationSummary]:
-    return ResponseSchema(data=await svc.evaluation())
+    return ResponseSchema(data=await svc.evaluation(current_user))

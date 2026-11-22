@@ -11,6 +11,7 @@ from app.modules.analytics.schema import (
     EvaluationSummary,
     ModelMetric,
 )
+from app.modules.user.model import User
 
 
 class AnalyticsService:
@@ -18,11 +19,18 @@ class AnalyticsService:
         self.db = db
         self.repo = AnalyticsRepository(db)
 
-    async def overview(self) -> AnalyticsOverview:
-        return AnalyticsOverview(**await self.repo.overview())
+    @staticmethod
+    def _scope_user_id(current_user: User) -> int | None:
+        """超管与 data_scope=all 不做过滤；own/dept 仅统计本人数据。"""
+        if current_user.is_superuser or getattr(current_user, "data_scope", "own") == "all":
+            return None
+        return current_user.id
 
-    async def daily(self, days: int = 14) -> list[DailyMetric]:
-        raw = await self.repo.daily(days)
+    async def overview(self, current_user: User) -> AnalyticsOverview:
+        return AnalyticsOverview(**await self.repo.overview(self._scope_user_id(current_user)))
+
+    async def daily(self, current_user: User, days: int = 14) -> list[DailyMetric]:
+        raw = await self.repo.daily(days, self._scope_user_id(current_user))
         points: list[DailyMetric] = []
         today = date.today()
         for offset in range(days - 1, -1, -1):
@@ -38,11 +46,11 @@ class AnalyticsService:
             )
         return points
 
-    async def by_agent(self) -> list[AgentMetric]:
+    async def by_agent(self, current_user: User) -> list[AgentMetric]:
         names = await self.repo.agent_names()
         metrics: list[AgentMetric] = []
         for agent_id, agent_name, conversations, tokens, cost, avg_latency in (
-            await self.repo.by_agent()
+            await self.repo.by_agent(self._scope_user_id(current_user))
         ):
             metrics.append(
                 AgentMetric(
@@ -56,9 +64,11 @@ class AnalyticsService:
             )
         return metrics
 
-    async def by_model(self) -> list[ModelMetric]:
+    async def by_model(self, current_user: User) -> list[ModelMetric]:
         metrics: list[ModelMetric] = []
-        for model_id, model_name, conversations, tokens, cost in await self.repo.by_model():
+        for model_id, model_name, conversations, tokens, cost in await self.repo.by_model(
+            self._scope_user_id(current_user)
+        ):
             metrics.append(
                 ModelMetric(
                     model_id=model_id,
@@ -70,15 +80,15 @@ class AnalyticsService:
             )
         return metrics
 
-    async def costs(self, days: int = 14) -> CostSummary:
-        overview = await self.repo.overview()
+    async def costs(self, current_user: User, days: int = 14) -> CostSummary:
+        overview = await self.repo.overview(self._scope_user_id(current_user))
         total = overview["total_cost"]
         conversations = overview["total_conversations"]
         return CostSummary(
             total_cost=round(total, 6),
             avg_cost_per_conversation=round(total / conversations, 6) if conversations else 0,
-            daily=await self.daily(days),
+            daily=await self.daily(current_user, days),
         )
 
-    async def evaluation(self) -> EvaluationSummary:
-        return EvaluationSummary(**await self.repo.evaluation())
+    async def evaluation(self, current_user: User) -> EvaluationSummary:
+        return EvaluationSummary(**await self.repo.evaluation(self._scope_user_id(current_user)))

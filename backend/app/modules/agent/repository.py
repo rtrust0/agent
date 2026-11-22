@@ -20,9 +20,10 @@ class AgentVersionRepository(BaseRepository[AgentVersion]):
 
     async def get_by_version(self, agent_id: int, version: str) -> AgentVersion | None:
         return await self.db.scalar(
-            select(AgentVersion).where(
-                AgentVersion.agent_id == agent_id, AgentVersion.version == version
-            )
+            select(AgentVersion)
+            .where(AgentVersion.agent_id == agent_id, AgentVersion.version == version)
+            .order_by(AgentVersion.id.desc())
+            .limit(1)
         )
 
     async def list_by_agent(self, agent_id: int) -> list[AgentVersion]:

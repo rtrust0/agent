@@ -222,3 +222,15 @@ async def test_document_on_missing_kb(client, db_session):
         headers=AUTH(token),
     )
     assert response.json()["code"] == 404
+
+
+async def test_kb_update_and_delete_out_of_scope(client, db_session):
+    await _kb_user(db_session, "writer", ["knowledge:update", "knowledge:delete"])
+    foreign = await create_knowledge_base(db_session, "他人库", created_by="someone")
+    token = await login_token(client, "writer")
+    updated = await client.put(
+        f"/api/v1/knowledge-bases/{foreign.id}", json={"name": "越权"}, headers=AUTH(token)
+    )
+    deleted = await client.delete(f"/api/v1/knowledge-bases/{foreign.id}", headers=AUTH(token))
+    assert updated.json()["code"] == 403
+    assert deleted.json()["code"] == 403

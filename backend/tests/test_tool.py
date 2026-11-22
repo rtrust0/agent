@@ -130,3 +130,20 @@ async def test_tool_delete_and_not_found(client, db_session):
     missing = await client.get(f"/api/v1/tools/{tool.id}", headers=AUTH(token))
     assert deleted.json()["code"] == 200
     assert missing.json()["code"] == 404
+
+
+async def test_tool_update_and_delete_out_of_scope(client, db_session):
+    permissions = [
+        await create_permission(db_session, code)
+        for code in ("tool:update", "tool:delete")
+    ]
+    role = await create_role(db_session, "writer", permissions)
+    await create_user(db_session, "writer", roles=[role], data_scope="own")
+    foreign = await create_tool(db_session, "他人工具", created_by="someone")
+    token = await login_token(client, "writer")
+    updated = await client.put(
+        f"/api/v1/tools/{foreign.id}", json={"name": "越权"}, headers=AUTH(token)
+    )
+    deleted = await client.delete(f"/api/v1/tools/{foreign.id}", headers=AUTH(token))
+    assert updated.json()["code"] == 403
+    assert deleted.json()["code"] == 403

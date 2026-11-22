@@ -5,7 +5,7 @@
 - 测试文件：`backend/tests/test_knowledge.py`
 - 执行命令：`cd backend && .venv/Scripts/python.exe -m pytest tests/test_knowledge.py -q`
 - 测试环境：Python 3.14 / FastAPI / SQLAlchemy 2.0（async）/ Pydantic v2；pytest + pytest-asyncio + httpx，内存 SQLite
-- 用例结果：**11 passed / 0 failed**
+- 用例结果：**12 passed / 0 failed**
 
 ## 一、接口覆盖
 
@@ -41,6 +41,7 @@
 - `test_retrieval_test_and_reindex`
 - `test_kb_delete_cascades`
 - `test_document_on_missing_kb`
+- `test_kb_update_and_delete_out_of_scope`
 
 ## 三、关键断言
 

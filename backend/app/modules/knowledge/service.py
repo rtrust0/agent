@@ -327,18 +327,15 @@ class KnowledgeService:
             scored.append((score, segment))
 
         scored.sort(key=lambda item: item[0], reverse=True)
-        hits: list[RetrievalHit] = []
-        for score, segment in scored[:limit]:
-            segment.hit_count += 1
-            hits.append(
-                RetrievalHit(
-                    segment_id=segment.id,
-                    document_id=segment.document_id,
-                    content=segment.content,
-                    score=score,
-                )
+        hits = [
+            RetrievalHit(
+                segment_id=segment.id,
+                document_id=segment.document_id,
+                content=segment.content,
+                score=score,
             )
-        await self.db.commit()
+            for score, segment in scored[:limit]
+        ]
         return RetrievalTestResult(knowledge_base_id=kb.id, query=query, hits=hits)
 
     async def reindex(self, actor: User, kb_id: int) -> ReindexResult:

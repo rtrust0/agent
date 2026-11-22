@@ -3,7 +3,9 @@ from tests.helpers import (
     AUTH,
     create_agent,
     create_model,
+    create_permission,
     create_provider,
+    create_role,
     create_user,
     login_token,
 )
@@ -115,3 +117,25 @@ async def test_analytics_evaluation(client, db_session):
     assert body["satisfaction_rate"] == 66.67
     assert body["avg_rating"] == 3.67
     assert body["needs_optimization"] == 1
+
+
+async def test_analytics_respects_data_scope(client, db_session):
+    permission = await create_permission(db_session, "analytics:read")
+    role = await create_role(db_session, "metrics_reader", [permission])
+    scoped = await create_user(db_session, "scoped", roles=[role], data_scope="own")
+    other = await create_user(db_session, "outsider")
+    db_session.add_all(
+        [
+            _conversation(user_id=scoped.id),
+            _conversation(user_id=other.id),
+            _conversation(user_id=other.id),
+        ]
+    )
+    await db_session.commit()
+    token = await login_token(client, "scoped")
+    overview = (await client.get("/api/v1/analytics/overview", headers=AUTH(token))).json()["data"]
+    assert overview["total_conversations"] == 1
+    by_agent = (await client.get("/api/v1/analytics/by-agent", headers=AUTH(token))).json()["data"]
+    assert sum(row["conversations"] for row in by_agent) == 1
+    daily = (await client.get("/api/v1/analytics/daily?days=3", headers=AUTH(token))).json()["data"]
+    assert sum(point["conversations"] for point in daily) == 1

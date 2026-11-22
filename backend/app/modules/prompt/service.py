@@ -6,7 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.data_scope import assert_in_scope, scope_condition
 from app.core.deps import PageParams
 from app.core.exceptions import BizException
-from app.core.versioning import bump_version
+from app.core.versioning import next_version
 from app.modules.audit.service import AuditService
 from app.modules.prompt.model import Prompt, PromptVersion
 from app.modules.prompt.repository import PromptRepository, PromptVersionRepository
@@ -82,6 +82,8 @@ class PromptService:
 
     async def update(self, actor: User, prompt_id: int, data: PromptUpdate) -> Prompt:
         prompt = await self.get_prompt(prompt_id, actor)
+        if data.status is not None and data.status != "draft":
+            raise BizException(code=400, message="请使用发布接口发布 Prompt")
         before = {
             "name": prompt.name,
             "status": prompt.status,
@@ -122,7 +124,10 @@ class PromptService:
 
     async def publish(self, actor: User, prompt_id: int, changelog: str | None) -> Prompt:
         prompt = await self.get_prompt(prompt_id, actor)
-        new_version = bump_version(prompt.version)
+        history = await self.version_repo.list_by_prompt(prompt.id)
+        new_version = next_version(
+            [item.version for item in history] + [prompt.version], prompt.version
+        )
         await self.version_repo.clear_current(prompt.id)
         version = PromptVersion(
             prompt_id=prompt.id,

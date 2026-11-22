@@ -5,7 +5,7 @@
 - 测试文件：`backend/tests/test_tool.py`
 - 执行命令：`cd backend && .venv/Scripts/python.exe -m pytest tests/test_tool.py -q`
 - 测试环境：Python 3.14 / FastAPI / SQLAlchemy 2.0（async）/ Pydantic v2；pytest + pytest-asyncio + httpx，内存 SQLite
-- 用例结果：**10 passed / 0 failed**
+- 用例结果：**11 passed / 0 failed**
 
 ## 一、接口覆盖
 
@@ -34,6 +34,7 @@
 - `test_tool_test_success_and_failure`
 - `test_tool_logs`
 - `test_tool_delete_and_not_found`
+- `test_tool_update_and_delete_out_of_scope`
 
 ## 三、关键断言
 
