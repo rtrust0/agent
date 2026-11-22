@@ -6,10 +6,13 @@ from app.core.config import get_settings
 from app.core.database import init_db
 from app.core.exceptions import register_exception_handlers
 from app.core.request_context import RequestContextMiddleware
+from app.modules.agent.api import router as agent_router
 from app.modules.approval.api import router as approval_router
 from app.modules.audit.api import router as audit_router
 from app.modules.auth.api import router as auth_router
+from app.modules.model.api import router as model_router
 from app.modules.permission.api import router as permission_router
+from app.modules.prompt.api import router as prompt_router
 from app.modules.role.api import router as role_router
 from app.modules.user.api import router as user_router
 
@@ -40,6 +43,9 @@ def create_app() -> FastAPI:
         permission_router,
         audit_router,
         approval_router,
+        model_router,
+        agent_router,
+        prompt_router,
     ):
         app.include_router(router, prefix=API_PREFIX)
 
