@@ -98,7 +98,7 @@ ROLE_GRANTS: dict[str, list[str]] = {
         "knowledge:list", "knowledge:read", "knowledge:create", "knowledge:update",
         "knowledge:document_upload", "knowledge:retrieval_test", "knowledge:reindex",
         "tool:list", "tool:read", "tool:test", "tool:toggle",
-        "conversation:list", "conversation:read",
+        "conversation:list", "conversation:read", "conversation:annotate", "conversation:export",
         "analytics:read",
     ],
     "viewer": [

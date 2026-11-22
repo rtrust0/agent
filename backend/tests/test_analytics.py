@@ -1,5 +1,12 @@
 from app.modules.conversation.model import Conversation
-from tests.helpers import AUTH, create_model, create_provider, create_user, login_token
+from tests.helpers import (
+    AUTH,
+    create_agent,
+    create_model,
+    create_provider,
+    create_user,
+    login_token,
+)
 
 
 async def _admin(client, db_session):
@@ -61,11 +68,13 @@ async def test_analytics_by_agent_and_model(client, db_session):
     token = await _admin(client, db_session)
     provider = await create_provider(db_session)
     model = await create_model(db_session, provider, "gpt-4o")
+    support_agent = await create_agent(db_session, "客服助手")
+    analysis_agent = await create_agent(db_session, "分析助手")
     db_session.add_all(
         [
-            _conversation(agent_id=1, agent_name="客服助手", model_id=model.id),
-            _conversation(agent_id=1, agent_name="客服助手", model_id=model.id),
-            _conversation(agent_id=2, agent_name="分析助手", model_id=None),
+            _conversation(agent_id=support_agent.id, agent_name="客服助手", model_id=model.id),
+            _conversation(agent_id=support_agent.id, agent_name="客服助手", model_id=model.id),
+            _conversation(agent_id=analysis_agent.id, agent_name="分析助手", model_id=None),
         ]
     )
     await db_session.commit()

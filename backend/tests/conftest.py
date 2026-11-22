@@ -3,13 +3,14 @@ from httpx import ASGITransport, AsyncClient
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 
 from app.core.base_model import Base
-from app.core.database import get_db
+from app.core.database import enable_sqlite_foreign_keys, get_db
 from app.main import app
 
 
 @pytest_asyncio.fixture
 async def db_engine():
     engine = create_async_engine("sqlite+aiosqlite:///:memory:")
+    enable_sqlite_foreign_keys(engine)
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
     yield engine

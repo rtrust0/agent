@@ -63,8 +63,8 @@ backend/tests/test_{role,permission,audit,approval,model,agent,prompt,knowledge,
 - `scope_condition(model, user, owner_field="created_by") -> ColumnElement | None`；`assert_in_scope(obj, user, owner_field) -> None`。
 - `get_effective_permission_codes(db, user) -> set[str]`：角色权限 ∪ 有效审批授权；`get_current_user_with_permission(code)` 改为 async 依赖。
 
-- [ ] Step 1：实现上述文件，`pytest -q` 保持 22 passed
-- [ ] Step 2：commit
+- [x] Step 1：实现上述文件，`pytest -q` 保持 22 passed
+- [x] Step 2：commit
 
 ---
 
@@ -75,9 +75,9 @@ backend/tests/test_{role,permission,audit,approval,model,agent,prompt,knowledge,
 - permission：`GET /permissions/`（登录）、`GET /permissions/search`（permission:list）、`GET /permissions/{id}`（permission:read）、`POST /permissions`（permission:create）、`PUT /permissions/{id}`（permission:update，code 不可改）、`DELETE /permissions/{id}`（permission:delete）。
 - 写操作记录审计（module=role/permission）。
 
-- [ ] Step 1：写 `tests/test_role.py`、`tests/test_permission.py` 并观察 RED
-- [ ] Step 2：实现 api/service/repository/schema，注册路由
-- [ ] Step 3：GREEN，commit
+- [x] Step 1：写 `tests/test_role.py`、`tests/test_permission.py` 并观察 RED
+- [x] Step 2：实现 api/service/repository/schema，注册路由
+- [x] Step 3：GREEN，commit
 
 ---
 
@@ -89,9 +89,9 @@ backend/tests/test_{role,permission,audit,approval,model,agent,prompt,knowledge,
 - 审批通过：status=approved，写 approver/approved_at/expired_at；`get_effective_permission_codes` 立即生效。
 - `PUT /users/{id}`（user:update，可改 email/is_active/data_scope/密码）。
 
-- [ ] Step 1：写 `tests/test_audit.py`、`tests/test_approval.py`，RED
-- [ ] Step 2：实现并注册；user 写操作补审计
-- [ ] Step 3：GREEN，commit
+- [x] Step 1：写 `tests/test_audit.py`、`tests/test_approval.py`，RED
+- [x] Step 2：实现并注册；user 写操作补审计
+- [x] Step 3：GREEN，commit
 
 ---
 
@@ -102,9 +102,9 @@ backend/tests/test_{role,permission,audit,approval,model,agent,prompt,knowledge,
 - Agent：`/agents` CRUD、`POST /agents/{id}/publish`（agent:publish，生成 agent_versions + 置 status=active）、`GET /agents/{id}/versions`（agent:read）、`POST /agents/{id}/versions/{version}/rollback`（agent:publish）、`POST /agents/{id}/test`（agent:test）、`GET /agents/{id}/monitor`（agent:monitor）。
 - Prompt：`/prompts` CRUD、`POST /prompts/{id}/publish`、`GET /prompts/{id}/versions`、`POST /prompts/{id}/versions/{version}/rollback`、`POST /prompts/{id}/test`。
 
-- [ ] Step 1：三个测试文件 RED
-- [ ] Step 2：实现三模块（含版本表）
-- [ ] Step 3：GREEN，commit
+- [x] Step 1：三个测试文件 RED
+- [x] Step 2：实现三模块（含版本表）
+- [x] Step 3：GREEN，commit
 
 ---
 
@@ -114,9 +114,9 @@ backend/tests/test_{role,permission,audit,approval,model,agent,prompt,knowledge,
 - 知识库：`/knowledge-bases` CRUD；`POST /{id}/documents`（knowledge:document_upload，登记文档并置 processing→completed，按 chunk_size 生成 segments）、`GET /{id}/documents`、`POST /{id}/documents/{doc_id}/retry`、`DELETE /{id}/documents/{doc_id}`；`GET /{id}/segments`、`PUT/DELETE /{id}/segments/{seg_id}`；`POST /{id}/retrieval-test`（关键词打分返回 top_k）；`POST /{id}/reindex`。
 - 工具：`/tools` CRUD、`POST /{id}/test`（tool:test）、`POST /{id}/toggle`（tool:toggle）、`GET /{id}/logs`（tool:read）。
 
-- [ ] Step 1：两个测试文件 RED
-- [ ] Step 2：实现两模块
-- [ ] Step 3：GREEN，commit
+- [x] Step 1：两个测试文件 RED
+- [x] Step 2：实现两模块
+- [x] Step 3：GREEN，commit
 
 ---
 
@@ -128,19 +128,19 @@ backend/tests/test_{role,permission,audit,approval,model,agent,prompt,knowledge,
 - 统计：`/analytics/{overview,daily,by-agent,by-model,costs,evaluation}`（analytics:read）。
 - 系统：`/system/api-keys` CRUD（system:api_keys）、`/system/alerts/rules` CRUD + `active` + `{id}/acknowledge` + `{id}/resolve`（system:alerts）、`/system/settings` GET/PUT（system:settings）。
 
-- [ ] Step 1：四个测试文件 RED
-- [ ] Step 2：实现四模块
-- [ ] Step 3：GREEN，commit
+- [x] Step 1：四个测试文件 RED
+- [x] Step 2：实现四模块
+- [x] Step 3：GREEN，commit
 
 ---
 
 ### Task 7: 种子数据 + 报告
 
 **Files:** `backend/seed.py`、`docs/tests/backend/*.md`
-- [ ] Step 1：`seed.py` 写入 71 权限码 + 3 角色（授权关系对齐 init-data.sql）+ 3 演示账号 + 业务演示数据
-- [ ] Step 2：`pytest tests/ -q` 全绿
-- [ ] Step 3：按模块生成测试报告（含用例清单、执行命令、结果统计）
-- [ ] Step 4：commit
+- [x] Step 1：`seed.py` 写入 71 权限码 + 3 角色（授权关系对齐 init-data.sql）+ 3 演示账号 + 业务演示数据
+- [x] Step 2：`pytest tests/ -q` 全绿
+- [x] Step 3：按模块生成测试报告（含用例清单、执行命令、结果统计）
+- [x] Step 4：commit
 
 ---
 
