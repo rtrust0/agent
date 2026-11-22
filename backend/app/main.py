@@ -10,10 +10,12 @@ from app.modules.agent.api import router as agent_router
 from app.modules.approval.api import router as approval_router
 from app.modules.audit.api import router as audit_router
 from app.modules.auth.api import router as auth_router
+from app.modules.knowledge.api import router as knowledge_router
 from app.modules.model.api import router as model_router
 from app.modules.permission.api import router as permission_router
 from app.modules.prompt.api import router as prompt_router
 from app.modules.role.api import router as role_router
+from app.modules.tool.api import router as tool_router
 from app.modules.user.api import router as user_router
 
 API_PREFIX = "/api/v1"
@@ -46,6 +48,8 @@ def create_app() -> FastAPI:
         model_router,
         agent_router,
         prompt_router,
+        knowledge_router,
+        tool_router,
     ):
         app.include_router(router, prefix=API_PREFIX)
 
