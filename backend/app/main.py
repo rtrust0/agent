@@ -7,14 +7,19 @@ from app.core.database import init_db
 from app.core.exceptions import register_exception_handlers
 from app.core.request_context import RequestContextMiddleware
 from app.modules.agent.api import router as agent_router
+from app.modules.analytics.api import router as analytics_router
 from app.modules.approval.api import router as approval_router
 from app.modules.audit.api import router as audit_router
 from app.modules.auth.api import router as auth_router
+from app.modules.conversation.api import router as conversation_router
+from app.modules.conversation.api import trace_router as conversation_trace_router
+from app.modules.dashboard.api import router as dashboard_router
 from app.modules.knowledge.api import router as knowledge_router
 from app.modules.model.api import router as model_router
 from app.modules.permission.api import router as permission_router
 from app.modules.prompt.api import router as prompt_router
 from app.modules.role.api import router as role_router
+from app.modules.system.api import router as system_router
 from app.modules.tool.api import router as tool_router
 from app.modules.user.api import router as user_router
 
@@ -50,6 +55,11 @@ def create_app() -> FastAPI:
         prompt_router,
         knowledge_router,
         tool_router,
+        conversation_router,
+        conversation_trace_router,
+        dashboard_router,
+        analytics_router,
+        system_router,
     ):
         app.include_router(router, prefix=API_PREFIX)
 
